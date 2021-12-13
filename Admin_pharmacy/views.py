@@ -12,15 +12,16 @@ from django.contrib.auth import authenticate,login,logout
 
 
 def index(request):
-    list=[]
-    docs=pharmacy.objects.get(id=request.user.pharmacy.id)
-    product=pha_product.objects.filter(doc=docs)
-    supp=supplier.objects.filter(user=docs)
-    user=pharmacy_prod_order.objects.filter(pharmacys=docs)
-    for i in user:
-        if [i.username,i.phone,i.address] not in list:
-            list.append([i.username,i.phone,i.address])
-    dics={'product':list,'date':date.today(),'supp':len(supp),'prod':len(product)}
+    if request.user.is_authenticated:
+        list=[]
+        docs=pharmacy.objects.get(id=request.user.pharmacy.id)
+        product=pha_product.objects.filter(doc=docs)
+        supp=supplier.objects.filter(user=docs)
+        user=pharmacy_prod_order.objects.filter(pharmacys=docs)
+        for i in user:
+            if [i.username,i.phone,i.address] not in list:
+                list.append([i.username,i.phone,i.address])
+        dics={'product':list,'date':date.today(),'supp':len(supp),'prod':len(product)}
     return render(request,'home.html',dics)
 def categories(request):
     product=category.objects.all()

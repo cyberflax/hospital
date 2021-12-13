@@ -41,9 +41,9 @@ def Doctor_register(request):
         confirm=request.POST['confirm']
         usermail = User.objects.filter(email=email)
         usernam=User.objects.filter(username=name)
-        if len(usermail) !=1:
-            if len(usernam)!=1:
-                user =User.objects.create_user(username=name, email=email, password=password)
+        print(name,name.lower(),usernam)
+        if len(usermail) !=1 and len(usernam)!=1:
+                user =User.objects.create_user(username=name.lower(), email=email, password=password)
                 user.save()
                 name1 = request.POST['name']
                 email1 = request.POST['email']
@@ -56,11 +56,8 @@ def Doctor_register(request):
                 else:
                     messages.success(request, "Your account has been successfully created")
                 return redirect('home')
-            else:
-                messages.error(request, 'Username is already register.')
-
         else:
-            messages.error(request, "Email is already register.")
+            messages.error(request, "Email or name is already register.")
 
     return render(request,'doctor/doctor-register.html')
 def change_password(request):

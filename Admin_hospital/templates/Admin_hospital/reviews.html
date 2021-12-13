@@ -50,11 +50,20 @@
 													</h2>
 												</td>
 												<td>
-													<i class="fe fe-star text-warning"></i>
-													<i class="fe fe-star text-warning"></i>
-													<i class="fe fe-star text-warning"></i>
-													<i class="fe fe-star text-warning"></i>
-													<i class="fe fe-star-o text-secondary"></i>
+
+                {%for  j in "x"|ljust:"5"%}
+    {%if r.rating > forloop.counter0 %}
+                <i class="fe fe-star text-warning" >
+                </i>
+                {%else%}
+                <i class="fe fe-star-o text-secondary">
+                </i>
+                {%endif%}
+                {%endfor%}
+
+
+
+
 												</td>
 												<td>
 													{{r.review}}
