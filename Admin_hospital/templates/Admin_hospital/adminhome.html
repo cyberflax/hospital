@@ -1,0 +1,374 @@
+{% extends 'adminbasic.html' %}
+{% load static %}
+{% block body %}
+
+<div class="page-wrapper">
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="page-title">
+                        Welcome Admin! SRJ
+                    </h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item active">
+                            Dashboard
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-primary border-primary">
+                                <i class="fe fe-users">
+                                </i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>
+                                    {{dct|length}}
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="dash-widget-info">
+                            <h6 class="text-muted">
+                                Doctors
+                            </h6>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-primary w-50">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-success">
+                                <i class="fe fe-credit-card">
+                                </i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>
+                                    {{pnt|length}}
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="dash-widget-info">
+                            <h6 class="text-muted">
+                                Patients
+                            </h6>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-success w-50">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-danger border-danger">
+                                <i class="fe fe-money">
+                                </i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>
+                                    {{apmnt|length}}
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="dash-widget-info">
+                            <h6 class="text-muted">
+                                Appointment
+                            </h6>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-danger w-50">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6 col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="dash-widget-header">
+                            <span class="dash-widget-icon text-warning border-warning">
+                                <i class="fe fe-folder">
+                                </i>
+                            </span>
+                            <div class="dash-count">
+                                <h3>
+                                    $62523
+                                </h3>
+                            </div>
+                        </div>
+                        <div class="dash-widget-info">
+                            <h6 class="text-muted">
+                                Revenue
+                            </h6>
+                            <div class="progress progress-sm">
+                                <div class="progress-bar bg-warning w-50">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-lg-6">
+                <div class="card card-chart">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Revenue
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="morrisArea">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-6">
+                <div class="card card-chart">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Status
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="morrisLine">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 d-flex">
+                <div class="card card-table flex-fill">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Doctors List
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Doctor Name
+                                        </th>
+                                        <th>
+                                            Speciality
+                                        </th>
+                                        <th>
+                                            Earned
+                                        </th>
+                                        <th>
+                                            Reviews
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for d in dct %}
+                                    <tr>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' d.id %}">
+                                                    <img alt="User Image" class="avatar-img rounded-circle"
+                                                        src="/media/{{d.img}}" />
+                                                </a>
+                                                <a href="{% url 'Doctor_profile' d.id %}">
+                                                    {{d.name}}
+                                                </a>
+                                            </h2>
+                                        </td>
+                                        <td>
+                                            {{d.specialization}}
+                                        </td>
+                                        <td>
+                                            $3200.00
+                                        </td>
+                                        <td>
+                                            <i class="fe fe-star text-warning">
+                                            </i>
+                                            <i class="fe fe-star text-warning">
+                                            </i>
+                                            <i class="fe fe-star text-warning">
+                                            </i>
+                                            <i class="fe fe-star text-warning">
+                                            </i>
+                                            <i class="fe fe-star-o text-secondary">
+                                            </i>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 d-flex">
+                <div class="card card-table flex-fill">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Patients List
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Patient Name
+                                        </th>
+                                        <th>
+                                            Phone
+                                        </th>
+                                        <th>
+                                            Last Visit
+                                        </th>
+                                        <th>
+                                            Paid
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for p in pnt %}
+                                    <tr>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{p.id}} ">
+                                                    <img alt="User Image" class="avatar-img rounded-circle"
+                                                        src="/media/{{p.img}}" />
+                                                </a>
+                                                <a href="{%url 'patient_profile'%}?profile={{p.id}}">
+                                                    {{p.name}}
+                                                </a>
+                                            </h2>
+                                        </td>
+                                        <td>
+                                            {{p.mobile}}
+                                        </td>
+                                        <td>
+                                            20 Oct 2019
+                                        </td>
+                                        <td class="text-right">
+                                            $100.00
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-table">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            Appointment List
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Doctor Name
+                                        </th>
+                                        <th>
+                                            Speciality
+                                        </th>
+                                        <th>
+                                            Patient Name
+                                        </th>
+                                        <th>
+                                            Apointment Time
+                                        </th>
+                                        <th>
+                                            Status
+                                        </th>
+                                        <th class="text-right">
+                                            Amount
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for ap in apmnt %}
+                                    <tr>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' ap.doctor.id %}">
+                                                    <img alt="User Image" class="avatar-img rounded-circle"
+                                                        src="/media/{{ap.doctor.img}}" />
+                                                </a>
+                                                <a href="{% url 'Doctor_profile' ap.doctor.id %}">
+                                                    {{ap.doctor.name}}
+                                                </a>
+                                            </h2>
+                                        </td>
+                                        
+                                        <td>
+                                            {{ap.doctor.specialization}}
+                                        </td>
+                                        <td>
+                                            <h2 class="table-avatar">
+                                                <a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{ap.patient.id}}">
+                                                    <img alt="User Image" class="avatar-img rounded-circle"
+                                                        src="/media/{{ap.patient.img}}" />
+                                                </a>
+                                                <a href="{%url 'patient_profile'%}?profile={{p.id}}">
+                                                    {{ap.patient}}
+                                                </a>
+                                            </h2>
+                                        </td>
+                                        <td>
+                                            9 Nov 2019
+                                            <span class="text-primary d-block">
+                                                11.00 AM - 11.15 AM
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="status-toggle">
+                                                <input checked="" class="check" id="status_1" type="checkbox" />
+                                                <label class="checktoggle" for="status_1">
+                                                    checkbox
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="text-right">
+                                            $200.00
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock body %}
+
+
+

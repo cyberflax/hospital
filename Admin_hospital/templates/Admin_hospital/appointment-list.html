@@ -1,0 +1,75 @@
+{% extends 'adminbasic.html' %}
+{% load static %}
+{% block body %}
+<div class="page-wrapper">
+	<div class="content container-fluid">
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">Appointments</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
+						<li class="breadcrumb-item active">Appointments</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>Doctor Name</th>
+										<th>Speciality</th>
+										<th>Patient Name</th>
+										<th>Apointment Time</th>
+										<th>Status</th>
+										<th class="text-right">Amount</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for ap in apmnt %}
+									<tr>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' ap.doctor.id %}"><img
+														alt="User Image" class="avatar-img rounded-circle"
+														src="/media/{{ap.doctor.img}}" /></a>
+												<a href="{% url 'Doctor_profile' ap.doctor.id %}">{{ap.doctor.name}}</a>
+											</h2>
+										</td>
+										<td>{{ap.doctor.specialization}}</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{ap.patient.id}}"><img
+														alt="User Image" class="avatar-img rounded-circle"
+														src="/media/{{ap.patient.img}}" /></a>
+												<a href="{%url 'patient_profile'%}?profile={{ap.patient.id}}">{{ap.patient}} </a>
+											</h2>
+										</td>
+										<td> {{ap.date|date:'d  M  Y'}} <span class="text-primary d-block">{{ap.time1}}-{{ap.time2}}
+												</span></td>
+										<td>
+											<div class="status-toggle">
+												<input checked="" class="check" id="status_1" type="checkbox" />
+												<label class="checktoggle" for="status_1">checkbox</label>
+											</div>
+										</td>
+										<td class="text-right">
+											${{ap.amount}}.00
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock body %}

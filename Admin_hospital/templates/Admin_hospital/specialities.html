@@ -1,0 +1,279 @@
+{% extends 'adminbasic.html' %}
+{% load static %}
+{% block body %}
+		<div class="page-wrapper">
+			<div class="content container-fluid">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-sm-7 col-auto">
+							<h3 class="page-title">Specialities</h3>
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
+								<li class="breadcrumb-item active">Specialities</li>
+							</ul>
+						</div>
+						<div class="col-sm-5 col">
+							<a class="btn btn-primary float-right mt-2" data-toggle="modal"
+								href="#Add_Specialities_details">Add</a>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="datatable table table-hover table-center mb-0">
+										<thead>
+											<tr>
+												<th>#</th>
+												<th>Specialities</th>
+												<th class="text-right">Actions</th>
+											</tr>
+										</thead>
+										<tbody>{% for i in product %}
+											<tr>
+												<td>#SP0{{forloop.counter}}</td>
+												<td>
+													<h2 class="table-avatar">
+														<a class="avatar avatar-sm mr-2" href="/media/{{i.img}}">
+															<img alt="Speciality" class="avatar-img"
+																src="/media/{{i.img}}" />
+														</a>
+														<a href="/media/{{i.img}}">{{i.spec}}</a>
+													</h2>
+												</td>
+												<td class="text-right">
+													<div class="actions">
+														<a class="btn btn-sm bg-success-light" data-toggle="modal"
+					 onclick="$('#speid').val('{{i.id}}');$('#spename').val('{{i.categorie}}');"	href="#edit_specialities_details">
+															<i class="fe fe-pencil"></i> Edit
+														</a>
+														<a class="btn btn-sm bg-danger-light" data-toggle="modal"
+							onclick="$('#speids').val('{{i.id}}');"	href="#delete_modal">
+															<i class="fe fe-trash"></i> Delete
+														</a>
+													</div>
+												</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+{% block body1 %}
+   <div aria-hidden="true" class="modal fade" id="Add_Specialities_details" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+      <div class="modal-header">
+       <h5 class="modal-title">
+        Add Category
+       </h5>
+       <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+        <span aria-hidden="true">
+         ×
+        </span>
+       </button>
+      </div>
+      <div class="modal-body">
+       <form method="post" > {% csrf_token %}
+        <div class="row form-row">
+         <div class="col-12">
+          <div class="form-group">
+           <label>
+           Specialization
+           </label>
+<!--           <input class="form-control" name="catename" id="cat1" type="text"/>-->
+               <select class="form-control select" aria-required="" name="spesname" id='cates' required="">
+
+               <option selected="selected" value="Dentist">
+            Dentist
+               </option>
+                   <option value="Urology">
+               Urology
+               </option>
+               <option value="Orthopedic">
+                Orthopedic
+               </option>
+               <option value=" Cardiology">
+               Cardiology
+               </option>
+
+<!--               <option value="Baby care">-->
+<!--                Baby care-->
+<!--               </option>-->
+              </select>
+
+
+          </div>
+         </div>
+
+             <div class="col-12">
+          <div class="form-group">
+           <label>
+           Image
+           </label><input type="file" class="form-control" required name="img" id="img"></div></div>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">
+         Save Changes
+        </button>
+       </form>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div aria-hidden="true" class="modal fade" id="edit_specialities_details" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+      <div class="modal-header">
+       <h5 class="modal-title">
+        Edit Category
+       </h5>
+       <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+        <span aria-hidden="true">
+         ×
+        </span>
+       </button>
+      </div>
+      <div class="modal-body">
+       <form method="post">{% csrf_token %}
+        <div class="row form-row">
+         <div class="col-12">
+          <div class="form-group">
+           <label>
+           Speciality
+           </label>
+           <input class="form-control" id="speid" name="speid" type="hidden" value=""/>
+
+           <input class="form-control" name="spename" required id="spes" value="" type="text"/>
+
+<!--    <select class="form-control select" name="catname" id='cate' required="">-->
+<!--        {% for i in product %}-->
+
+<!--               <option selected="selected" value="{{i.spec}}">-->
+<!--                   {{i.spec}}-->
+<!--               </option>{% endfor %}-->
+
+<!--              </select>-->
+
+          </div>
+         </div>
+        </div>
+        <button class="btn btn-primary btn-block" type="submit">
+         Save Changes
+        </button>
+       </form>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div aria-hidden="true" class="modal fade" id="delete_modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+     <div class="modal-content">
+      <div class="modal-body">
+       <form method="get">
+       <div class="form-content p-2">
+        <input class="form-control" id="speids" name="speids" type="hidden" value=""/>
+        <h4 class="modal-title">
+         Delete
+        </h4>
+        <p class="mb-4">
+         Are you sure want to delete?
+        </p>
+        <button class="btn btn-primary" type="submit">
+         Save
+        </button>
+        <button class="btn btn-danger" data-dismiss="modal" type="button">
+         Close
+        </button>
+       </div></form>
+      </div>
+     </div>
+    </div>
+   </div>
+   {% endblock body1 %}
+<!--		<div aria-hidden="true" class="modal fade" id="Add_Specialities_details" role="dialog">-->
+<!--			<div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--				<div class="modal-content">-->
+<!--					<div class="modal-header">-->
+<!--						<h5 class="modal-title">Add Specialities</h5>-->
+<!--						<button aria-label="Close" class="close" data-dismiss="modal" type="button">-->
+
+<!--						</button>-->
+<!--					</div>-->
+<!--					<div class="modal-body">-->
+<!--						<form>-->
+<!--							<div class="row form-row">-->
+<!--								<div class="col-12 col-sm-6">-->
+<!--									<div class="form-group">-->
+<!--										<label>Specialities</label>-->
+<!--										<input class="form-control" type="text" />-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="col-12 col-sm-6">-->
+<!--									<div class="form-group">-->
+<!--										<label>Image</label>-->
+<!--										<input class="form-control" type="file" />-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--							<button class="btn btn-primary btn-block" type="submit">Save Changes</button>-->
+<!--						</form>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		<div aria-hidden="true" class="modal fade" id="edit_specialities_details" role="dialog">-->
+<!--			<div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--				<div class="modal-content">-->
+<!--					<div class="modal-header">-->
+<!--						<h5 class="modal-title">Edit Specialities</h5>-->
+<!--						<button aria-label="Close" class="close" data-dismiss="modal" type="button">-->
+
+<!--						</button>-->
+<!--					</div>-->
+<!--					<div class="modal-body">-->
+<!--						<form>-->
+<!--							<div class="row form-row">-->
+<!--								<div class="col-12 col-sm-6">-->
+<!--									<div class="form-group">-->
+<!--										<label>Specialities</label>-->
+<!--										<input class="form-control" type="text" value="Cardiology" />-->
+<!--									</div>-->
+<!--								</div>-->
+<!--								<div class="col-12 col-sm-6">-->
+<!--									<div class="form-group">-->
+<!--										<label>Image</label>-->
+<!--										<input class="form-control" type="file" />-->
+<!--									</div>-->
+<!--								</div>-->
+<!--							</div>-->
+<!--							<button class="btn btn-primary btn-block" type="submit">Save Changes</button>-->
+<!--						</form>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+<!--		<div aria-hidden="true" class="modal fade" id="delete_modal" role="dialog">-->
+<!--			<div class="modal-dialog modal-dialog-centered" role="document">-->
+<!--				<div class="modal-content">-->
+<!--					<div class="modal-body">-->
+<!--						<div class="form-content p-2">-->
+<!--							<h4 class="modal-title">Delete</h4>-->
+<!--							<p class="mb-4">Are you sure want to delete?</p>-->
+<!--							<button class="btn btn-primary" type="button">Save </button>-->
+<!--							<button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>-->
+<!--						</div>-->
+<!--					</div>-->
+<!--				</div>-->
+<!--			</div>-->
+<!--		</div>-->
+
+		{% endblock body %}

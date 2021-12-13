@@ -1,0 +1,65 @@
+{% extends 'adminbasic.html' %}
+{% load static %}
+{% block body %}
+<div class="page-wrapper">
+	<div class="content container-fluid">
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">List of Doctors</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
+						<li class="breadcrumb-item"><a href="javascript:(0);">Users</a></li>
+						<li class="breadcrumb-item active">Doctor</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>Doctor Name</th>
+										<th>Speciality</th>
+										<th>Member Since</th>
+										<th>Earned</th>
+										<th>Account Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for d in dct %}
+									<tr>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' d.id %}"><img
+														alt="User Image" class="avatar-img rounded-circle"
+														src="/media/{{d.img}}" /></a>
+												<a href="{% url 'Doctor_profile' d.id %}">{{d.name}}</a>
+											</h2>
+										</td>
+										<td>{{d.specialization}}</td>
+										<td>{{d.date|date:'d M Y'}} <br /><small>
+					{{d.time|time:'h:i A'}}</small></td>
+										<td>$3100.00</td>
+										<td>
+											<div class="status-toggle">
+												<input checked="" class="check" id="status_1" type="checkbox" />
+												<label class="checktoggle" for="status_1">checkbox</label>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock body %}

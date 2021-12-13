@@ -1,0 +1,174 @@
+{% extends 'adminbasic.html' %}
+{% load static %}
+{% block body %}
+<div class="page-wrapper">
+	<div class="content container-fluid">
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-7 col-auto">
+					<h3 class="page-title">Pharmacy List</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
+						<li class="breadcrumb-item active">Pharmacy List</li>
+					</ul>
+				</div>
+				<div class="col-sm-5 col">
+					<a class="btn btn-primary float-right mt-2" data-toggle="modal"
+						href="#Add_Specialities_details">Add</a>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Pharmacy Name</th>
+										<th>Pharmacy Address</th>
+										<th>Created Date</th>
+										<th>Phone</th>
+										<th class="text-right">Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for p in pharma %}<tr>
+										<td>#PN0{{forloop.counter}}</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar avatar-sm mr-2" >
+													<img alt="product image" class="avatar-img rounded-circle"
+														src="/media/{{p.img}}" />
+												</a>
+												<a>
+													{{p.name}}</a>
+											</h2>
+										</td>
+										<td>{{p.address}}<br /> Cyrus, MN 56323 </td>
+										<td>12-05-2020</td>
+										<td>{{p.contact}}</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-success-light" data-toggle="modal"
+										onclick="$('#pharid').val('{{p.id}}');" href="#edit_specialities_details">
+													<i class="fe fe-pencil"></i> Edit
+												</a>
+												<a class="btn btn-sm bg-danger-light" data-toggle="modal"
+											onclick="$('#phrid').val('{{p.id}}');" href="#delete_modal">
+													<i class="fe fe-trash"></i> Delete
+												</a>
+											</div>
+										</td>
+									</tr>
+									{% endfor%}
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% block body1 %}
+<div aria-hidden="true" class="modal fade" id="Add_Specialities_details" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Add Pharmacy</h5>=# this not working bcz user field is not available  its only creating if u register by form.
+				<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+					<span aria-hidden="true"></span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form method="post">{% csrf_token %}
+					<div class="row form-row">
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Pharmacy Name</label>
+								<input class="form-control" required name="name" type="text" />
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Image</label>
+								<input class="form-control" required name="img" type="file" />
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Pharmacy Address</label>
+								<textarea class="form-control" required name="add" rows="4"></textarea>
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Pharmacy Contact</label>
+								<input type="number" required class="form-control" name="phone"  rows="4"></input>
+							</div>
+						</div>
+					</div>
+					<button class="btn btn-primary btn-block" type="submit">Save Changes</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div aria-hidden="true" class="modal fade" id="edit_specialities_details" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Edit Pharmacy</h5>
+				<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+					<span aria-hidden="true">�</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form method="post">{% csrf_token %}
+					<div class="row form-row"><input  name="phar"  type="hidden" id="pharid">
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Pharmacy Name</label>
+								<input class="form-control" name="phrmcy" required type="text" />
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Image</label>
+								<input class="form-control" name="img"  required type="file" />
+							</div>
+						</div>
+						<div class="col-12">
+							<div class="form-group">
+								<label>Pharmacy Address</label>
+								<input class="form-control" name="address" required type="text" />
+							</div>
+						</div>
+					</div>
+					<button class="btn btn-primary btn-block" type="submit">Save Changes</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<div aria-hidden="true" class="modal fade" id="delete_modal" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="form-content p-2">
+					<h4 class="modal-title">Delete</h4>
+					<p class="mb-4">Are you sure want to delete?</p>
+					<form method="post">{% csrf_token %}
+					<input id="phrid"  type="hidden" name="pharids">
+					<button class="btn btn-primary" type="submit">Save </button>
+					<button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+					</form>	</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock body1 %}
+{% endblock body %}

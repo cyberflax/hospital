@@ -1,0 +1,98 @@
+{% extends 'adminbasic.html' %}
+{% load static %}
+{% block body %}
+<div class="page-wrapper" xmlns="http://www.w3.org/1999/html">
+			<div class="content container-fluid">
+				<div class="page-header">
+					<div class="row">
+						<div class="col-sm-12">
+							<h3 class="page-title">Transactions</h3>
+							<ul class="breadcrumb">
+								<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
+								<li class="breadcrumb-item active">Transactions</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="card">
+							<div class="card-body">
+								<div class="table-responsive">
+									<table class="datatable table table-hover table-center mb-0">
+										<thead>
+											<tr>
+												<th>Invoice Number</th>
+												<th>Patient ID</th>
+												<th>Patient Name</th>
+												<th>Total Amount</th>
+												<th class="text-center">Status</th>
+												<th class="text-right">Actions</th>
+											</tr>
+										</thead>
+										<tbody>
+											{% for t in trs %}
+											<tr>
+				<td><a href="{%url 'invoice_view'%}?Pid={{t.patient.id}}&Did={{t.doctor.id}}&Oid={{t.id}}">#IN-{{forloop.counter}}</a></td>
+												<td>#PT-{{t.patient.id}}</td>
+												<td>
+													<h2 class="table-avatar">
+														<a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{t.patient.id}}"><img
+																alt="User Image" class="avatar-img rounded-circle"
+																src="/media/{{t.patient.img}}" /></a>
+														<a href="{%url 'patient_profile'%}?profile={{t.patient.id}}">{{t.patient}} </a>
+													</h2>
+												</td>
+												<td>${{t.amount}}</td>
+												{% if t.payment_status == 'Unpaid' %}
+												<td class="text-center">
+													<span class="badge badge-pill bg-warning inv-badge">UnPaid</span>
+												</td>
+												{% elif t.payment_status == 'Pending' %}
+												<td class="text-center">
+													<span class="badge badge-pill bg-success inv-badge">Pending</span>
+												</td>
+												{% else %}
+												<td class="text-center">
+													<span class="badge badge-pill bg-success inv-badge">Paid</span>
+												</td>
+												{% endif %}
+												<td class="text-right">
+													<div class="actions">
+														<a class="btn btn-sm bg-danger-light" data-toggle="modal"
+						onclick="$('#Tid').val('{{t.id}}');$('#Pid').val('{{t.patient.id}}');"		href="#delete_modal">
+															<i class="fe fe-trash"></i> Delete
+														</a>
+													</div>
+												</td>
+											</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% block body1 %}
+		<div aria-hidden="true" class="modal fade" id="delete_modal" role="dialog">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="form-content p-2">
+							<h4 class="modal-title">Delete</h4>
+							<p class="mb-4">Are you sure want to delete?</p>
+							<form method="post">{% csrf_token %}
+								<input name="pid" id="Pid">
+								<input id='Tid' name='tid'>
+							<button class="btn btn-primary" type="submit">Save </button>
+							<button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+						</form></div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endblock body1 %}
+		{% endblock body %}

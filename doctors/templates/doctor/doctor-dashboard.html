@@ -1,0 +1,513 @@
+
+{% extends 'blank-page.html' %}
+{% block body %}
+{% load static %}
+<!--    {% block style %}-->
+<!--<link rel="stylesheet" href="{% static 'style.css' %}" xmlns="http://www.w3.org/1999/html"-->
+<!--      xmlns="http://www.w3.org/1999/html">{% endblock %}-->
+
+
+   <div class="breadcrumb-bar">
+    <div class="container-fluid">
+     <div class="row align-items-center">
+      <div class="col-md-12 col-12">
+       <h2 class="breadcrumb-title">
+        Dashboard
+       </h2>
+       <nav aria-label="breadcrumb" class="page-breadcrumb">
+        <ol class="breadcrumb">
+         <li class="breadcrumb-item">
+          <a href="/">
+           Home
+          </a>
+         </li>
+         <li aria-current="page" class="breadcrumb-item active">
+          Dashboard
+         </li>
+        </ol>
+       </nav>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="content">
+    <div class="container-fluid">
+     <div class="row">
+      <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+       <div class="profile-sidebar">
+        <div class="widget-profile pro-widget-content">
+         <div class="profile-info-widget">
+          <a class="booking-doc-img" href="{% url 'Doctor_profile' request.user.Dr.id %}">
+
+            {% if request.user.Dr.img|length is not 0 %}
+           <img alt="User Image" src="/media/{{request.user.Dr.img}}"/>
+           {% else %}
+            <img alt="User Image" src="/media/default.jpg"/>
+         {% endif %}
+          </a>
+          <div class="profile-det-info">
+           <h3>
+           {{request.user.Dr.user}}
+           </h3>
+           <div class="patient-details">
+            <h5 class="mb-0">
+           {{request.user.Dr.qulification}}
+            </h5>
+           </div>
+          </div>
+         </div>
+        </div>
+        <div class="dashboard-widget">
+         <nav class="dashboard-menu">
+          <ul>
+           <li class="active">
+            <a href="{%url 'doctor_dashboard'%}?id={{request.user.Dr.id}}">
+             <span>
+              Dashboard
+             </span>
+             <i class="feather-airplay">
+             </i>
+            </a>
+           </li>
+           <li>
+            <a href="{% url 'appointments'%}?doctor={{request.user.Dr.id}}">
+             <span>
+              Appointments
+             </span>
+             <i class="feather-calendar">
+             </i>
+            </a>
+           </li>
+           <li>
+            <a href="{%url 'my_patient'%}?doctor={{request.user.Dr.id}}">
+             <span>
+              My Patients
+             </span>
+             <i class="fas fa-user-injured">
+             </i>
+            </a>
+           </li>
+           <li>
+            <a href="{% url 'schedule'%}">
+             <span>
+              Schedule Timings
+             </span>
+             <i class="far fa-hourglass">
+             </i>
+            </a>
+           </li>
+           <li>
+<!--            <a href="available-timings.html">-->
+
+              <a href="{% url 'pagenotfound' %}">
+            <span>
+              Available Timings
+             </span>
+             <i class="feather-clock">
+             </i>
+            </a>
+           </li>
+           <li>
+            <a href="{%url 'invoices'%}?invoice={{request.user.Dr.id}}">
+             <span>
+              Invoices
+             </span>
+             <i class="feather-file-text">
+             </i>
+            </a>
+           </li>
+           <li>
+<!--            <a href="accounts.html">-->
+
+              <a href="{% url 'pagenotfound' %}">
+            <span>
+              Accounts
+             </span>
+             <i class="fas fa-file-invoice-dollar">
+             </i>
+            </a>
+           </li>
+           <li>
+            <a href="{%url 'reviews'%}">
+             <span>
+              Reviews
+             </span>
+             <i class="feather-star">
+             </i>
+            </a>
+           </li>
+           <li>
+            <a href="{% url 'chat_doctor'%}">
+             <span>
+              Message
+             </span>
+             <i class="feather-message-circle">
+             </i>
+            </a>
+           </li>
+           <li>
+            <a href="{%url 'doctor_profile_setting'%}?profile={{request.user.Dr.id}}">
+             <span>
+              Profile Settings
+             </span>
+             <i class="feather-user">
+             </i>
+            </a>
+           </li>
+           <li>
+<!--            <a href="social-media.html">-->
+
+              <a href="{% url 'pagenotfound' %}">
+             <span>
+              Social Media
+             </span>
+             <i class="feather-share-2">
+             </i>
+            </a>
+           </li>
+           <li>
+            <a href="{% url 'change_password' %}">
+             <span>
+              Change Password
+             </span>
+             <i class="feather-lock">
+             </i>
+            </a>
+           </li>
+           <li>
+            <a href="{%url 'dlogout'%}">
+             <span>
+              Logout
+             </span>
+             <i class="feather-log-out">
+             </i>
+            </a>
+           </li>
+          </ul>
+         </nav>
+        </div>
+       </div>
+      </div>
+      <div class="col-md-7 col-lg-8 col-xl-9">
+       <div class="row">
+        <div class="col-md-12">
+         <div class="dash-card">
+          <div class="">
+           <div class="row">
+            <div class="col-md-12 col-lg-4">
+             <div class="dash-widget">
+              <div class="dash-widget-info">
+               <h6 class="text-danger">
+                Total Patient
+               </h6>
+               <div class="dash-widget-count">
+                <h3>
+                 1500
+                </h3>
+                <p>
+                 Till Today
+                </p>
+               </div>
+              </div>
+              <div class="graph">
+               <img alt="patient" class="img-fluid" src="{% static 'assets/img/icons/icon-01.png'%}"/>
+              </div>
+             </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+             <div class="dash-widget dct-border-rht">
+              <div class="dash-widget-info">
+               <h6 class="text-success">
+                Total Patient
+               </h6>
+               <div class="dash-widget-count">
+                <h3>
+                 {{pcount}}
+                </h3>
+                <p>
+                 26, Aug 2021
+                </p>
+               </div>
+              </div>
+              <div class="graph">
+               <img alt="patient" class="img-fluid" src="{% static 'assets/img/icons/icon-02.png' %}"/>
+              </div>
+             </div>
+            </div>
+            <div class="col-md-12 col-lg-4">
+             <div class="dash-widget">
+              <div class="dash-widget-info">
+               <h6 class="text-info">
+                Appoinments
+               </h6>
+               <div class="dash-widget-count">
+                <h3>
+                 {{length}}
+                </h3>
+                <p>
+                 26, Aug 2021
+                </p>
+               </div>
+              </div>
+              <div class="graph">
+               <img alt="patient" class="img-fluid" src="{% static 'assets/img/icons/icon-03.png'%}"/>
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div class="row">
+        <div class="col-md-12">
+         <h4 class="sub-heading">
+          Patient Appoinment
+         </h4>
+         <div class="appointment-tab">
+          <ul class="nav nav-tabs nav-tabs-solid">
+           <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#upcoming-appointments">
+             Upcoming
+            </a>
+           </li>
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#today-appointments">
+             Today
+            </a>
+           </li>
+          </ul>
+          <div class="tab-content">
+           <div class="tab-pane show active" id="upcoming-appointments">
+            <div class="card card-table mb-0">
+             <div class="card-body">
+              <div class="table-responsive">{% if list|length is not 0%}
+               <table class="table table-hover table-center mb-0">
+                <thead>
+                 <tr>
+                  <th>
+                   Patient Name
+                  </th>
+                  <th>
+                   Appt Date
+                  </th>
+                  <th>
+                   Purpose
+                  </th>
+                  <th>
+                   Type
+                  </th>
+                  <th>
+                   Paid Amount
+                  </th>
+                  <th>
+                   Actions
+                  </th>
+                 </tr>
+                </thead>
+                <tbody>{%for i in list%}
+                 <tr>
+                  <td>
+                   <h2 class="table-avatar">
+                    <a class="avatar avatar-sm mr-2" href="{% url 'patient_profile'%}?profile={{i.patient.id}}">
+                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.patient.img}}"/>
+                    </a>
+                    <a href="{% url 'patient_profile'%}?profile={{i.patient.id}}">
+                     {{i.patient.name}}
+                     <span>
+                      #PT00{{i.patient.id}}
+                     </span>
+                    </a>
+                   </h2>
+                  </td>
+                  <td>
+                   {{i.date}}
+                   <span class="d-block text-info apt-time">
+                    {{i.time1}}-{{i.time2}}
+                   </span>
+                  </td>
+                  <td>
+                   General
+                  </td>
+                  <td>
+                   New Patient
+                  </td>
+                  <td>
+                   $ {{i.amount}}
+                  </td>
+                  <td class="text-left">
+                   <div class="table-action">
+                    <a class="btn btn-sm bg-info-light"
+                      data-target="#appointment_details" data-toggle="modal"
+                      onclick="$('#date1').val('{{i.date}}'); $('#time2').val(' {{i.time2}}');
+       $('#amount').val(' {{i.amount}}');$('#time1').val(' {{i.time1}}');$('#Pid1').val('{{i.patient.name}}');">
+                     <i class="feather-eye">
+                     </i>
+                    </a>
+                    <a class="btn btn-sm bg-success-light" href="{% url 'checkup'%}?id={{i.patient.id}}&Oid={{i.id}}">
+                     <i class="feather-check-circle">
+                     </i>
+                    </a>
+                    <a class="btn btn-sm bg-danger-light" href="{% url 'appo_delete'%}?id={{i.id}}&&next={{request.get_full_path}}">
+
+                     <i class="feather-x-circle">
+                     </i>
+                    </a>
+                   </div>
+                  </td>
+                 </tr>
+                 {%endfor%}
+                </tbody>
+               </table>{% else %}
+
+
+               <p style="color:blue;font-size:25px;" class="my-3 mx-3" >No Appointment Available !</p>
+               {% endif %}
+              </div>
+             </div>
+            </div>
+           </div>
+           <div class="tab-pane" id="today-appointments">
+            <div class="card card-table mb-0">
+             <div class="card-body">
+              <div class="table-responsive">{% if list|length is not 0%}
+               <table class="table table-hover table-center mb-0">
+                <thead>
+                 <tr>
+                  <th>
+                   Patient Name
+                  </th>
+                  <th>
+                   Appt Date
+                  </th>
+                  <th>
+                   Purpose
+                  </th>
+                  <th>
+                   Type
+                  </th>
+                  <th>
+                   Paid Amount
+                  </th>
+                  <th>
+                   Actions
+                  </th>
+                 </tr>
+                </thead>
+                <tbody>{%for i in list%}
+                {% if i.date == now %}
+                 <tr>
+                  <td>
+                   <h2 class="table-avatar">
+                    <a class="avatar avatar-sm mr-2" href="{% url 'patient_profile'%}?profile={{i.patient.id}}">
+                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.patient.img}}"/>
+                    </a>
+                    <a href="{% url 'patient_profile'%}?profile={{i.patient.id}}">
+                    {{i.patient.name}}
+                     <span>
+                      #PT0{{i.patient.id}}
+                     </span>
+                    </a>
+                   </h2>
+                  </td>
+                  <td>
+                  {{i.date}}
+                   <span class="d-block text-info apt-time">
+                   {{i.time1}}-{{i.time2}}
+                   </span>
+                  </td>
+                  <td>
+                   Fever
+                  </td>
+                  <td>
+                   Old Patient
+                  </td>
+                  <td>
+                   ${{i.amount}}
+                  </td>
+                  <td class="text-left">
+                   <div class="table-action">
+                    <a class="btn btn-sm bg-info-light"
+                      data-target="#appointment_details" data-toggle="modal"
+                      onclick="$('#date1').val('{{i.date}}'); $('#time2').val(' {{i.time2}}');
+       $('#amount').val(' {{i.amount}}');$('#time1').val(' {{i.time1}}');$('#Pid1').val('{{i.patient.name}}');">
+                     <i class="feather-eye">
+                     </i>
+                    </a>
+                    <a class="btn btn-sm bg-success-light" href="{% url 'checkup'%}?id={{i.patient.id}}&Oid={{i.id}}">
+                     <i class="feather-check-circle">
+                     </i>
+                    </a>
+                    <a class="btn btn-sm bg-danger-light" href="{% url 'appo_delete'%}?id={{i.id}}&&next={{request.get_full_path}}">
+                     <i class="feather-x-circle">
+                     </i>
+                    </a>
+                   </div>
+                  </td>
+                 </tr>{% endif %}{%endfor%}
+
+                </tbody>
+               </table>{% else %}
+
+
+               <p style="color:blue;font-size:25px;" class="my-3 mx-3" >No Appointment Available !</p>
+               {% endif %}
+              </div>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+{% endblock %}
+
+{% block body1 %}
+
+ <div class="modal fade custom-modal" id="appointment_details">
+   <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+     <div class="modal-header">
+      <h5 class="modal-title">
+       Appointment Details
+      </h5>
+      <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+       <span aria-hidden="true">
+        ×
+       </span>
+      </button>
+     </div>
+      <div class="modal-body">
+      <ul class="info-details">
+       <li>
+        <span class="title">
+         Patient: <input id='Pid1' class="mx-2" style="border:none; display: inline; width: 150px;" >
+        </span>
+       </li>
+        <li>
+        <span class="title">
+         Date : <input id='date1' class="mx-2" style="border:none; display: inline; width: 150px;">
+        </span>
+
+       </li>
+        <li>
+        <span class="title">
+         Time: <input id='time1'  class="mx-2" style="border:none; display: inline; width: 50px;">-<input id='time2'  class="mx-1" style="border:none; display: inline; width: 50px;">
+        </span>
+       </li>
+       <li>
+        <span class="title">
+         Amount : $<input class="mx-1"  style="border:none; display: inline; width: 150px;" id="amount" />
+        </span>
+
+       </li>
+      </ul>
+     </div>
+    </div>
+   </div>
+  </div>
+{% endblock body1 %}
