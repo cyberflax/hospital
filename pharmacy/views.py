@@ -175,6 +175,9 @@ def add_to_cart(request):
         else:
             products=product_cart(user_id=request.user.id,Sku_no=product.doc.id,pharmacy_name=product.doc.name,quntity=1,product_id=product.id)
             products.save()
+    else:
+        messages.warning(request,'Please Login')
+        return redirect('dlogin')
     return redirect('medicine_cart')
 def minus(request):
     prodid = request.GET.get('quntity')

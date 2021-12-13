@@ -483,7 +483,13 @@
        <div class="blog grid-blog">
         <div class="blog-image">
          <a href="/blog-details?@//@/={{i.id}}&Did={{i.doc.id}}">
-          <img alt="Post Image" class="img-fluid" src="/media/{{i.img}}"/>
+<!--          <img alt="Post Image" class="img-fluid" src="/media/{{i.img}}"/>-->
+
+             {% if i.img|length is not 0 %}
+           <img alt="Post Image" class="img-fluid" src="/media/{{i.img}}">
+           {% else %}
+            <img alt="User Image" src="/media/default.jpg"/>
+         {% endif %}
          </a>
         </div>
         <div class="blog-content">
@@ -501,7 +507,13 @@
           <li>
            <div class="post-author">
             <a href="{% url 'Doctor_profile' i.doc.id %}">
+<!--             <img alt="Post Author" src="/media/{{i.doc.img}} "/>-->
+
+               {% if i.doc.img|length is not 0 %}
              <img alt="Post Author" src="/media/{{i.doc.img}} "/>
+           {% else %}
+            <img alt="Post Author" src="/media/default.jpg"/>
+         {% endif %}
              <span>
               {{i.doc.name}}
              </span>

@@ -1,6 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import *
 from patient.models import *
+from Admin_hospital.models import speciality
 from django.contrib import messages
 from django.contrib.auth.models import User
 from datetime import date
@@ -43,7 +44,7 @@ def Doctor_register(request):
         usernam=User.objects.filter(username=name)
         print(name,name.lower(),usernam)
         if len(usermail) !=1 and len(usernam)!=1:
-                user =User.objects.create_user(username=name.lower(), email=email, password=password)
+                user =User.objects.create_user(username=name, email=email, password=password)
                 user.save()
                 name1 = request.POST['name']
                 email1 = request.POST['email']
@@ -244,7 +245,8 @@ def doctor_profile_setting(request):
             # registration = request.POST['registration']
             # # res_year = request.POST['res_year']
                     messages.success(request, 'profile updated ')
-    res={'spec':specifications_add.objects.all(),'serv':servies_add.objects.all()}
+    spec=speciality.objects.all()
+    res={'spec':specifications_add.objects.all(),'special':spec,'serv':servies_add.objects.all()}
     return render(request,'doctor/doctor-profile-settings.html',res)
 def reviews(request):
     dr=Dr.objects.get(id=request.user.Dr.id)

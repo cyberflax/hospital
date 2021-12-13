@@ -10,7 +10,7 @@
 							<ul class="breadcrumb">
 								<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
 								<li class="breadcrumb-item"><a href="javascript:(0);">Pages</a></li>
-								<li class="breadcrumb-item active">Blog</li>
+								<li class="breadcrumb-item active" style="color:blue">Blog</li>
 							</ul>
 						</div>
 					</div>
@@ -29,7 +29,7 @@
 								</ul>
 							</div>
 							<div class="col-auto">
-								<a class="btn btn-primary btn-sm" href="{% url 'addblog' %}"><i class="fas fa-plus mr-1"></i>
+								<a class="btn btn-primary btn-sm" href="{% url 'addblog' %}"><i class="fas fa-plus "></i>
 									Add Blog</a>
 							</div>
 						</div>
@@ -38,15 +38,33 @@
 							<div class="col-md-6 col-xl-4 col-sm-12">
 								<div class="blog grid-blog">
 									<div class="blog-image">
-										<a href="{% url 'blogdetails' %}?Bid={{b.id}}"><img alt="Post Image" class="img-fluid"
-												src="/media/{{b.img}}" /></a>
+										<a href="{% url 'blogdetails' %}?Bid={{b.id}}">
+<!--											<img alt="Post Image" class="img-fluid"-->
+<!--												src="/media/{{b.img}}" />-->
+
+       {% if b.img|length is not 0 %}
+       <img alt="Post Image" class="img-fluid" src="/media/{{b.img}}" width="31"/>
+            {% else %}
+             <img alt="Post Image" class="img-fluid" width="31" src="/media/default.jpg"/>
+          {% endif %}
+
+										</a>
 									</div>
 									<div class="blog-content">
 										<ul class="entry-meta meta-item">
 											<li>
 												<div class="post-author">
-													<a href="{% url 'Doctor_profile' b.doc.id %}"><img alt="Post Author"
-															src="/media/{{b.doc.img}}" /> <span>Dr.
+													<a href="{% url 'Doctor_profile' b.doc.id %}">
+<!--														<img alt="Post Author"-->
+<!--															src="/media/{{b.doc.img}}" /> -->
+
+
+       {% if b.doc.img|length is not 0 %}
+       <img alt="Post Author"  src="/media/{{b.doc.img}}" width="31"/>
+            {% else %}
+             <img alt="Post Author"  width="31" src="/media/default.jpg"/>
+          {% endif %}
+														<span>Dr.
 															{{b.doc}}</span></a>
 												</div>
 											</li>

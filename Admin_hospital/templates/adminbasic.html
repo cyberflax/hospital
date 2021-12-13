@@ -185,19 +185,21 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown has-arrow">
-                    <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#">
-                        <span class="user-img">
+<!--                    <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#">-->
+<!--                        <span class="user-img">-->
 <!--                            <img alt="Ryan Taylor" class="rounded-circle"-->
 <!--                                src="{% static 'admin/assets/img/profiles/avatar-01.jpg' %}" width="31" />-->
 
-
+{{request.user.hospital_admin_record.img}}
        {% if request.user.hospital_admin_record.img|length is not 0 %}
+     <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="/media/{{request.user.hospital_admin_record.img}}">
+                        <span class="user-img">
       <img alt="Fred Ortego" class="rounded-circle" src="/media/{{request.user.hospital_admin_record.img}}" width="31"/>
-           {% else %}
+                        </span></a> {% else %}<a class="dropdown-toggle nav-link" data-toggle="dropdown" href="/media/default.jpg">
+                        <span class="user-img">
             <img alt="Fred Ortego" class="rounded-circle" width="31" src="/media/default.jpg"/>
-         {% endif %}
-                        </span>
-                    </a>
+                        </span></a> {% endif %}
+
                     <div class="dropdown-menu">
                         <div class="user-header">
                             <div class="avatar avatar-sm">
@@ -353,11 +355,11 @@
                                         Blog
                                     </a>
                                 </li>
-<!--                                <li>-->
-<!--                                    <a href="{% url 'blogdetails' %}">-->
-<!--                                        Blog Details-->
-<!--                                    </a>-->
-<!--                                </li>-->
+                               <li>
+                                   <a href="{% url 'blogcategeory' %}">
+                                       Blog Category
+                                 </a>
+                         </li>
                                 <li>
                                     <a href="{% url 'addblog' %}">
                                         Add Blog

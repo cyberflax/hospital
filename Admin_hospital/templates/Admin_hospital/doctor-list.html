@@ -9,8 +9,8 @@
 					<h3 class="page-title">List of Doctors</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
-						<li class="breadcrumb-item"><a href="javascript:(0);">Users</a></li>
-						<li class="breadcrumb-item active">Doctor</li>
+<!--						<li class="breadcrumb-item"><a href="javascript:(0);">Users</a></li>-->
+						<li class="breadcrumb-item active" style="color:blue">Doctor</li>
 					</ul>
 				</div>
 			</div>
@@ -35,10 +35,17 @@
 									<tr>
 										<td>
 											<h2 class="table-avatar">
-												<a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' d.id %}"><img
-														alt="User Image" class="avatar-img rounded-circle"
-														src="/media/{{d.img}}" /></a>
-												<a href="{% url 'Doctor_profile' d.id %}">{{d.name}}</a>
+												<a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' d.id %}">
+<!--													<img alt="User Image" class="avatar-img rounded-circle"-->
+<!--														src="/media/{{d.img}}" /></a>-->
+
+       {% if d.img|length is not 0 %}
+       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{d.img}}" width="31"/>
+            {% else %}
+             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+													{% endif %}</a>
+
+													<a href="{% url 'Doctor_profile' d.id %}">{{d.name}}</a>
 											</h2>
 										</td>
 										<td>{{d.specialization}}</td>

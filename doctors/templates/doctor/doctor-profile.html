@@ -418,11 +418,18 @@
 
            <li>
             <div class="comment">
-             <img alt="User Image" class="avatar avatar-sm rounded-circle" src="/media/{{i.patient.img}}"/>
+<!--             <img alt="User Image" class="avatar avatar-sm rounded-circle" src="/media/{{i.patient.img}}"/>-->
+<!--            -->
+               {% if i.patient.img|length is not 0 %}
+             <img alt="User Image" class="avatar rounded-circle" src="/media/{{i.patient.img}}"/>
+
+           {% else %}
+            <img  alt="User Image" class="avatar rounded-circle" src="/media/default.jpg"/>
+         {% endif %}
              <div class="comment-body">
               <div class="meta-data">
                <span class="comment-author">
-                {{i.patient.name}}
+                {{i.name}}
                </span>
                <span class="comment-date">
                 Reviewed 2 Days ago

@@ -1,32 +1,4 @@
-# from django.shortcuts import render
-#
-# # Create your views here.
-# def dashboard(request):
-#     return render(request,'admin_hospital/index.html')
-#
-# def appointment_list(request):
-#     return render(request,'admin_hospital/appointment-list.html')
-#
-# def specialities(request):
-#     return render(request,'admin_hospital/specialities.html')
-#
-# def doctor_list(request):
-#     return render(request,'admin_hospital/doctor-list.html')
-#
-# def patient_list(request):
-#     return render(request,'admin_hospital/patient-list.html')
-#
-# def reviews(request):
-#     return render(request,'admin_hospital/reviews.html')
-#
-# def transactions_list(request):
-#     return render(request,'admin_hospital/transactions-list.html')
-#
-# def settings(request):
-#     return render(request,'admin_hospital/settings.html')
-#
-# # def dashboard(request):
-# #     return render(request,'admin_hospital/index.html')
+
 from django.contrib import messages
 from django.shortcuts import render,redirect
 from doctors.models import *
@@ -44,6 +16,8 @@ def adminhome(request):
         res['dct'] = Dr.objects.all()
         res['pnt'] = patient_record.objects.all()
         res['apmnt'] = appoinmentlist.objects.all()
+
+
     else:
         return redirect('error404')
     return render(request, 'Admin_hospital/adminhome.html', res)
@@ -52,9 +26,10 @@ def adminhome(request):
 def addblog(request):
 
     if request.user.is_authenticated:
-        print(dr_blogs.objects.all())
         res = {}
         res['dr'] = Dr.objects.all()
+        res['cat'] = blog_categeory.objects.all()
+        res['sub'] = blog_subcategory.objects.all()
         if request.method=='POST':
             title=request.POST['title']
             img = request.FILES['img']
@@ -65,7 +40,7 @@ def addblog(request):
             dr=Dr.objects.get(name=doc)
             blog=dr_blogs(title=title,img=img,desc=desc,ctgry=cate,subcate=subcate,doc=dr)
             blog.save()
-            return redirect(request.get_full_path())
+            return redirect('blog')
     else:
         return redirect('error404')
     return render(request, 'Admin_hospital/add-blog.html',res)
@@ -80,7 +55,49 @@ def appointmentlist(request):
         return redirect('error404')
     return render(request, 'Admin_hospital/appointment-list.html', res)
 
+def blogcategeory(request):
+    
+    if request.user.is_authenticated:
 
+        ctgry = blog_subcategory.objects.all()
+        # product = pharmacy.objects.filter(user=request.user.userType.id)
+        if request.method == 'POST': # for edit
+            if request.POST.get('catid') is not None:
+                # cat = request.POST['catname']
+                subcat=request.POST['subname']
+                cats= blog_subcategory.objects.get(id=request.POST.get('subid'))
+                cats.subcat = subcat
+                cats.save()
+            elif request.POST.get('cat') is not None:  # for add
+                cat = request.POST['cat']
+                subcat = request.POST['subcat']
+                cats = blog_categeory.objects.values('cat')
+                data = {data['cat'].lower() for data in cats}
+                
+                subcats = blog_subcategory.objects.values('subcat')
+                datas = {data['subcat'].lower() for data in subcats}
+                if cat.lower() not in data:
+                    spe = blog_categeory(cat=cat)
+                    spe.save()
+                    cat = blog_subcategory(subcat=subcat, cats=(blog_categeory.objects.get(cat=cat)))
+                    cat.save()
+                    messages.success(request,'Category Added.')
+                    return redirect(request.get_full_path())
+                elif subcat.lower() not in datas:
+                    cats=blog_categeory.objects.get(cat=cat)
+                    cat=blog_subcategory(subcat=subcat,cats=cats)
+                    cat.save()
+                    messages.success(request,'Sub-Category Added.')
+                    return redirect(request.get_full_path())
+                else:
+                    messages.warning(request, 'Category is already in list')
+            elif request.POST.get('catids') is not None:
+              # for delete
+                products = blog_subcategory.objects.filter(id=request.POST.get('catids'))
+                products.delete()
+    else:
+        return redirect('error404')
+    return render(request,'Admin_hospital/blog-category.html',{'cat':ctgry})
 def blogdetails(request):
 
     if request.user.is_authenticated:
@@ -402,9 +419,32 @@ def admin_pwd_chng(request):
 
     return redirect('adminhome')
 def register(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        email = request.POST['email']
+        password = request.POST['password']
+        confirm=request.POST['confrm']
+        user =User.objects.create_superuser(username=name, email=email, password=password)
+        user.save()
+        users=hospital_admin_record(user=user,email=email,name=name)
+        users.save()
+        typeuser = userType(user=user, type='4')
+        typeuser.save()
+                # name1 = request.POST['name']
+                # email1 = request.POST['email']
+                # user1 = Dr(user=user, name=name1, email=email1,fees_starting=0,fees_end=0 )
+                # user1.save()
+                # typeuser = userType(user=user, type='2')
+                # typeuser.save()
+                # if user is None:
+                #     messages.error(request, "invalid user")
+                # else:
+        messages.success(request, "Your account has been successfully created")
+        return redirect('home')
+        # else:
+        #     messages.error(request, "Email or name is already register.")
+
     return render(request, 'Admin_hospital/register.html')
-
-
 def reviews(request):
     if request.user.is_authenticated:
         res = {}

@@ -11,7 +11,7 @@
                         Welcome Admin! SRJ
                     </h3>
                     <ul class="breadcrumb">
-                        <li class="breadcrumb-item active">
+                        <li class="breadcrumb-item active" style="color:blue">
                             Dashboard
                         </li>
                     </ul>
@@ -185,8 +185,14 @@
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' d.id %}">
-                                                    <img alt="User Image" class="avatar-img rounded-circle"
-                                                        src="/media/{{d.img}}" />
+                                                    <!-- <img alt="User Image" class="avatar-img rounded-circle"
+                                                        src="/media/{{d.img}}" /> -->
+                                                        
+       {% if d.img|length is not 0 %}
+       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{d.img}}" width="31"/>
+            {% else %}
+             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+          {% endif %}
                                                 </a>
                                                 <a href="{% url 'Doctor_profile' d.id %}">
                                                     {{d.name}}
@@ -197,7 +203,7 @@
                                             {{d.specialization}}
                                         </td>
                                         <td>
-                                            $3200.00
+                                           $3200.00
                                         </td>
                                         <td>
                                             <i class="fe fe-star text-warning">
@@ -251,8 +257,15 @@
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{p.id}} ">
-                                                    <img alt="User Image" class="avatar-img rounded-circle"
-                                                        src="/media/{{p.img}}" />
+                                                    <!-- <img alt="User Image" class="avatar-img rounded-circle"
+                                                        src="/media/{{p.img}}" /> -->
+                                                                                         
+       {% if p.img|length is not 0 %}
+       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{p.img}}" width="31"/>
+            {% else %}
+             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+          {% endif %}     
+
                                                 </a>
                                                 <a href="{%url 'patient_profile'%}?profile={{p.id}}">
                                                     {{p.name}}
@@ -316,8 +329,15 @@
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' ap.doctor.id %}">
-                                                    <img alt="User Image" class="avatar-img rounded-circle"
-                                                        src="/media/{{ap.doctor.img}}" />
+                                                    <!-- <img alt="User Image" class="avatar-img rounded-circle"
+                                                        src="/media/{{ap.doctor.img}}" /> -->
+
+                                                                                                  
+       {% if ap.doctor..img|length is not 0 %}
+       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{ap.doctor.img}}" width="31"/>
+            {% else %}
+             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+          {% endif %}
                                                 </a>
                                                 <a href="{% url 'Doctor_profile' ap.doctor.id %}">
                                                     {{ap.doctor.name}}
@@ -331,8 +351,15 @@
                                         <td>
                                             <h2 class="table-avatar">
                                                 <a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{ap.patient.id}}">
-                                                    <img alt="User Image" class="avatar-img rounded-circle"
-                                                        src="/media/{{ap.patient.img}}" />
+                                                    <!-- <img alt="User Image" class="avatar-img rounded-circle"
+                                                        src="/media/{{ap.patient.img}}" /> -->
+
+                                                                                                  
+       {% if ap.patient.img|length is not 0 %}
+       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{ap.patient.img}}" width="31"/>
+            {% else %}
+             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+          {% endif %}
                                                 </a>
                                                 <a href="{%url 'patient_profile'%}?profile={{p.id}}">
                                                     {{ap.patient}}

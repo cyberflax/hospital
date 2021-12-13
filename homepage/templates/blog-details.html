@@ -55,7 +55,12 @@
           <li>
            <div class="post-thumb">
             <a href="/blog-details?@//@/={{tit.id}}&Did={{tit.doc.id}}">
+<!--             <img alt="" class="img-fluid" src="/media/{{tit.img}}"/>-->
+              {% if tit.img|length is not 0 %}
              <img alt="" class="img-fluid" src="/media/{{tit.img}}"/>
+           {% else %}
+            <img alt="" class="img-fluid" src="/media/default.jpg"/>
+         {% endif %}
             </a>
            </div>
            <div class="post-info">
@@ -248,8 +253,15 @@
        <div class="blog-view">
         <div class="blog blog-single-post">
          <div class="blog-image">
-          <a href="javascript:void(0);">
-           <img alt="" class="img-fluid" src="/media/{{tit.img}}"/>
+<!--          <a href="javascript:void(0);">-->
+<!--           <img alt="" class="img-fluid" src="/media/{{tit.img}}"/>-->
+
+              {% if tit.img|length is not 0 %}
+          <a href="/media/{{tit.img}}">
+           <img alt="" class="img-fluid" src="/media/{{tit.img}}"/></a>
+           {% else %}<a href="/media/default.jpg">
+          <img alt="img-fluid" src="/media/default.jpg"/></a>
+         {% endif %}
           </a>
          </div>
          <h3 class="blog-title">
@@ -260,12 +272,20 @@
            <ul>
             <li>
              <div class="post-author">
-              <a href="{% url 'Doctor_profile' tit.doc.id %}">
-               <img alt="Post Author" src="/media/{{tit.doc.img}}"/>
+<!--              <a href="{% url 'Doctor_profile' tit.doc.id %}">-->
+<!--               <img alt="Post Author" src="/media/{{tit.doc.img}}"/>-->
+
+                {% if tit.doc.img|length is not 0 %}
+              <a href="/media/{{tit.doc.img}}">
+              <img alt="" class="Post Author" src="/media/{{tit.doc.img}}"/>
+              </a>
+           {% else %}<a href="/media/default.jpg">
+              <img alt="Post Author" src="/media/default.jpg"/></a>
+         {% endif %}
                <span>
                {{tit.doc.name}}
                </span>
-              </a>
+<!--              </a>-->
              </div>
             </li>
             <li>
@@ -341,9 +361,15 @@
           <div class="about-author">
            <div class="about-author-img">
             <div class="author-img-wrap">
-             <a href="{% url 'Doctor_profile' tit.doc.id %}">
-              <img alt="" class="img-fluid rounded-circle" src="/media/{{tit.doc.img}}"/>
-             </a>
+<!--             <a href="{% url 'Doctor_profile' tit.doc.id %}">-->
+<!--              <img alt="" class="img-fluid rounded-circle" src="/media/{{tit.doc.img}}"/>-->
+               {% if tit.doc.img|length is not 0 %}
+             <a href="/media/{{tit.doc.img}}">
+              <img alt="" class="img-fluid rounded-circle" src="/media/{{tit.doc.img}}"/></a>
+           {% else %}<a href="/media/default.jpg">
+             <img  alt='' class="avatar rounded-circle" src="/media/default.jpg"/></a>
+         {% endif %}
+<!--             </a>-->
             </div>
            </div>
            <div class="author-details">
@@ -448,26 +474,36 @@
  {% for i in review %}
            <li>
             <div class="comment">
+<!--             <img alt="User Image" class="avatar rounded-circle" src="/media/{{i.patient.img}}"/>-->
+
+
+               {% if i.patient.img|length is not 0 %}
              <img alt="User Image" class="avatar rounded-circle" src="/media/{{i.patient.img}}"/>
+
+           {% else %}
+            <img  alt="User Image" class="avatar rounded-circle" src="/media/default.jpg"/>
+         {% endif %}
              <div class="comment-body">
               <div class="meta-data">
                <span class="comment-author">
-                {{i.patient.name}}
+                {{i.name}}
                </span>
                <span class="comment-date">
                 Reviewed on 1 Nov 2021
                </span>
-               <div class="review-count rating">
-                <i class="fas fa-star filled">
+
+
+                   <div class="review-count rating">
+                {%for  j in "x"|ljust:"5"%}
+    {%if i.rating > forloop.counter0 %}
+                <i class="fas fa-star filled" >
                 </i>
-                <i class="fas fa-star filled">
+                {%else%}
+                <i class="fas fa-star">
                 </i>
-                <i class="fas fa-star filled">
-                </i>
-                <i class="fas fa-star filled">
-                </i>
-                <i class="fas fa-star filled">
-                </i>
+                {%endif%}
+                {%endfor%}
+
                </div>
               </div>
               <p class="comment-content">

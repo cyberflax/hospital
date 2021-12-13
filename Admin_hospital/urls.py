@@ -14,6 +14,7 @@ urlpatterns = [
     path('blog-details/', views.blogdetails, name='blogdetails'),
     path('blog-grid/', views.bloggrid, name='bloggrid'),
     path('blog/', views.blog, name='blog'),
+    path('blogcategeory/',views.blogcategeory,name='blogcategeory'),
     path('edit-blog/', views.editblog, name='editblog'),
     path('components/', views.components, name='components'),
     path('data-tables/', views.datatables, name='datatables'),

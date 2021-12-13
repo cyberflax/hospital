@@ -9,7 +9,7 @@
                     <h3 class="page-title">Product List</h3>
                     <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Product List</li>
+                        <li class="breadcrumb-item active" style="color:blue">Product List</li>
                     </ul>
                 </div>
                 <div class="col-sm-5 col">
@@ -41,8 +41,16 @@
                                         <h2 class="table-avatar">
                                             <a class="avatar avatar-sm mr-2" data-toggle="modal"
                                         onclick="$('#prodid').val('{{p.id}}');"  href="#edit_specialities_details">
-                                                <img alt="product image" class="avatar-img rounded-circle"
-                                                     src="/media/{{p.img}}"/>
+<!--                                                <img alt="product image" class="avatar-img rounded-circle"-->
+<!--                                                     src="/media/{{p.img}}"/>-->
+
+
+       {% if p.img|length is not 0 %}
+       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{p.img}}" width="31"/>
+            {% else %}
+             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+          {% endif %}
+
                                             </a>
                                             <a data-toggle="modal"  onclick="$('#prodid').val('{{p.id}}');"  href="#edit_specialities_details">
 												{{p.name}} (Syrup 200 ml)</a>

@@ -1,9 +1,9 @@
 
 # Create your views here.
 from django.shortcuts import render,redirect
-from .models import patient_record,patient_dashB,checkout,favourite,appoinmentlist,prescriptions,billings,medical_records
+from .models import *
 from pharmacy.models import pharmacy_prod_order
-from doctors.models import Dr,for_bookings,book_times,book_timed,mypatient,reView,userType
+from doctors.models import *
 from django.contrib import messages
 from django.contrib.auth.models import User
 import datetime

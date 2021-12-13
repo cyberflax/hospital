@@ -56,7 +56,14 @@
           <li>
            <div class="post-thumb">
             <a href="{% url 'blog_details'%}?@//@/={{i.id }}&Did={{i.doc.id}}">
+<!--             <img alt="" class="img-fluid" src="/media/{{i.img}}"/>-->
+
+              {% if i.img|length is not 0 %}
              <img alt="" class="img-fluid" src="/media/{{i.img}}"/>
+           {% else %}
+            <img alt="" class="img-fluid" src="/media/default.jpg"/>
+         {% endif %}
+
             </a>
            </div>
            <div class="post-info">
@@ -248,9 +255,16 @@
       <div class="col-lg-8 col-md-12">{%for i in title%}
        <div class="blog">
         <div class="blog-image">
-         <a href="{% url 'blog_details'%}?@//@/={{i.id}}&&Did={{i.doc.id}}">
-          <img alt="Post Image" class="img-fluid" src="/media/{{i.img}}"/>
-         </a>
+<!--         <a href="{% url 'blog_details'%}?@//@/={{i.id}}&&Did={{i.doc.id}}">-->
+<!--          <img alt="Post Image" class="img-fluid" src="/media/{{i.img}}"/>-->
+           {% if i.img|length is not 0 %}
+
+         <a href="/media/{{i.img}}">
+          <img alt="Post Image" class="img-fluid" src="/media/{{i.img}}"/></a>
+           {% else %}<a href="/media/default.jpg">
+            <img alt="Post Image" class="img-fluid" src="/media/default.jpg"/>
+         </a> {% endif %}
+
         </div>
         <h3 class="blog-title">
          <a href="{% url 'blog_details'%}?@//@/={{i.id}}&Did={{i.doc.id}}">
@@ -260,12 +274,25 @@
         <div class="blog-info clearfix">
          <div class="post-left">
           <div class="post-author">
-           <a href="{% url 'Doctor_profile' i.doc.id %}">
+<!--           <a href="{% url 'Doctor_profile' i.doc.id %}">-->
+<!--            <img alt="Post Author" src="/media/{{i.doc.img}}"/>-->
+
+
+             {% if i.doc.img|length is not 0 %}
+           <a href="/media/{{i.doc.img}}">
             <img alt="Post Author" src="/media/{{i.doc.img}}"/>
-            <span>
+           <span >
              {{i.doc.name}}
-            </span>
-           </a>
+            </span></a>
+           {% else %}<a href="/media/default.jpg">
+            <img alt="Post Author"  src="/media/default.jpg"/><span>
+             {{i.doc.name}}
+            </span></a>
+         {% endif %}
+<!--            <span class="my-1 ">-->
+<!--             {{i.doc.name}}-->
+<!--            </span>-->
+<!--           </a>-->
           </div>
           <ul>
            <li>

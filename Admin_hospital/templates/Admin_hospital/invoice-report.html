@@ -9,7 +9,7 @@
 							<h3 class="page-title">Invoice Report</h3>
 							<ul class="breadcrumb">
 								<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
-								<li class="breadcrumb-item active">Invoice Report</li>
+								<li class="breadcrumb-item active" style="color:blue">Invoice Report</li>
 							</ul>
 						</div>
 					</div>
@@ -35,12 +35,20 @@
 											{% for t in trs %}
 											<tr>
 												<td><a href="{%url 'invoice_view'%}?Pid={{t.patient.id}}&Did={{t.doctor.id}}&Oid={{t.id}}">#IN0001</a></td>
-												<td>#PT001</td>
+												<td>#PT00{{forloop.counter}}</td>
 												<td>
 													<h2 class="table-avatar">
-														<a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{t.patient.id}}"><img
-																alt="User Image" class="avatar-img rounded-circle"
-																src="/media/{{t.patient.img}}" /></a>
+														<a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{t.patient.id}}">
+<!--															<img alt="User Image" class="avatar-img rounded-circle"-->
+<!--																src="/media/{{t.patient.img}}" />-->
+
+       {% if t.patient.img|length is not 0 %}
+       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{t.patient.img}}" width="31"/>
+            {% else %}
+             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+          {% endif %}
+
+														</a>
 														<a href="{%url 'patient_profile'%}?profile={{t.patient.id}}">{{t.patient}} </a>
 													</h2>
 												</td>

@@ -9,7 +9,7 @@
 					<h3 class="page-title">Appointments</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
-						<li class="breadcrumb-item active">Appointments</li>
+						<li class="breadcrumb-item active" style="color:blue">Appointments</li>
 					</ul>
 				</div>
 			</div>
@@ -35,18 +35,36 @@
 									<tr>
 										<td>
 											<h2 class="table-avatar">
-												<a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' ap.doctor.id %}"><img
-														alt="User Image" class="avatar-img rounded-circle"
-														src="/media/{{ap.doctor.img}}" /></a>
+												<a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' ap.doctor.id %}">
+													<!-- <img	alt="User Image" class="avatar-img rounded-circle"
+														src="/media/{{ap.doctor.img}}" /> -->
+
+
+
+														                                          
+       {% if ap.doctor.img|length is not 0 %}
+       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{ap.doctor.img}}" width="31"/>
+            {% else %}
+             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+          {% endif %}
+													</a>
 												<a href="{% url 'Doctor_profile' ap.doctor.id %}">{{ap.doctor.name}}</a>
 											</h2>
 										</td>
 										<td>{{ap.doctor.specialization}}</td>
 										<td>
 											<h2 class="table-avatar">
-												<a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{ap.patient.id}}"><img
-														alt="User Image" class="avatar-img rounded-circle"
-														src="/media/{{ap.patient.img}}" /></a>
+												<a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{ap.patient.id}}">
+													<!-- <img alt="User Image" class="avatar-img rounded-circle"
+														src="/media/{{ap.patient.img}}" /></a> -->
+													                                          
+       {% if ap.patient.img|length is not 0 %}
+       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{ap.patient.img}}" width="31"/>
+            {% else %}
+             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+          {% endif %}	
+													
+													</a>
 												<a href="{%url 'patient_profile'%}?profile={{ap.patient.id}}">{{ap.patient}} </a>
 											</h2>
 										</td>

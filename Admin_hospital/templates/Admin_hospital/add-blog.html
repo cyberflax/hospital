@@ -10,7 +10,7 @@
 							<ul class="breadcrumb">
 								<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
 								<li class="breadcrumb-item"><a href="javascript:(0);">Pages</a></li>
-								<li class="breadcrumb-item active">Add Blog</li>
+								<li class="breadcrumb-item active" style="color:blue">Add Blog</li>
 							</ul>
 						</div>
 					</div>
@@ -23,10 +23,10 @@
 									<div class="col">
 										<ul class="nav nav-tabs nav-tabs-solid">
 											<li class="nav-item">
-												<a class="nav-link" href="blog.html">Acitive Blog</a>
+												<a class="nav-link" href="{% url 'blog' %}">Acitive Blog</a>
 											</li>
 											<li class="nav-item">
-												<a class="nav-link" href="pending-blog.html">Pending Blog</a>
+												<a class="nav-link" href="#">Pending Blog</a>
 											</li>
 										</ul>
 									</div>
@@ -72,13 +72,9 @@
 												<div class="form-group">
 													<label>Category <span class="text-danger">*</span></label>
 													<select class="form-control" name="cat" required="">
-														<option value="Automobile">Automobile</option>
-														<option selected="selected" value="Construction">Construction</option>
-														<option value="Interior">Interior</option>
-														<option value="Cleaning">Cleaning</option>
-														<option value="Electrical">Electrical</option>
-														<option value="Carpentry">Carpentry</option>
-														<option value="Computer">Computer</option>
+														{% for c in cat %}
+														<option  value="{{c.cat}}">{{c.cat}}</option>
+														{% endfor %}
 													</select>
 												</div>
 											</div>
@@ -86,14 +82,9 @@
 												<div class="form-group">
 													<label>Sub Category <span class="text-danger">*</span></label>
 													<select required class="form-control" name="subcat">
-														<option value="House cleaning">House cleaning</option>
-														<option value="Others">Others</option>
-														<option value="Full Car Wash">Full Car Wash</option>
-														<option selected="selected" value="Testing category">Testing category</option>
-														<option value="Test Sub category">Test Sub category</option>
-														<option value="Harvesting pine">Harvesting pine</option>
-														<option value="Test Sub category name">Test Sub category name</option>
-													</select>
+								{% for s in sub %}
+										<option selected="selected" value="{{s.subcat}}">{{s.subcat}}</option>
+												{% endfor %}	</select>
 												</div>
 											</div>
 										</div>
@@ -123,19 +114,19 @@
 														<li>
 															<div class="upload-images">
 																<img alt="Blog Image"
-																	src="{% static 'admin/assets/img/profiles/avatar-17.jpg' %}" />
+																	src="{% static 'assets/img/blog/blog-03.jpg' %}" />
 															</div>
 														</li>
 														<li>
 															<div class="upload-images">
 																<img alt="Blog Image"
-																	src="{% static 'admin/assets/img/profiles/avatar-17.jpg' %}" />
+																	src="{% static 'assets/img/blog/blog-02.jpg' %}" />
 															</div>
 														</li>
 														<li>
 															<div class="upload-images">
 																<img alt="Blog Image"
-																	src="{% static 'admin/assets/img/profiles/avatar-17.jpg' %}" />
+																	src="{% static 'assets/img/blog/blog-01.jpg' %}" />
 															</div>
 														</li>
 													</ul>

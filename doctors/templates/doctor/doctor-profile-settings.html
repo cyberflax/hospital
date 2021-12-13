@@ -319,21 +319,11 @@
 
             </label>
             <select class="form-control" required name="speciality" id="spec">
-             <option value="Neurology">
-              Neurology
+             {% for s in special %}
+             <option value="{{s.spec}}">
+              {{s.spec}}
              </option>
-              <option value="Dentist">
-              Dentist
-             </option>
-              <option value="Urology">
-              Urology
-             </option>
-              <option value="Cardiology">
-              Cardiology
-             </option>
-              <option value="Orthopedic">
-              Orthopedic
-             </option>
+              {% endfor %}
             </select>
            </div>
           </div>
