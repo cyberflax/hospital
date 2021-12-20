@@ -166,8 +166,7 @@ def patient_register(request):
             usermail=User.objects.filter(email=emails)
             usernam = User.objects.filter(username=names)
 
-            if len(usermail)!= 1 :
-                if len(usernam)!=1:
+            if len(usermail)!= 1 and len(usernam)!=1:
                     user = User.objects.create_user(username=names, email=emails, password=passwords)
                     user.save()
                     user1 = patient_record(patient=user, name=names,age=0, email=emails,DOB='1998-4-2',mobile=0)
@@ -179,10 +178,8 @@ def patient_register(request):
                     else:
                         messages.success(request, "Your account has been successfully created")
                     return redirect('home')
-                else:
-                    messages.error(request,'Username is already register.')
             else:
-                messages.error(request, "Email is already register.")
+                messages.error(request, "Email or name is already register.")
 
     return render(request,'patient/patient-register.html')
 def change_password(request):

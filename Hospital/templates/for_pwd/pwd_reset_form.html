@@ -1,0 +1,13 @@
+
+{% extends 'blank-page.html' %}
+{% block body %}
+{% load static %}
+
+<title>Reset Your password</title>
+<h1>Forgotten your password?</h1>
+<p>Enter your email address to obtain a new password.</p>
+<form action="." method="post">
+{% csrf_token %}
+{{form.as_p}}
+<input type="submit" value="send email">
+</form>{% endblock %}

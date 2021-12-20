@@ -33,7 +33,9 @@
                 <a class="logo logo-small" href="index.html">
                     <img alt="Logo" height="30" src="{% static 'admin/assets/img/logo-small.png' %}" width="30" />
                 </a>
+           
             </div>
+
             <a href="javascript:void(0);" id="toggle_btn">
                 <i class="fe fe-text-align-left">
                 </i>
@@ -185,37 +187,41 @@
                     </div>
                 </li>
                 <li class="nav-item dropdown has-arrow">
-<!--                    <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#">-->
-<!--                        <span class="user-img">-->
-<!--                            <img alt="Ryan Taylor" class="rounded-circle"-->
-<!--                                src="{% static 'admin/assets/img/profiles/avatar-01.jpg' %}" width="31" />-->
-
-{{request.user.hospital_admin_record.img}}
-       {% if request.user.hospital_admin_record.img|length is not 0 %}
-     <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="/media/{{request.user.hospital_admin_record.img}}">
+                    <!--                    <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#">-->
+                    <!--                        <span class="user-img">-->
+                    <!--                            <img alt="Ryan Taylor" class="rounded-circle"-->
+                    <!--                                src="{% static 'admin/assets/img/profiles/avatar-01.jpg' %}" width="31" />-->
+                 
+                    <!-- {{request.user.hospital_admin_record.img}}{{request.user.id}} -->
+                    {% if request.user.hospital_admin_record.img|length is not 0 %}
+                    <a class="dropdown-toggle nav-link" data-toggle="dropdown"
+                        href="/media/{{request.user.hospital_admin_record.img}}">
                         <span class="user-img">
-      <img alt="Fred Ortego" class="rounded-circle" src="/media/{{request.user.hospital_admin_record.img}}" width="31"/>
-                        </span></a> {% else %}<a class="dropdown-toggle nav-link" data-toggle="dropdown" href="/media/default.jpg">
+                            <img alt="Fred Ortego" class="rounded-circle"
+                                src="/media/{{request.user.hospital_admin_record.img}}" width="31" />
+                        </span></a> {% else %}<a class="dropdown-toggle nav-link" data-toggle="dropdown"
+                        href="/media/default.jpg">
                         <span class="user-img">
-            <img alt="Fred Ortego" class="rounded-circle" width="31" src="/media/default.jpg"/>
+                            <img alt="Fred Ortego" class="rounded-circle" width="31" src="/media/default.jpg" />
                         </span></a> {% endif %}
 
                     <div class="dropdown-menu">
                         <div class="user-header">
                             <div class="avatar avatar-sm">
-<!--                                <img alt="User Image" class="avatar-img rounded-circle"-->
-<!--                                    src="{% static 'admin/assets/img/profiles/avatar-01.jpg' %}" />-->
+                                <!--                                <img alt="User Image" class="avatar-img rounded-circle"-->
+                                <!--                                    src="{% static 'admin/assets/img/profiles/avatar-01.jpg' %}" />-->
 
-       {% if request.user.hospital_admin_record.img|length is not 0 %}
-      <img alt="Fred Ortego" class="rounded-circle" src="/media/{{request.user.hospital_admin_record.img}}" width="31"/>
-           {% else %}
-            <img alt="Fred Ortego" class="rounded-circle" width="31" src="/media/default.jpg"/>
-         {% endif %}
+                                {% if request.user.hospital_admin_record.img|length is not 0 %}
+                                <img alt="Fred Ortego" class="rounded-circle"
+                                    src="/media/{{request.user.hospital_admin_record.img}}" width="31" />
+                                {% else %}
+                                <img alt="Fred Ortego" class="rounded-circle" width="31" src="/media/default.jpg" />
+                                {% endif %}
 
                             </div>
                             <div class="user-text">
                                 <h6>
-                                   {{request.user.hospital_admin_record.name}}
+                                    {{request.user.username}}
                                 </h6>
                                 <p class="text-muted mb-0">
                                     Administrator
@@ -234,7 +240,22 @@
                     </div>
                 </li>
             </ul>
+
+    
+
+</div>
+           
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+          <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="True">&times;</span>
+            </button>
+            {{ message }}
+          </div>
         </div>
+        {% endfor %}
+        
         <div class="sidebar" id="sidebar">
             <div class="sidebar-inner slimscroll">
                 <div class="sidebar-menu" id="sidebar-menu">
@@ -355,21 +376,21 @@
                                         Blog
                                     </a>
                                 </li>
-                               <li>
-                                   <a href="{% url 'blogcategeory' %}">
-                                       Blog Category
-                                 </a>
-                         </li>
+                                <li>
+                                    <a href="{% url 'blogcategeory' %}">
+                                        Blog Category
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="{% url 'addblog' %}">
                                         Add Blog
                                     </a>
                                 </li>
-<!--                                <li>-->
-<!--                                    <a href="{% url 'editblog' %}">-->
-<!--                                        Edit Blog-->
-<!--                                    </a>-->
-<!--                                </li>-->
+                                <!--                                <li>-->
+                                <!--                                    <a href="{% url 'editblog' %}">-->
+                                <!--                                        Edit Blog-->
+                                <!--                                    </a>-->
+                                <!--                                </li>-->
                             </ul>
                         </li>
                         <li>
@@ -421,7 +442,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'forgotpassword' %}">
+                                    <a href="">
                                         Forgot Password
                                     </a>
                                 </li>
@@ -614,14 +635,17 @@
                 </div>
             </div>
         </div>
-        {% block body %}
         
+     
+    
+                            {% block body %}{% endblock %}
+                
         {% block body1 %}
         {% endblock body1 %}
 
-        {% endblock body %}
-    </div>
     
+    </div>
+
     <script src="{% static 'admin/assets/js/jquery-3.6.0.min.js' %}">
     </script>
     <script src="{% static 'admin/assets/js/popper.min.js' %}">

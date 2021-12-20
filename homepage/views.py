@@ -6,8 +6,27 @@ from .models import dr_blogs,Newsletter_subscriber
 from doctors.models import Dr,reView
 from patient.models import patient_record
 from django.contrib import messages
-# Create your views here.
 
+#for send email
+from django.core.mail import send_mail
+#for html to email
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+# Create your views here.
+def pwd_frgot(request):
+    if request.method=='POST':
+        email=request.POST['email']
+        data={
+        'email':email}
+        print(data,email,'pppppp')
+        deatil = {'tite':data}
+        html_content = render_to_string('for_pwd/pwd_reset_email.html',deatil)
+        text = strip_tags(html_content)
+        send_mail('for reset password', text, email, ['narware0422@gmail.com'])
+        messages.success(request, "mail send successfully. check your email. ")
+        return redirect('pwd_reset')
+
+    return render(request,'forgot-password.html')
 def home(request):
      profile = Dr.objects.all()
      blog=dr_blogs.objects.all()

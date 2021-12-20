@@ -16,7 +16,7 @@ def adminhome(request):
         res['dct'] = Dr.objects.all()
         res['pnt'] = patient_record.objects.all()
         res['apmnt'] = appoinmentlist.objects.all()
-
+        messages.warning(request,'ppppp')
 
     else:
         return redirect('error404')
