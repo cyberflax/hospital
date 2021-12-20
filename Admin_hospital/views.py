@@ -424,25 +424,20 @@ def register(request):
         email = request.POST['email']
         password = request.POST['password']
         confirm=request.POST['confrm']
-        user =User.objects.create_superuser(username=name, email=email, password=password)
-        user.save()
-        users=hospital_admin_record(user=user,email=email,name=name)
-        users.save()
-        typeuser = userType(user=user, type='4')
-        typeuser.save()
-                # name1 = request.POST['name']
-                # email1 = request.POST['email']
-                # user1 = Dr(user=user, name=name1, email=email1,fees_starting=0,fees_end=0 )
-                # user1.save()
-                # typeuser = userType(user=user, type='2')
-                # typeuser.save()
-                # if user is None:
-                #     messages.error(request, "invalid user")
-                # else:
-        messages.success(request, "Your account has been successfully created")
-        return redirect('home')
-        # else:
-        #     messages.error(request, "Email or name is already register.")
+        usermail = User.objects.filter(email=email)
+        usernam=User.objects.filter(username=name)
+        print(name,name.lower(),usernam)
+        if len(usermail) !=1 and len(usernam)!=1:
+            user =User.objects.create_superuser(username=name, email=email, password=password)
+            user.save()
+            users=hospital_admin_record(user=user,email=email,name=name)
+            users.save()
+            typeuser = userType(user=user, type='4')
+            typeuser.save()
+            messages.success(request, "Your account has been successfully created")
+            return redirect('home')
+        else:
+            messages.error(request, "Email or name is already register.")
 
     return render(request, 'Admin_hospital/register.html')
 def reviews(request):
