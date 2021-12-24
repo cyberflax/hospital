@@ -94,8 +94,14 @@
          <li class="list-group-item">{% if last is not None %}
           <div class="media align-items-center">
            <div class="mr-3">
-            <img alt="Image placeholder" class="avatar rounded-circle" src="/media/{{last.doctor.img}}"/>
-           </div>
+            <!-- <img alt="Image placeholder" class="avatar rounded-circle" src="/media/{{last.doctor.img}}"/> -->
+            {% if last.doctor.img|length is not 0 %}
+           <img  alt="Image placeholder" class="avatar rounded-circle" src="/media/{{last.doctor.img}}"/>
+           {% else %}
+            <img  alt="Image placeholder" class="avatar rounded-circle" src="/media/default.jpg"/>
+         {% endif %}
+          
+          </div>
            <div class="media-body">
             <h5 class="d-block mb-0">
              {{last.doctor.name}}
@@ -272,8 +278,13 @@
                  <td>
                   {{i.date}}
                  </td>
-                 <td><a href="/media/{{i.prec_name}}" style="color:green">
+                 <td>{% if i.prec_name is not none %}
+                   <a href="/media/{{i.prec_name}}" style="color:green">
                 {{i.prec_name}}</a>
+                      {% else %}
+                <a href="/media/{{blank.png}}" style="color:red">
+                  No prec.</a>{% endif %}
+
                  </td>
                  <td>
                   <h2 class="table-avatar">
@@ -360,13 +371,19 @@
                  <td>
                   {{i.date}}
                  </td>
-                 <td>
+                 <td>{% if i.desc is not none %}
                   {{i.desc}}
+                  {% else %}
+                  <p style="color:red">
+                    No Desc.</p>{% endif %}
                  </td>
-                 <td>
-                  <a href="#">
+                 <td>{% if  i.attachment is not blank %}
+                  <a href="/media/{{i.attachment}}">
                    {{i.attachment}}
                   </a>
+                  {% else %}
+                  <a href="/media/{{blank.png}}" style="color:red">
+                    No Atachment</a>{% endif %}
                  </td>
                  <td>
                   <h2 class="table-avatar">

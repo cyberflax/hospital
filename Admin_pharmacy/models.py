@@ -30,7 +30,7 @@ class supplier(models.Model):
     address = models.TextField()
 
     def __str__(self):
-        return self.name
+        return self.name+' - '+self.user.name
 class category(models.Model):
     cate = models.CharField(max_length=30)
     date_created=models.DateField(auto_now=True)
@@ -48,7 +48,7 @@ class Purchase(models.Model):
     img = models.ImageField()
 
     def __str__(self):
-        return self.med_name
+        return self.med_name+' - '+self.pharmacys.name+' - '+self.supplir.name
 class setting(models.Model):
     pharmacy=models.OneToOneField(pharmacy,on_delete=models.CASCADE,related_name='setting')
     webname=models.CharField(max_length=30)
@@ -56,7 +56,7 @@ class setting(models.Model):
     favican=models.ImageField()
 
     def __str__(self):
-        return self.webname
+        return self.webname+' - '+self.pharmacy.name
 
 
 

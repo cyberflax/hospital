@@ -5,16 +5,18 @@ from Admin_hospital.models import speciality
 from django.contrib import messages
 from django.contrib.auth.models import User
 from datetime import date
+import uuid
 #for login
 from django.contrib.auth import authenticate,login,logout
 
 def Doctor_profile(request,id):
+    
+    # if request.user.is_authenticated:
          # bid= request.GET.get('@//@/')
-         profile=Dr.objects.get(id=id)
-         patient = patient_record.objects.values('name')
-         patients = {data['name'] for data in patient}
-
-         if request.method == "POST":
+        profile=Dr.objects.get(id=id)
+        patient = patient_record.objects.values('name')
+        patients = {data['name'] for data in patient}
+        if request.method == "POST":
             name = request.POST['name']
             review = request.POST['review']
             rating = request.POST['rating']
@@ -25,43 +27,57 @@ def Doctor_profile(request,id):
                 return redirect(request.get_full_path())
             else:
                  messages.success(request, "Your are not patient")
-         review = reView.objects.filter(dics=profile)
-         loc=Loca_tions.objects.filter(doc=profile)
-         pro=Dr.objects.filter(id=id)
-         buss_ho=Buss_Ho.objects.filter(doc1=profile)
-         ov_view=Ov_view.objects.filter(doc=profile)
-         res={'title':profile,'review':review,'location':loc,'Buss_Ho':buss_ho,'over':ov_view}
-         return render(request,'doctor/doctor-profile.html',res)
+        review = reView.objects.filter(dics=profile)
+        loc=Loca_tions.objects.filter(doc=profile)
+        pro=Dr.objects.filter(id=id)
+        buss_ho=Buss_Ho.objects.filter(doc1=profile)
+        ov_view=Ov_view.objects.filter(doc=profile)
+        # if request.user.userType.type == '1' is not None:
+        #     pa_names=patient_record.objects.get(id=request.user.patient_record.id)# for favourite checked
+        #     favt=favourite.objects.values('dr_name').filter(pa_name=pa_names)
+        #     fav=[i['dr_name'] for i in favt]
+        # else:
+        #     print('')
+        res={'title':profile,'review':review,'location':loc,
+        'Buss_Ho':buss_ho,'over':ov_view}
+        return render(request,'doctor/doctor-profile.html',res)
+    
 def Doctor_register(request):
-    userlist=Dr.objects.values('email')
-    userlis={data['email'].lower() for data in userlist}
-    if request.method == "POST":
-        name = request.POST['name']
-        email = request.POST['email']
-        password = request.POST['password']
-        confirm=request.POST['confirm']
-        usermail = User.objects.filter(email=email)
-        usernam=User.objects.filter(username=name)
-        print(name,name.lower(),usernam)
-        if len(usermail) !=1 and len(usernam)!=1:
-                user =User.objects.create_user(username=name, email=email, password=password)
-                user.save()
-                name1 = request.POST['name']
-                email1 = request.POST['email']
-                user1 = Dr(user=user, name=name1, email=email1,fees_starting=0,fees_end=0 )
-                user1.save()
-                typeuser = userType(user=user, type='2')
-                typeuser.save()
-                if user is None:
-                    messages.error(request, "invalid user")
-                else:
-                    messages.success(request, "Your account has been successfully created")
-                return redirect('home')
-        else:
-            messages.error(request, "Email or name is already register.")
-
-    return render(request,'doctor/doctor-register.html')
+    
+    # if request.user.is_not_authenticated:
+        userlist=Dr.objects.values('email')
+        userlis={data['email'].lower() for data in userlist}
+        if request.method == "POST":
+            name = request.POST['name']
+            email = request.POST['email']
+            password = request.POST['password']
+            confirm=request.POST['confirm']
+            usermail = User.objects.filter(email=email)
+            usernam=User.objects.filter(username=name)
+            print(name,name.lower(),usernam)
+            if len(usermail) !=1 and len(usernam)!=1:
+                    user =User.objects.create_user(username=name, email=email, password=password)
+                    user.save()
+                    user1 = Dr(user=user, name=name, email=email,fees_starting=0,fees_end=0 )
+                    user1.save()
+                    typeuser = userType(user=user, type='2')
+                    typeuser.save()
+                    token=str(uuid.uuid4())
+                    frgpwd=frgt_pwd(user=user,frg_token=token)
+                    frgpwd.save()
+                    if user is None:
+                        messages.error(request, "invalid user")
+                    else:
+                        messages.success(request, "Your account has been successfully created")
+                    return redirect('home')
+            else:
+                messages.error(request, "Email or name is already register.")
+        return render(request,'doctor/doctor-register.html')
+    # else:
+    #     return redirect('error500')
 def change_password(request):
+    
+    if request.user.is_authenticated:
         if request.method == "POST":
             old = request.POST['oldpwd']
             new = request.POST['newpwd']
@@ -79,36 +95,46 @@ def change_password(request):
                 messages.error(request, "incorrect old password")
             return redirect('change_password')
         return render(request,'patient/change-password.html')
+    else:
+        return redirect('error500')
 def dlogin(request):
-    if request.method=='POST':
-         loginemail = request.POST['email']
-         username = User.objects.get(email=loginemail).username
-         pass1 = request.POST['password']
-         user= authenticate(username=username,password=pass1)
-         if user is not None:
-            login(request,user)
-            if not request.user.is_authenticated:
-               messages.success(request, 'user none')
-               return redirect('dlogin')
-            else:
-                messages.success(request,F'{username} you are successfully logged In')
-                return redirect('home')
-         messages.error(request, 'Invalid email or password')
-         return redirect('dlogin')
-    return render(request,'login.html')
+    
+    # if request.user.is_not_authenticated:
+        if request.method=='POST':
+            loginemail = request.POST['email']
+            username = User.objects.get(email=loginemail).username
+            pass1 = request.POST['password']
+            user= authenticate(username=username,password=pass1)
+            if user is not None:
+                login(request,user)
+                if not request.user.is_authenticated:
+                    messages.success(request, 'user none')
+                    return redirect('dlogin')
+                else:
+                    messages.success(request,F'{username} you are successfully logged In')
+                    return redirect('home')
+            messages.error(request, 'Invalid email or password')
+            return redirect('dlogin')
+        return render(request,'login.html')
+    # else:
+    #     return redirect('error500')
 def dlogout(request):
     logout(request)
     messages.success(request,'you are successfully logged Out')
     return redirect('home')
 def doctor_dashboard(request):
-    dr = Dr.objects.get(id=request.user.Dr.id)
-    list= checkout.objects.filter(dr_name=dr)
-    totalapp=len(list)
+    
+    if request.user.is_authenticated:
+        dr = Dr.objects.get(id=request.user.Dr.id)
+        list= checkout.objects.filter(dr_name=dr)
+        totalapp=len(list)
 
-    doctors=Dr.objects.get(id=request.user.Dr.id)
-    p_list=mypatient.objects.filter(Dr_names=doctors)
-    current_date=date.today()
-    return render(request,'doctor/doctor-dashboard.html',{'list':list,'now':current_date,'length':totalapp,'pcount':len(p_list)})
+        doctors=Dr.objects.get(id=request.user.Dr.id)
+        p_list=mypatient.objects.filter(Dr_names=doctors)
+        current_date=date.today()
+        return render(request,'doctor/doctor-dashboard.html',{'list':list,'now':current_date,'length':totalapp,'pcount':len(p_list)})
+    else:
+        return redirect('error500')
 def doctor_profile_setting(request):
     if request.user.is_authenticated:
         userids=request.GET.get('profile')
@@ -248,190 +274,227 @@ def doctor_profile_setting(request):
     spec=speciality.objects.all()
     res={'spec':specifications_add.objects.all(),'special':spec,'serv':servies_add.objects.all()}
     return render(request,'doctor/doctor-profile-settings.html',res)
+    
+    
 def reviews(request):
-    dr=Dr.objects.get(id=request.user.Dr.id)
-    rev=reView.objects.filter(dics=dr)
-
-    return render(request,'doctor/reviews.html',{'review':rev})
+    
+    if request.user.is_authenticated:
+        dr=Dr.objects.get(id=request.user.Dr.id)
+        rev=reView.objects.filter(dics=dr)
+        return render(request,'doctor/reviews.html',{'review':rev})
+    else:
+        return redirect('error500')
 def like(request):
-    bid=request.GET.get('@//@/')
-    next=request.GET.get('next')
-    prod_list = reView.objects.filter(id=bid)
-    if len(prod_list) > 0:
-        ob = prod_list[0]
-        if ob.YES >= 0:
-            ob.YES+= 1
-            ob.save()
-    return redirect(next)
+    
+    if request.user.is_authenticated:
+        bid=request.GET.get('@//@/')
+        next=request.GET.get('next')
+        prod_list = reView.objects.filter(id=bid)
+        if len(prod_list) > 0:
+            ob = prod_list[0]
+            if ob.YES >= 0:
+                ob.YES+= 1
+                ob.save()
+        return redirect(next)
+    else:
+        return redirect('error500')
 def dislike(request):
-    bid=request.GET.get('@//@/')
-    next = request.GET.get('next')
-    prod_list = reView.objects.filter(id=bid)
-    if len(prod_list) > 0:
-        ob = prod_list[0]
-        if ob.NO >= 0:
-            ob.NO+= 1
-            ob.save()
-    return redirect(next)
+    
+    if request.user.is_authenticated:
+        bid=request.GET.get('@//@/')
+        next = request.GET.get('next')
+        prod_list = reView.objects.filter(id=bid)
+        if len(prod_list) > 0:
+            ob = prod_list[0]
+            if ob.NO >= 0:
+                ob.NO+= 1
+                ob.save()
+        return redirect(next)
+    else:
+        return redirect('error500')
 def appointments(request):
 
-    doctor=request.GET.get('doctor')
-    dr=Dr.objects.get(id=doctor)
-    appoin=checkout.objects.filter(dr_name=dr)
-    res={'app':appoin}
-    return render(request,'doctor/appointments.html',res)
+    if request.user.is_authenticated:
+        doctor=request.GET.get('doctor')
+        dr=Dr.objects.get(id=doctor)
+        appoin=checkout.objects.filter(dr_name=dr)
+        res={'app':appoin}
+        return render(request,'doctor/appointments.html',res)
+    else:
+        return redirect('error500')
 def appo_delete(request):
 
-    # app_id = request.GET.get('id')
-    checkid=request.GET.get('id')
-    next = request.GET.get('next')
-    check=checkout.objects.get(id=checkid)
-    check.delete()
-    return redirect(next)
-def schedule(request):
-    dr = Dr.objects.get(id=request.user.Dr.id)
-    time = for_bookings.objects.filter(name=dr)
-    day = for_bookings.objects.values('day')
-    days = {datas['day'] for datas in day}
-    x = request.GET.get('dayy')
-    # x2=book_times.objects.get(dr=x)
-    x1 = book_times.objects.filter(dr=x)
-
-    print(request.get_full_path(),'////00')
-    time1 = request.GET.get('timeid')
-    day = request.GET.get('dayid')
-    p = book_times.objects.filter(id=day)
-    print(p,'pppp')
-    # pcun=p.times.all().count()
-    print(request.get_full_path(),'//===0')
-    for i in p:
-        print(i,'ooooo',i.times,len(p),'//',i.times.all().count())
-        z = i.times.remove(time1)
-        print(i.times,'//////',i.times.all().count())
-        if i.times.all().count()==0:
-            p.delete()
-        redirect(request.get_full_path())
-    res = {'time': time, 'days': days, 'x': x1}
-    return render(request,'doctor/schedule-timings.html',res)
-def invoices(request):
-    doctor = request.GET.get('invoice')
-    dr = Dr.objects.get(id=doctor)
-    invoice = appoinmentlist.objects.filter(doctor=dr)
-    if request.GET.get('Oid') is not None:
-        oderid = request.GET.get('Oid')
-        pat_id = request.GET.get('pid')
-        pat=patient_record.objects.get(id=pat_id)
-        check = appoinmentlist.objects.get(patient=pat,id=oderid)
+    if request.user.is_authenticated:
+        # app_id = request.GET.get('id')
+        checkid=request.GET.get('id')
+        next = request.GET.get('next')
+        check=checkout.objects.get(id=checkid)
         check.delete()
-    res = {'invoice': invoice}
-    return render(request,'doctor/invoices.html',res)
+        return redirect(next)
+    else:
+        return redirect('error500')
+def schedule(request):
+    
+    if request.user.is_authenticated:
+        dr = Dr.objects.get(id=request.user.Dr.id)
+        time = for_bookings.objects.filter(name=dr)
+        day = for_bookings.objects.values('day')
+        days = {datas['day'] for datas in day}
+        x = request.GET.get('dayy')
+        # x2=book_times.objects.get(dr=x)
+        x1 = book_times.objects.filter(dr=x)
+
+        time1 = request.GET.get('timeid')
+        day = request.GET.get('dayid')
+        p = book_times.objects.filter(id=day)
+
+        # pcun=p.times.all().count()
+        for i in p:
+            z = i.times.remove(time1)
+            if i.times.all().count()==0:
+                p.delete()
+            redirect(request.get_full_path())
+        res = {'time': time, 'days': days, 'x': x1}
+        return render(request,'doctor/schedule-timings.html',res)
+    else:
+        return redirect('error500')
+def invoices(request):
+    
+    if request.user.is_authenticated:
+        doctor = request.GET.get('invoice')
+        dr = Dr.objects.get(id=doctor)
+        invoice = appoinmentlist.objects.filter(doctor=dr)
+        if request.GET.get('Oid') is not None:
+            oderid = request.GET.get('Oid')
+            pat_id = request.GET.get('pid')
+            pat=patient_record.objects.get(id=pat_id)
+            check = appoinmentlist.objects.get(patient=pat,id=oderid)
+            check.delete()
+        res = {'invoice': invoice}
+        return render(request,'doctor/invoices.html',res)
+    else:
+        return redirect('error500')
 def chat_doctor(request):
-    dr = Dr.objects.get(id=request.user.Dr.id)
-    chat = checkout.objects.filter(dr_name=dr)
-    li=[]
-    for i in chat:
-        pat=patient_record.objects.get(id=i.patient.id)
-        if pat not in li:
-
-          li.append(pat)
-
-    return render(request,'doctor/chat-doctor.html',{'list':li})
+    
+    if request.user.is_authenticated:
+        dr = Dr.objects.get(id=request.user.Dr.id)
+        chat = checkout.objects.filter(dr_name=dr)
+        li=[]
+        for i in chat:
+            pat=patient_record.objects.get(id=i.patient.id)
+            if pat not in li:
+               li.append(pat)
+        return render(request,'doctor/chat-doctor.html',{'list':li})
+    else:
+        return redirect('error500')
 def checkup(request):
-    patientid = request.GET.get('id')
-    patients=patient_record.objects.filter(id=patientid)
-    # timing=checkout.objects.filter(id=patientid)
-    oid = request.GET.get('Oid')
-    patents=patient_record.objects.get(id=patientid)
-    tiing=checkout.objects.filter(id=oid,patient=patents)
+    
+    if request.user.is_authenticated:
+        patientid = request.GET.get('id')
+        patients=patient_record.objects.filter(id=patientid)
+        # timing=checkout.objects.filter(id=patientid)
+        oid = request.GET.get('Oid')
+        patents=patient_record.objects.get(id=patientid)
+        tiing=checkout.objects.filter(id=oid,patient=patents)
 
-    tiings=appoinmentlist.objects.filter(id=oid,patient=patents)
-    res = {'patient': patients,'time':tiing,'time1':tiings}
+        tiings=appoinmentlist.objects.filter(id=oid,patient=patents)
+        res = {'patient': patients,'time':tiing,'time1':tiings}
 
-    return render(request,'doctor/checkup.html',res)
+        return render(request,'doctor/checkup.html',res)
+    else:
+        return redirect('error500')
 def my_patients(request):
-    doctors=Dr.objects.get(id=request.user.Dr.id)
-    patientlist=mypatient.objects.filter(Dr_names=doctors)
-    return render(request,'doctor/my-patients.html',{'list':patientlist})
+    
+    if request.user.is_authenticated:
+        doctors=Dr.objects.get(id=request.user.Dr.id)
+        patientlist=mypatient.objects.filter(Dr_names=doctors)
+        return render(request,'doctor/my-patients.html',{'list':patientlist})
+    else:
+        return redirect('error500')
 def allpatient(request):
-    dr_id=request.GET.get('doctor')
-    pa_id = request.GET.get('pa_id')
-    doctors=Dr.objects.get(id=dr_id)
-    patients=patient_record.objects.get(id=pa_id)
-    Oid = request.GET.get('Oid')
-    # my_patients = mypatient.objects.filter(Dr_names=doctors, pa_names=patients)
-    check = checkout.objects.filter(dr_name=doctors, patient=patients,id=Oid)
-    patientid = request.GET.get('pa_id')
-    patients = patient_record.objects.filter(id=request.GET.get('pa_id'))
-    patient1 = patient_record.objects.get(id=patientid)
-    patientss = User.objects.get(username=patient1.name)
-    if request.method=='POST':
-        age = request.POST['age']
-        BG = request.POST['bgroup']
-        gender = request.POST['gender']
-        dob = request.POST['dob']
-        if len(patients) > 0:
-            ob = patients[0]
-            ob.patient = patientss
-            ob.age = age
-            ob.gender = gender
-            ob.Blood_group = BG
-            ob.DOB = dob
-            ob.save()
-        else:
-            patient = patient_record(patient=patientss, age=age, Blood_group=BG, DOB=dob,gender=gender)
-            patient.save()
-        BP = request.POST['BP']
-        BP1 = request.POST['BP1']
-        GL = request.POST['GL']
-        GL1 = request.POST['GL1']
-        BT = request.POST['BT']
-        HR = request.POST['HR']
-        patient1 = patient_record.objects.get(id=pa_id)
-        pat = patient_record.objects.filter(id=request.GET.get('pa_id'))
-        dashBord=patient_dashB.objects.filter(patient_name=patient1)
-        if len(dashBord) > 0:
-            os = dashBord[0]
-            os.patient_name = patient1
-            os.heart_rate = HR
-            os.BP_mg = BP
-            os.BP_dl = BP1
-            os.body_temp = BT
-            os.Glucose_Level_up = GL
-            os.Glucose_Level_to = GL1
-            os.BMI_Status = 0
-            os.Heart_Rate_Status = 0
-            os.FBC_Status = 0
-            os.Weight_Status = 0
-            os.save()
-        else:
+    
+    if request.user.is_authenticated:
+        dr_id=request.GET.get('doctor')
+        pa_id = request.GET.get('pa_id')
+        doctors=Dr.objects.get(id=dr_id)
+        patients=patient_record.objects.get(id=pa_id)
+        Oid = request.GET.get('Oid')
+        # my_patients = mypatient.objects.filter(Dr_names=doctors, pa_names=patients)
+        check = checkout.objects.filter(dr_name=doctors, patient=patients,id=Oid)
+        patientid = request.GET.get('pa_id')
+        patients = patient_record.objects.filter(id=request.GET.get('pa_id'))
+        patient1 = patient_record.objects.get(id=patientid)
+        patientss = User.objects.get(username=patient1.name)
+        if request.method=='POST':
+            age = request.POST['age']
+            BG = request.POST['bgroup']
+            gender = request.POST['gender']
+            dob = request.POST['dob']
+            if len(patients) > 0:
+                ob = patients[0]
+                ob.patient = patientss
+                ob.age = age
+                ob.gender = gender
+                ob.Blood_group = BG
+                ob.DOB = dob
+                ob.save()
+            else:
+                patient = patient_record(patient=patientss, age=age, Blood_group=BG, DOB=dob,gender=gender)
+                patient.save()
+            BP = request.POST['BP']
+            BP1 = request.POST['BP1']
+            GL = request.POST['GL']
+            GL1 = request.POST['GL1']
+            BT = request.POST['BT']
+            HR = request.POST['HR']
             patient1 = patient_record.objects.get(id=pa_id)
-            patients = patient_dashB(patient_name=patient1, heart_rate=HR, BP_mg=BP, BP_dl=BP1,
-                                     body_temp=BT, Glucose_Level_up=GL, Glucose_Level_to=GL1,
-                                     BMI_Status=0, Heart_Rate_Status=0, FBC_Status=0, Weight_Status=0)
-            patients.save()
-        messages.success(request, 'successfully detail updated')
-    for data in check:
-        pa_id=data.patient
-        dr_id=data.dr_name
-        my_patients = mypatient.objects.filter(Dr_names=dr_id, pa_names=pa_id)
+            pat = patient_record.objects.filter(id=request.GET.get('pa_id'))
+            dashBord=patient_dashB.objects.filter(patient_name=patient1)
+            if len(dashBord) > 0:
+                os = dashBord[0]
+                os.patient_name = patient1
+                os.heart_rate = HR
+                os.BP_mg = BP
+                os.BP_dl = BP1
+                os.body_temp = BT
+                os.Glucose_Level_up = GL
+                os.Glucose_Level_to = GL1
+                os.BMI_Status = 0
+                os.Heart_Rate_Status = 0
+                os.FBC_Status = 0
+                os.Weight_Status = 0
+                os.save()
+            else:
+                patient1 = patient_record.objects.get(id=pa_id)
+                patients = patient_dashB(patient_name=patient1, heart_rate=HR, BP_mg=BP, BP_dl=BP1,
+                                        body_temp=BT, Glucose_Level_up=GL, Glucose_Level_to=GL1,
+                                        BMI_Status=0, Heart_Rate_Status=0, FBC_Status=0, Weight_Status=0)
+                patients.save()
+            messages.success(request, 'successfully detail updated')
+        for data in check:
+            pa_id=data.patient
+            dr_id=data.dr_name
+            my_patients = mypatient.objects.filter(Dr_names=dr_id, pa_names=pa_id)
 
-        prec=prescriptions(patient=pa_id,date=data.date,doctor=dr_id,prec_name='blank')
-        prec.save()
-        bill=billings(patient=pa_id,doctor=dr_id,amount=data.amount,paid_on_date=data.date,invoice_no=0)
-        bill.save()
-        medical=medical_records(patient=pa_id,desc='',attachment='',date=data.date,doctor=dr_id)
-        medical.save()
+            prec=prescriptions(patient=pa_id,date=data.date,doctor=dr_id,prec_name='blank')
+            prec.save()
+            bill=billings(patient=pa_id,doctor=dr_id,amount=data.amount,paid_on_date=data.date,invoice_no=0)
+            bill.save()
+            medical=medical_records(patient=pa_id,desc='',attachment='',date=data.date,doctor=dr_id)
+            medical.save()
 
-        if len(my_patients)>0:
-            ob=my_patients[0]
-            ob.Dr_names=dr_id
-            ob.pa_names=pa_id
-            ob.save()
-        else:
-            my_patienT = mypatient(Dr_names=dr_id, pa_names=pa_id)
-            my_patienT.save()
-        data.delete()
-    return redirect('my_patient')
+            if len(my_patients)>0:
+                ob=my_patients[0]
+                ob.Dr_names=dr_id
+                ob.pa_names=pa_id
+                ob.save()
+            else:
+                my_patienT = mypatient(Dr_names=dr_id, pa_names=pa_id)
+                my_patienT.save()
+            data.delete()
+        return redirect('my_patient')
+    else:
+        return redirect('error500')
 
 def pagenotfound(request):
     return render(request,'notfound.html')

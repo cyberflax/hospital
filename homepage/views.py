@@ -1,10 +1,10 @@
 from django.shortcuts import render,redirect
-
+from django.conf import settings
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.models import User
 from .models import dr_blogs,Newsletter_subscriber
-from doctors.models import Dr,reView
-from patient.models import patient_record
+from doctors.models import Dr, frgt_pwd,reView
+from patient.models import favourite, patient_record
 from django.contrib import messages
 
 #for send email
@@ -16,37 +16,51 @@ from django.utils.html import strip_tags
 def pwd_frgot(request):
     if request.method=='POST':
         email=request.POST['email']
-        data={
-        'email':email}
-        print(data,email,'pppppp')
-        deatil = {'tite':data}
-        html_content = render_to_string('for_pwd/pwd_reset_email.html',deatil)
-        text = strip_tags(html_content)
-        send_mail('for reset password', text, email, ['narware0422@gmail.com'])
+        useremail=User.objects.get(email=email)
+        frgtoken=frgt_pwd.objects.get(user=useremail)
+        ftoken=frgtoken.frg_token
+        emails=useremail.email
+        mail_msg=f'Hello,Your reset password link is http://127.0.0.1:8000/Pforgot/{ftoken}'
+        send_mail('For reset password', mail_msg,settings.EMAIL_HOST_USER, [emails],fail_silently=False)
         messages.success(request, "mail send successfully. check your email. ")
         return redirect('pwd_reset')
 
     return render(request,'forgot-password.html')
-def home(request):
-     profile = Dr.objects.all()
-     blog=dr_blogs.objects.all()
-     speciality = Dr.objects.values('specialization')
-     speciality = {data['specialization'] for data in speciality}
-     name = request.GET.get('special')
-     profile1 = Dr.objects.filter(specialization=name)
-     if name is None:
-         res=profile
-     else:
-         res=profile1
+def Pforgot(request,id):
+    
+    if request.method=='POST':
+        pass1=request.POST['pass1']
+        confirm=request.POST['pass2']
+        frgpwd=frgt_pwd.objects.get(frg_token=id)
+        user=User.objects.get(username=frgpwd)
+        print(frgpwd,user,'////////////')
+        user.set_password(pass1)
+        user.save()
+        messages.success(request, "Password change successfully. ")
+        return redirect('dlogin')
+       
+    return render(request,'for_pwd/pwd_reset_confirm.html')
 
-     re = {'title': profile,'blog':blog,'specialty':speciality,'special':res}
-     if request.method=="POST":
-         email = request.POST['email1']
-         var = Newsletter_subscriber(suscriber_email=email)
-         var.save()
-         messages.success(request, " Thank You For Your Subscription")
-         return redirect('home')
-     return render(request,'index.html',re)
+def home(request):
+    profile = Dr.objects.all()
+    blog=dr_blogs.objects.all()
+    speciality = Dr.objects.values('specialization')
+    speciality = {data['specialization'] for data in speciality}
+    name = request.GET.get('special')
+    profile1 = Dr.objects.filter(specialization=name)
+    if name is None:
+        res=profile
+    else:
+        res=profile1
+
+    re = {'title': profile,'blog':blog,'specialty':speciality,'special':res}
+    if request.method=="POST":
+        email = request.POST['email1']
+        var = Newsletter_subscriber(suscriber_email=email)
+        var.save()
+        messages.success(request, " Thank You For Your Subscription")
+        return redirect('home')
+    return render(request,'index.html',re)
 def blog_details(request):
     bid = request.GET.get('@//@/')
     Did = request.GET.get('Did')

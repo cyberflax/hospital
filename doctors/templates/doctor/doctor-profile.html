@@ -77,11 +77,15 @@
              {% if  request.user.userType.type == '1'  %}
             <a class="fav-btn" href="{%url 'favt'%}?dr={{title.id}}&pa={{request.user.id}}">
             {% if  title.id  in  favt %}
-            <i class="fas fa-check-circle verified">
+            <i class="fas fa-check-circle verified ml-2">
             </i>{% else %}
             <i  class="feather-check-circle verified ml-2" >
             </i> {% endif %}
+            
            </a> {% endif %}
+
+
+           
            </p>
            <ul class="clinic-gallery">
 

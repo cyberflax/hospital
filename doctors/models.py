@@ -8,6 +8,14 @@ class userType(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+class frgt_pwd(models.Model):
+    user=models.OneToOneField(User,on_delete=models.CASCADE,related_name='pwd')
+    frg_token=models.CharField(max_length=1000)
+    def __str__(self):
+        return self.user.username
+
 class Dr(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="Dr")
     name = models.CharField(max_length=30)
@@ -22,7 +30,7 @@ class Dr(models.Model):
     date = models.DateField(auto_now=True)
     time=models.TimeField(auto_now=True)
     def __str__(self):
-        return self.name+self.specialization
+        return self.name+' - '+self.specialization
 class Ov_view(models.Model):
     doc = models.OneToOneField(Dr, primary_key=True, related_name='Ov_view', on_delete=models.CASCADE)
     about = models.TextField(max_length=500)
@@ -55,7 +63,7 @@ class Awards(models.Model):
     aw_year=models.DateField()
     aw_desc = models.TextField(max_length=1000)
     def __str__(self):
-        return self.aw_name+self.dr.doc.name
+        return self.aw_name+' - '+self.dr.doc.name
 class Educat_ion(models.Model):
     dr = models.ForeignKey(Ov_view, on_delete=models.CASCADE,related_name='Educat_ion')
     univercity = models.CharField(max_length=200)
@@ -63,7 +71,7 @@ class Educat_ion(models.Model):
     YOA = models.DateField()
     YOP = models.DateField()
     def __str__(self):
-        return self.univercity+self.dr.doc.name
+        return self.univercity+' - '+self.dr.doc.name
 class Exp_erince(models.Model):
     dr = models.ForeignKey(Ov_view, on_delete=models.CASCADE, related_name='Exp_erince')
     exp_filled = models.CharField(max_length=200)
@@ -72,7 +80,7 @@ class Exp_erince(models.Model):
     experince = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.exp_filled+((self.dr.doc.name))
+        return self.exp_filled+' - '+((self.dr.doc.name))
 class Buss_Ho(models.Model):
     doc1 = models.OneToOneField(Dr, on_delete=models.CASCADE, primary_key=True, related_name="Buss_Ho")
     dates = models.DateField(auto_now_add=True)
@@ -86,7 +94,7 @@ class Hour_S(models.Model):
     Time2=models.TimeField()
     Day=models.CharField(max_length=20)
     def __str__(self):
-        return self.Day+(self.dic2.doc1.name)
+        return self.Day+' - '+(self.dic2.doc1.name)
 
 class reView(models.Model):
     dics = models.ForeignKey(Dr, on_delete=models.CASCADE, related_name='reView')
@@ -100,7 +108,7 @@ class reView(models.Model):
     time = models.TimeField(auto_now=True)
 
     def __str__(self):
-        return self.name + self.dics.name
+        return self.name + ' - '+self.dics.name
 
 
 class rvw_reply(models.Model):
@@ -116,7 +124,7 @@ class rvw_reply(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name + self.dics.name
+        return self.name +' - '+ self.dics.name
 
 class Loca_tions(models.Model):
     doc = models.ForeignKey(Dr, on_delete=models.CASCADE, related_name="Loca_tions")
@@ -127,30 +135,30 @@ class Loca_tions(models.Model):
     closetime=models.TimeField(null=True)
 
     def __str__(self):
-        return self.clinics_name+ self.doc.name
+        return self.clinics_name+' - '+ self.doc.name
 class for_bookings(models.Model):
     name= models.ForeignKey(Dr, on_delete=models.CASCADE, related_name='for_booking')
     date = models.DateField(blank=True)
     day = models.CharField(max_length=20)
 
     def __str__(self):
-        return self.name.name + (self.day)
+        return self.name.name +' - '+ (self.day)
 class book_timed(models.Model):
       time1= models.TimeField()
       time2 = models.TimeField()
 
-      # def __str__(self):
-      #     return self.time1 + self.time2
+      def __str__(self):
+          return str(self.time1)+' - ' + str(self.time2)
 class book_times(models.Model):
     dr = models.OneToOneField(for_bookings, on_delete=models.CASCADE, related_name='book_times')
     times=models.ManyToManyField(book_timed,related_name='book_timed')
 
 
     def __str__(self):
-        return self.dr.name.name+self.dr.day
+        return self.dr.name.name+' - '+self.dr.day
 class mypatient(models.Model):
     Dr_names = models.ForeignKey(Dr, on_delete=models.CASCADE, related_name='mypatients')
     pa_names=models.ForeignKey('patient.patient_record',null=True,on_delete=models.CASCADE, related_name='mypatient')
-    # def __str__(self):
-    #     return  self.pa_names.name
+    def __str__(self):
+        return  self.Dr_names.name +' - '+self.pa_names.name
 

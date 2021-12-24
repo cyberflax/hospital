@@ -41,7 +41,7 @@ class blog_subcategory(models.Model):
     subcat = models.CharField(max_length=30)
     date_created=models.DateField(auto_now=True)
     def __str__(self):
-        return self.subcat
+        return self.cats.cat +' - '+self.subcat
 # class setting(models.Model):
 #     admin=models.OneToOneField(hospital_admin_record,on_delete=models.CASCADE,related_name='setting')
 #     webname=models.CharField(max_length=30)

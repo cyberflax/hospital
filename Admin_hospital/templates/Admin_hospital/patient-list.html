@@ -14,7 +14,7 @@
 					</ul>
 				</div>
 			</div>
-		</div>
+		</div>{% if pnt|length is not 0 %}
 		<div class="row">
 			<div class="col-sm-12">
 				<div class="card">
@@ -68,6 +68,9 @@
 				</div>
 			</div>
 		</div>
+		{% else %}
+		<p style="color: blue;font-size: 30px;">No Patient Record !</p>
+		{% endif %}
 	</div>
 </div>
 {% endblock body %}

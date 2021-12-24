@@ -19,14 +19,14 @@ class pha_Oview(models.Model):
     doc = models.OneToOneField(pharmacy, primary_key=True, related_name='pha_Oview', on_delete=models.CASCADE)
     about = models.TextField(max_length=500)
     def __str__(self):
-        return self.doc.name
+        return self.doc.name+' - '+self.doc.name
 class pha_awards(models.Model):
     dr = models.ForeignKey(pha_Oview, on_delete=models.CASCADE, related_name='pha_awards')
     aw_name = models.CharField(max_length=200)
     aw_year=models.DateField()
     aw_desc = models.TextField(max_length=1000)
     def __str__(self):
-        return self.aw_name+self.dr.doc.name
+        return self.aw_name+' - '+self.dr.doc.name
 class pha_review(models.Model):
     dics = models.ForeignKey(pharmacy, on_delete=models.CASCADE, related_name='pha_review')
     name = models.CharField(max_length=20)
@@ -36,19 +36,19 @@ class pha_review(models.Model):
     rating = models.IntegerField()
 
     def __str__(self):
-        return self.name + self.dics.name
+        return self.name + ' - '+self.dics.name
 class pha_loc(models.Model):
     doc = models.ForeignKey(pharmacy, on_delete=models.CASCADE, related_name="pha_loc")
     clinic_add = models.TextField(max_length=300)
 
     def __str__(self):
-        return  self.doc.name
+        return  self.doc.name+' - '+self.clinic_add
 class pha_buss(models.Model):
     doc1 = models.OneToOneField(pharmacy, on_delete=models.CASCADE, primary_key=True, related_name="pha_buss")
     dates = models.DateField()
 
     def __str__(self):
-        return self.doc1.name
+        return self.doc1.name+' - '+self.doc1.name
 class pha_product(models.Model):
         doc = models.ForeignKey(pharmacy, on_delete=models.CASCADE, related_name="pha_product")
         img = models.ImageField()
@@ -69,19 +69,19 @@ class pha_product(models.Model):
         discount=models.IntegerField(default=0)
         genatic_name=models.CharField(max_length=20)
         def __str__(self):
-            return self.name
+            return self.doc.name+' - '+self.name
 class pha_apply(models.Model):
     doc = models.ForeignKey(pha_product, on_delete=models.CASCADE, related_name="pha_apply")
     applied_for = models.TextField(max_length=100)
 
     def __str__(self):
-        return self.doc.name+self.doc.doc.name
+        return self.doc.name+' - '+self.doc.doc.name
 class pha_highlight(models.Model):
     doc = models.ForeignKey(pha_product, on_delete=models.CASCADE, related_name="pha_highlight")
     des = models.TextField(max_length=100)
 
     def __str__(self):
-            return self.doc.name+self.doc.doc.name
+            return self.doc.name+' - '+self.doc.doc.name
 class product_cart(models.Model):
     user_id=models.IntegerField()
     product_id = models.IntegerField()
@@ -112,7 +112,7 @@ class pharmacy_prod_order(models.Model):
     invoice=models.IntegerField()
     supply=models.ForeignKey('Admin_pharmacy.supplier',null=True,related_name='supp',on_delete=models.CASCADE)
     def __str__(self):
-        return self.username+self.product_name
+        return self.username+' - '+ self.pharmacys.name+' - '+self.product_name
 
 
 

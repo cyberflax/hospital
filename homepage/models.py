@@ -20,4 +20,4 @@ class dr_blogs(models.Model):
     ctgry=models.CharField(max_length=30,blank=True)
 
     def __str__(self):
-        return self.title + self.doc.name
+        return self.doc.name +' - '+ self.title

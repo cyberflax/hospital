@@ -52,7 +52,7 @@ class checkout(models.Model):
     amount=models.IntegerField()
 
     def __str__(self):
-        return self.dr_name.name+(self.patient.name)
+        return self.dr_name.name+' - '+(self.patient.name)
 class appoinmentlist(models.Model):
     doctor = models.ForeignKey(Dr, on_delete=models.CASCADE, related_name='appoinmentlist')
     patient = models.ForeignKey(patient_record, on_delete=models.CASCADE, related_name='appoinmentlists')
@@ -68,14 +68,14 @@ class appoinmentlist(models.Model):
     created_date=models.DateField(auto_now=True)
 
     def __str__(self):
-        return self.doctor.name + (self.patient.name)
+        return self.doctor.name + ' - '+(self.patient.name)
 
 class favourite(models.Model):
     dr_name=models.ForeignKey(Dr, on_delete=models.CASCADE, related_name='favourite')
     pa_name=models.ForeignKey(patient_record, on_delete=models.CASCADE, related_name='favs')
 
     def __str__(self):
-        return self.dr_name.name + (self.pa_name.name)
+        return self.dr_name.name +' - '+ (self.pa_name.name)
 class prescriptions(models.Model):
     patient = models.ForeignKey(patient_record, on_delete=models.CASCADE, related_name='prescription')
     date = models.DateField()
@@ -84,7 +84,7 @@ class prescriptions(models.Model):
     doctor = models.ForeignKey(Dr, on_delete=models.CASCADE, related_name='prescription')
 
     def __str__(self):
-        return self.patient.name+self.doctor.name
+        return self.patient.name+' - '+self.doctor.name
 class medical_records(models.Model):
     patient = models.ForeignKey(patient_record, on_delete=models.CASCADE, related_name='medical_record')
     desc=models.CharField(max_length=20)
@@ -94,7 +94,7 @@ class medical_records(models.Model):
     doctor = models.ForeignKey(Dr, on_delete=models.CASCADE, related_name='medical')
 
     def __str__(self):
-        return self.patient.name+self.doctor.name
+        return self.patient.name+' - '+self.doctor.name
 class billings(models.Model):
     patient = models.ForeignKey(patient_record, on_delete=models.CASCADE, related_name='billingss')
     doctor = models.ForeignKey(Dr, on_delete=models.CASCADE, related_name='bill')
@@ -104,5 +104,5 @@ class billings(models.Model):
     # time=models.TimeField()
 #
     def __str__(self):
-        return self.patient.name+self.doctor.name
+        return self.patient.name+' - '+self.doctor.name
 

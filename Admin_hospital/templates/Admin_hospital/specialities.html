@@ -17,7 +17,7 @@
 								href="#Add_Specialities_details">Add</a>
 						</div>
 					</div>
-				</div>
+				</div>{% if product|length is not 0 %}
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="card">
@@ -64,6 +64,9 @@
 						</div>
 					</div>
 				</div>
+            {% else %}
+		<p style="color: blue;font-size: 30px;">No Speciality !</p>
+		{% endif %}
 			</div>
 		</div>
 

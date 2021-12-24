@@ -25,7 +25,7 @@ admin.site.register(Buss_Ho)
 admin.site.register(Hour_S)
 # for patient
 admin.site.register(userType)
-
+admin.site.register(frgt_pwd)
 #for booking appointment
 admin.site.register(for_bookings)
 admin.site.register(book_times)

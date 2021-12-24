@@ -133,7 +133,14 @@
           <div class="doc-info-left">
            <div class="doctor-img">
             <a href="{%url 'Doctor_profile' i.id %}">
+             <!-- <img alt="User Image" class="img-fluid" src="/media/{{i.img}}"/> -->
+
+             {% if i.img|length is not 0 %}
              <img alt="User Image" class="img-fluid" src="/media/{{i.img}}"/>
+             {% else %}
+              <img alt="User Image" class="img-fluid" src="/media/default.jpg"/>
+           {% endif %}
+
             </a>
            </div>
            <div class="doc-info-cont">
@@ -142,7 +149,7 @@
               {{i.name}}</a>
   <a class="" href="{%url 'favt'%}?dr={{i.id}}&pa={{request.user.id}}">
            {% if  i.id  in  favt %}
-            <i class="fas fa-check-circle verified">
+            <i class="fas fa-check-circle verified ml-2">
             </i>{% else %}
               <i class="feather-check-circle verified ml-2">
               </i>{% endif %}

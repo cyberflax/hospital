@@ -1,11 +1,12 @@
 {% extends 'adminbasic.html' %}
 {% load static %}
 {% block body %}
+{% block body2 %}{% endblock body2 %}
 		<div class="page-wrapper">
 			<div class="content container-fluid">
 				<div class="page-header">
 					<div class="row">
-						<div class="col-sm-12">
+						<div class="col-sm-7 col-auto">
 							<h3 class="page-title">Blog</h3>
 							<ul class="breadcrumb">
 								<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
@@ -13,11 +14,17 @@
 								<li class="breadcrumb-item active" style="color:blue">Blog</li>
 							</ul>
 						</div>
+						<div class="col-sm-5 col">
+								<a class="btn btn-primary float-right mt-2" href="{% url 'addblog' %}">
+									<i class="fas fa-plus "></i>
+									Add Blog</a>
+						</div>
 					</div>
-				</div>
+				</div>{% if blg|length is not 0%}
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="row mb-5">
+							
 							<div class="col">
 								<ul class="nav nav-tabs nav-tabs-solid">
 									<li class="nav-item">
@@ -28,10 +35,11 @@
 									</li>
 								</ul>
 							</div>
-							<div class="col-auto">
-								<a class="btn btn-primary btn-sm" href="{% url 'addblog' %}"><i class="fas fa-plus "></i>
+							<!-- <div class="col-auto">
+								<a class="btn btn-primary btn-sm" href="{% url 'addblog' %}">
+									<i class="fas fa-plus "></i>
 									Add Blog</a>
-							</div>
+							</div> -->
 						</div>
 						<div class="row blog-grid-row">
 							{% for b in blg %}
@@ -113,8 +121,13 @@
 								</div>
 							</div>
 						</div>
+						
 					</div>
 				</div>
+				{% else %}
+				<p style="color: blue;font-size: 30px;">No Blog !</p>
+				{% endif %}
+				
 			</div>
 		</div>
 	{% block body1 %}

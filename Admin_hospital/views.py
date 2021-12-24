@@ -1,5 +1,5 @@
-
-from django.contrib import messages
+import uuid
+from django.contrib import messages as msg
 from django.shortcuts import render,redirect
 from doctors.models import *
 from patient.models import *
@@ -16,9 +16,10 @@ def adminhome(request):
         res['dct'] = Dr.objects.all()
         res['pnt'] = patient_record.objects.all()
         res['apmnt'] = appoinmentlist.objects.all()
-        messages.warning(request,'ppppp')
+        msg.warning(request,'preeti')
 
     else:
+        
         return redirect('error404')
     return render(request, 'Admin_hospital/adminhome.html', res)
 
@@ -81,16 +82,16 @@ def blogcategeory(request):
                     spe.save()
                     cat = blog_subcategory(subcat=subcat, cats=(blog_categeory.objects.get(cat=cat)))
                     cat.save()
-                    messages.success(request,'Category Added.')
+                    msg.success(request,'Category Added.')
                     return redirect(request.get_full_path())
                 elif subcat.lower() not in datas:
                     cats=blog_categeory.objects.get(cat=cat)
                     cat=blog_subcategory(subcat=subcat,cats=cats)
                     cat.save()
-                    messages.success(request,'Sub-Category Added.')
+                    msg.success(request,'Sub-Category Added.')
                     return redirect(request.get_full_path())
                 else:
-                    messages.warning(request, 'Category is already in list')
+                    msg.warning(request, 'Category is already in list')
             elif request.POST.get('catids') is not None:
               # for delete
                 products = blog_subcategory.objects.filter(id=request.POST.get('catids'))
@@ -413,9 +414,9 @@ def admin_pwd_chng(request):
             user.save()
             user=User.objects.get(email=mail)
             login(request)
-            messages.error(request, "password updated")
+            msg.error(request, "password updated")
         else:
-            messages.error(request, "incorrect old password")
+            msg.error(request, "incorrect old password")
 
     return redirect('adminhome')
 def register(request):
@@ -426,7 +427,7 @@ def register(request):
         confirm=request.POST['confrm']
         usermail = User.objects.filter(email=email)
         usernam=User.objects.filter(username=name)
-        print(name,name.lower(),usernam)
+        # print(name,name.lower(),usernam)
         if len(usermail) !=1 and len(usernam)!=1:
             user =User.objects.create_superuser(username=name, email=email, password=password)
             user.save()
@@ -434,10 +435,13 @@ def register(request):
             users.save()
             typeuser = userType(user=user, type='4')
             typeuser.save()
-            messages.success(request, "Your account has been successfully created")
+            token=str(uuid.uuid4())
+            frgpwd=frgt_pwd(user=user,frg_token=token)
+            frgpwd.save()
+            msg.success(request, "Your account has been successfully created")
             return redirect('home')
         else:
-            messages.error(request, "Email or name is already register.")
+            msg.error(request, "Email or name is already register.")
 
     return render(request, 'Admin_hospital/register.html')
 def reviews(request):
@@ -476,6 +480,7 @@ def specialities(request):
                 products.spec = name
                 # products.img=img
                 products.save()
+                msg.success(request, 'speciality edit successfully.')
             elif request.POST.get('spesname') is not None:  # for add
                 name = request.POST['spesname']
                 img = request.POST['img']
@@ -484,12 +489,17 @@ def specialities(request):
                 if name.lower() not in data:
                     spe = speciality(spec=name,img=img)
                     spe.save()
+                    msg.success(request, 'speciality added.')
+                    return redirect(request.get_full_path())
                 else:
-                    messages.arning(request, 'speciality is already in list')
+                    msg.warning(request, 'speciality is already in list')
+                    return redirect(request.get_full_path())
 
         prod = request.GET.get('speids')  # for delete
         products = speciality.objects.filter(id=prod)
         products.delete()
+        # msg.success(request, 'speciality deleted.')
+        # return redirect(request.get_full_path())
     else:
         return redirect('error404')
     return render(request, 'Admin_hospital/specialities.html',{'product':special})

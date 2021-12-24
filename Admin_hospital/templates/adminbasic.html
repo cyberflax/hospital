@@ -21,10 +21,21 @@
 			<script src="assets/js/respond.min.js"></script>
 
 		<![endif]-->
+        <style>
+            #msg{
+                align-items: center;
+                width: 67%;
+                margin-top: 5%;margin-left: 17%;
+                margin-bottom: 0;
+            }
+        </style>
 </head>
 
 <body>
+    
     <div class="main-wrapper">
+        
+        
         <div class="header">
             <div class="header-left">
                 <a class="logo" href="{% url 'home' %}">
@@ -241,30 +252,10 @@
                 </li>
             </ul>
 
-
-
+      
         </div>
+    
 
-        <div class="content">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <h5>
-                            {% if messages %}
-                            {% for message in messages %}
-                            <!-- <div class="container-fluid p-0"> -->
-                            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="True">&times;</span>
-                                </button>
-                                {{ message }}
-                            </div>
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-                    </h5>
-                </div>
-            </div></div></div>
             <div class="sidebar" id="sidebar">
                 <div class="sidebar-inner slimscroll">
                     <div class="sidebar-menu" id="sidebar-menu">
@@ -644,11 +635,36 @@
                     </div>
                 </div>
             </div>
+            <div class="content" id='msg'>
+                <div class="container-fluid">
+                    <!-- <div class="row">
+                        <div class="col-12"> -->
+                            <h5>
+        
+                                {% if messages %}
+                                {% for message in messages %}
+                                <div class="alert alert-{{message.tags}} alert-success">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        ×
+                                    </button>
+                                    <strong>Message: {{message}}</strong>
+                                </div>
+                                {% endfor %}
+                                {% endif %}
+        
 
-
-
-            {% block body %}{% endblock %}
-
+                            </h5>
+                        <!-- </div>
+                    </div> -->
+                </div>
+            </div>
+        
+          
+        
+                        {% block body  %}
+                        {% endblock %}
+                        
+        
             {% block body1 %}
             {% endblock body1 %}
 
