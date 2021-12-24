@@ -22,6 +22,7 @@ urlpatterns = [
     path('add_supplier/', views.add_supplier, name='add_supplier'),
     path('invoice_report/', views.invoice_report, name='invoice_report'),
     path('invoice_views/', views.invoice_views, name='invoice_views'),
+    path('pwd_chng/', views.pwd_chng, name='pwd_chng'),
 
 
 ]
