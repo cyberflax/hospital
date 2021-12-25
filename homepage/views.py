@@ -14,33 +14,38 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 # Create your views here.
 def pwd_frgot(request):
-    if request.method=='POST':
-        email=request.POST['email']
-        useremail=User.objects.get(email=email)
-        frgtoken=frgt_pwd.objects.get(user=useremail)
-        ftoken=frgtoken.frg_token
-        emails=useremail.email
-        mail_msg=f'Hello,Your reset password link is http://127.0.0.1:8000/Pforgot/{ftoken}'
-        send_mail('For reset password', mail_msg,settings.EMAIL_HOST_USER, [emails],fail_silently=False)
-        messages.success(request, "mail send successfully. check your email. ")
-        return redirect('pwd_reset')
+    if request.user.is_authenticated!=True:
+        if request.method=='POST':
+            email=request.POST['email']
+            useremail=User.objects.get(email=email)
+            frgtoken=frgt_pwd.objects.get(user=useremail)
+            ftoken=frgtoken.frg_token
+            emails=useremail.email
+            mail_msg=f'Hello,Your reset password link is http://127.0.0.1:8000/Pforgot/{ftoken}'
+            send_mail('For reset password', mail_msg,settings.EMAIL_HOST_USER, [emails],fail_silently=False)
+            messages.success(request, "mail send successfully. check your email. ")
+            return redirect('pwd_reset')
 
-    return render(request,'forgot-password.html')
+        return render(request,'forgot-password.html')
+    else:
+        return redirect('error500')
 def Pforgot(request,id):
     
-    if request.method=='POST':
-        pass1=request.POST['pass1']
-        confirm=request.POST['pass2']
-        frgpwd=frgt_pwd.objects.get(frg_token=id)
-        user=User.objects.get(username=frgpwd)
-        print(frgpwd,user,'////////////')
-        user.set_password(pass1)
-        user.save()
-        messages.success(request, "Password change successfully. ")
-        return redirect('dlogin')
-       
-    return render(request,'for_pwd/pwd_reset_confirm.html')
-
+    if request.user.is_authenticated!=True:
+        if request.method=='POST':
+            pass1=request.POST['pass1']
+            confirm=request.POST['pass2']
+            frgpwd=frgt_pwd.objects.get(frg_token=id)
+            user=User.objects.get(username=frgpwd)
+            print(frgpwd,user,'////////////')
+            user.set_password(pass1)
+            user.save()
+            messages.success(request, "Password change successfully. ")
+            return redirect('dlogin')
+        
+        return render(request,'for_pwd/pwd_reset_confirm.html')
+    else:
+        return redirect('error500')
 def home(request):
     profile = Dr.objects.all()
     blog=dr_blogs.objects.all()

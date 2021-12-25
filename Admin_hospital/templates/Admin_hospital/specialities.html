@@ -40,7 +40,7 @@
 															<img alt="Speciality" class="avatar-img"
 																src="/media/{{i.img}}" />
 														</a>
-														<a href="/media/{{i.img}}">{{i.spec}}</a>
+														<a href="/media/{{i.img}}">{{i.spec|capfirst}}</a>
 													</h2>
 												</td>
 												<td class="text-right">
@@ -93,7 +93,7 @@
            <label>
            Specialization
            </label>
-           <input class="form-control" name="spesname" id="cates" type="text"/>
+           <input class="form-control" name="spesname" required id="cates" type="text"/>
 <!--               <select class="form-control select" aria-required="" name="spesname" id='cates' required="">-->
 
 <!--               <option selected="selected" value="Dentist">-->
@@ -181,7 +181,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
      <div class="modal-content">
       <div class="modal-body">
-       <form method="get">
+       <form method="post">{% csrf_token %}
        <div class="form-content p-2">
         <input class="form-control" id="speids" name="speids" type="hidden" value=""/>
         <h4 class="modal-title">

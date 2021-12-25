@@ -16,7 +16,7 @@
            Home
           </a>
          </li>
-         <li aria-current="page" class="breadcrumb-item active">
+         <li aria-current="page" style="color: blue;"  class="breadcrumb-item active">
           Search
          </li>
         </ol>
@@ -143,7 +143,11 @@
           <div class="doc-info-left">
            <div class="doctor-img1">
             <a href="/pharmacy-details?@//@/={{i.id}}">
+               {% if i.img|length is not 0 %}
              <img alt="User Image" class="img-fluid" src="/media/{{i.img}}"/>
+            {% else %}
+             <img alt="User Image" class="img-fluid" 
+              src="/media/default.jpg"/>{% endif %}
             </a>
            </div>
            <div class="doc-info-cont">

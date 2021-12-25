@@ -16,7 +16,7 @@
            Home
           </a>
          </li>
-         <li aria-current="page" class="breadcrumb-item active">
+         <li aria-current="page" style="color: blue;"  class="breadcrumb-item active">
           Pharmacy Details
          </li>
         </ol>
@@ -37,7 +37,7 @@
            {% if title.img|length is not 0 %}
                <img alt="User Image" src="/media/{{title.img}}"/>
            {% else %}
-            <img alt="User Image"  src="/media/default.jpg"/>
+            <img alt="User Image"   src="/media/default.jpg"/>
            {% endif %}</a>
          </div>
          <div class="doc-info-cont">
@@ -74,7 +74,7 @@
         </div>
         <div class="doc-info-right d-flex align-items-center justify-content-center">
          <div class="clinic-booking">
-          <a class="view-pro-btn" href="chat.html">
+          <a class="view-pro-btn" href="#">
            Send Message
           </a>
           <a class="apt-btn" data-target="#voice_call" data-toggle="modal" href="#">
@@ -343,7 +343,7 @@
              Review
             </label>
             <div class="star-rating" >
-             <input id="star-5" name="rating" type="radio"  value='{{5}}'/>
+             <input id="star-5" name="rating" required type="radio"  value='{{5}}'/>
              <label for="star-5" title="5 stars">
               <i class="active fa fa-star">
               </i>
@@ -372,9 +372,11 @@
            </div>
            <div class="form-group">
             <label>
-             Title of your review/ Your Name
+             <!-- Title of your review/  -->
+             Your Name
             </label>
-            <input class="form-control" required name="title" id="title" placeholder="If you could say it in one sentence, what would you say?" type="text"/>
+            <input class="form-control" value="{{request.user.username}}" readonly
+             name="title" id="title" />
            </div>
            <div class="form-group">
             <label>
@@ -442,7 +444,7 @@
               <div class="card-body">
                <div class="listing-day">
                 <div class="day">
-                 Monday
+                 Monday - Saturday
                 </div>
                 <div class="time-items">
                  <span class="time">
@@ -450,7 +452,7 @@
                  </span>
                 </div>
                </div>
-               <div class="listing-day">
+               <!-- <div class="listing-day">
                 <div class="day">
                  Tuesday
                 </div>
@@ -499,7 +501,7 @@
                  {{title.opentime}} - {{title.clostime}}
                  </span>
                 </div>
-               </div>
+               </div> -->
                <div class="listing-day closed">
                 <div class="day">
                  Sunday

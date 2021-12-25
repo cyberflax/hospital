@@ -15,7 +15,7 @@
                                 Home
                             </a>
                         </li>
-                        <li aria-current="page" class="breadcrumb-item active">
+                        <li aria-current="page" style="color: blue;"  class="breadcrumb-item active">
                             Checkout
                         </li>
                     </ol>
@@ -37,7 +37,10 @@
                     <div class="card-body">
                         <div class="booking-doc-info">
                             <a class="booking-doc-img" href="{% url 'Doctor_profile' title.id %}">
+                                {% if title.img|length is not 0 %}
                                 <img alt="User Image" src="/media/{{title.img}}"/>
+                                {% else %}<img alt="User Image" src="/media/default.jpg"/>
+                               {% endif %} 
                             </a>
                             <div class="booking-info">
                                 <h4>

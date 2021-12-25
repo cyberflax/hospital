@@ -1,6 +1,8 @@
+from django.db.models.fields import related
 import model_utils
 from django.contrib.auth.models import User
 from django.db import models
+from Admin_hospital.models import *
 class userType(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE,related_name="userType")
     type = models.CharField(max_length=20,choices=(("1",'patient'),
@@ -21,7 +23,8 @@ class Dr(models.Model):
     name = models.CharField(max_length=30)
     img = models.ImageField()
     qulification = models.CharField(max_length=100)
-    specialization = models.CharField(max_length=100)
+    specialization = models.ForeignKey(speciality,unique=True,
+    on_delete=models.CASCADE,related_name='Drs',null=True)
     address = models.TextField(max_length=300)
     email=models.EmailField()
     fees_starting= models.IntegerField()
@@ -30,7 +33,7 @@ class Dr(models.Model):
     date = models.DateField(auto_now=True)
     time=models.TimeField(auto_now=True)
     def __str__(self):
-        return self.name+' - '+self.specialization
+        return self.name
 class Ov_view(models.Model):
     doc = models.OneToOneField(Dr, primary_key=True, related_name='Ov_view', on_delete=models.CASCADE)
     about = models.TextField(max_length=500)
@@ -71,7 +74,7 @@ class Educat_ion(models.Model):
     YOA = models.DateField()
     YOP = models.DateField()
     def __str__(self):
-        return self.univercity+' - '+self.dr.doc.name
+        return self.univercity +' - '+self.dr.doc.name
 class Exp_erince(models.Model):
     dr = models.ForeignKey(Ov_view, on_delete=models.CASCADE, related_name='Exp_erince')
     exp_filled = models.CharField(max_length=200)
@@ -80,7 +83,7 @@ class Exp_erince(models.Model):
     experince = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.exp_filled+' - '+((self.dr.doc.name))
+        return self.exp_filled +' - '+((self.dr.doc.name))
 class Buss_Ho(models.Model):
     doc1 = models.OneToOneField(Dr, on_delete=models.CASCADE, primary_key=True, related_name="Buss_Ho")
     dates = models.DateField(auto_now_add=True)
@@ -108,7 +111,7 @@ class reView(models.Model):
     time = models.TimeField(auto_now=True)
 
     def __str__(self):
-        return self.name + ' - '+self.dics.name
+        return self.name+ ' - '+self.dics.name
 
 
 class rvw_reply(models.Model):
@@ -148,7 +151,7 @@ class book_timed(models.Model):
       time2 = models.TimeField()
 
       def __str__(self):
-          return str(self.time1)+' - ' + str(self.time2)
+          return str(self.time1)   +' - ' + str(self.time2)
 class book_times(models.Model):
     dr = models.OneToOneField(for_bookings, on_delete=models.CASCADE, related_name='book_times')
     times=models.ManyToManyField(book_timed,related_name='book_timed')
@@ -160,5 +163,5 @@ class mypatient(models.Model):
     Dr_names = models.ForeignKey(Dr, on_delete=models.CASCADE, related_name='mypatients')
     pa_names=models.ForeignKey('patient.patient_record',null=True,on_delete=models.CASCADE, related_name='mypatient')
     def __str__(self):
-        return  self.Dr_names.name +' - '+self.pa_names.name
+        return  self.Dr_names.name  +' - '+self.pa_names.name
 

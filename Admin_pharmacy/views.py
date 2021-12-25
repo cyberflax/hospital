@@ -232,7 +232,7 @@ def add_product(request):
                 product=pha_product(doc=product2,name=name,img=images,about=about,
                                     price=Price,categorie=cate,quntity=quantity,expiry_date= date )
                 product.save()
-        messages.success(request, " Product Added Successfully")
+            messages.success(request, " Product Added Successfully")
         return render(request,'add-product.html',{'cates':cates})
         
     else:

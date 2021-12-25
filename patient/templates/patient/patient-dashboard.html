@@ -16,7 +16,7 @@
            Home
           </a>
          </li>
-         <li aria-current="page" class="breadcrumb-item active">
+         <li aria-current="page" style="color: blue;"  class="breadcrumb-item active">
           Dashboard
          </li>
         </ol>
@@ -390,8 +390,14 @@
                  <td>
                   <h2 class="table-avatar">
                    <a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' i.dr_name.id %}">
+                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.dr_name.img}}"/> -->
+                 
+                 
+                    {% if i.dr_name.img|length is not 0  %}
                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.dr_name.img}}"/>
-                   </a>
+                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                   {% endif %}
+                  </a>
                    <a href="{% url 'Doctor_profile' i.dr_name.id %}">
                     {{i.dr_name.name}}
                     <span>
@@ -480,8 +486,14 @@
                  <td>
                   <h2 class="table-avatar">
                    <a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' i.doctor.id %}">
+                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
+                  
+                  
+                    {% if i.doctor.img|length is not 0  %}
                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                   </a>
+                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                   {% endif %}
+                  </a>
                    <a href="{% url 'Doctor_profile' i.doctor.id %}">
                     {{i.doctor.name}}
                     <span>
@@ -547,26 +559,46 @@
                 <tr>
                  <td>
 
-                  <a href="/media/{{i.attachment}}" >
+                  <a href="#" >
                    #MR-00{{i.id}}
                   </a>
                  </td>
                  <td>
                   {{i.date}}
                  </td>
-                 <td>
+                 <!-- <td>
                   {{i.desc}}
                  </td>
                  <td>
                   <a href="/media/{{i.attachment}}" id="attchs">
                    {{i.attachment}}
                   </a>
+                 </td> -->
+                 <td>{% if i.desc is not none %}
+                  {{i.desc}}
+                  {% else %}
+                  <p style="color:red">
+                    No Desc.</p>{% endif %}
+                 </td>
+                 <td>{% if  i.attachment is not blank %}
+                  <a href="/media/{{i.attachment}}">
+                   {{i.attachment}}
+                  </a>
+                  {% else %}
+                  <a href="/media/{{blank.png}}" style="color:red">
+                    No Atachment</a>{% endif %}
                  </td>
                  <td>
                   <h2 class="table-avatar">
                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
+                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
+                   
+                  
+                    {% if i.doctor.img|length is not 0  %}
                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                   </a>
+                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                   {% endif %}
+                  </a>
                    <a href="{%url 'Doctor_profile' i.doctor.id %}">
                  {{i.doctor.name}}
                     <span>
@@ -640,8 +672,15 @@
                  <td>
                   <h2 class="table-avatar">
                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
-                    <img alt="User Image" class="avatar-img rounded-circle" src=" /media/{{i.doctor.img}}"/>
-                   </a>
+                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src=" /media/{{i.doctor.img}}"/> -->
+                   
+                  
+                    {% if i.doctor.img|length is not 0  %}
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
+                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                   {% endif %}
+                  
+                  </a>
                    <a href="{%url 'Doctor_profile' i.doctor.id %}">
                      {{i.doctor.name}}
                     <span>

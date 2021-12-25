@@ -16,7 +16,7 @@
            Home
           </a>
          </li>
-         <li aria-current="page" class="breadcrumb-item active">
+         <li aria-current="page" style="color: blue;" class="breadcrumb-item active">
           Profile Settings
          </li>
         </ol>
@@ -41,7 +41,7 @@
           </a>
           <div class="profile-det-info">
            <h3>
-           {{request.user.Dr.user}}
+           Dr. {{request.user.Dr.user}}
            </h3>
            <div class="patient-details">
             <h5 class="mb-0">
@@ -182,7 +182,7 @@
        </div>
       </div>
       <div class="col-md-7 col-lg-8 col-xl-9 basic-info">
-
+{{speciality.spec.all}}
 
  <form method="post" >
    {% csrf_token %}
@@ -203,7 +203,7 @@
          {% endif %}
              </div>
              <div class="custom-file" id="customFile1">
-              <label class="custom-file-upload">
+              <label class="custom-file-upload" for="imgs">
                <input name="img" id="imgs" required name='img' type="file"/>
                <span class="change-user">
                 <i class="feather-upload">
@@ -318,7 +318,7 @@
              Speciality
 
             </label>
-            <select class="form-control" required name="speciality" id="spec">
+            <select class="form-control"  name="speciality" id="spec">
              {% for s in special %}
              <option value="{{s.spec}}">
               {{s.spec}}
@@ -437,7 +437,7 @@
             <label class="control-label">
              City
             </label>
-            <input class="form-control" name="city" id="city" type="text"/>
+            <input class="form-control" name="citys" id="city" type="text"/>
            </div>
           </div>
           <div class="col-md-6">
@@ -545,7 +545,7 @@
         Education
        </h4>
        <div class="card">
-        <div class="card-body">
+        <div class="card-body" >
          <div class="education-info">
           <div class="row form-row education-cont">
            <div class="col-12 col-md-10 col-lg-11">
@@ -587,7 +587,7 @@
           </div>
          </div>
          <div class="add-more">
-          <a class="add-education" href="javascript:void(0);">
+          <a class="add-education"  href="javascript:void(0);">
            <i class="fa fa-plus-circle">
            </i>
            Add More

@@ -10,9 +10,9 @@ class pharmacy(models.Model):
     email = models.EmailField()
     address=models.TextField(max_length=1000)
     degree=models.CharField(max_length=500)
-    contact=models.IntegerField()
-    opentime=models.TimeField()
-    clostime=models.TimeField()
+    contact=models.IntegerField(null=True)
+    opentime=models.TimeField(null=True)
+    clostime=models.TimeField(null=True)
     def __str__(self):
         return self.name
 class pha_Oview(models.Model):

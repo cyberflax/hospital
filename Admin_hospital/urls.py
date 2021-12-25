@@ -30,7 +30,7 @@ urlpatterns = [
     path('form-vertical/', views.formvertical, name='formvertical'),
     path('invoice-report/', views.invoicereport, name='invoicereport'),
     path('lock-screen/', views.lockscreen, name='lockscreen'),
-    path('login/', views.login, name='login'),
+    path('loginpage/', views.loginpage, name='loginpage'),
     path('patient-list/', views.patientlist, name='patientlist'),
     path('pharmacy-list/', views.pharmacylist, name='pharmacylist'),
     path('product-list/', views.productlist, name='productlist'),
@@ -38,7 +38,7 @@ urlpatterns = [
     path('admin_pwd_chng/', views.admin_pwd_chng, name='admin_pwd_chng'),
 
     path('register/', views.register, name='register'),
-    path('reviews/', views.reviews, name='reviews'),
+    path('reviews/', views.doc_reviews, name='doc_reviews'),
     path('settings/', views.settings, name='settings'),
     path('specialities/', views.specialities, name='specialities'),
     path('table-basic/', views.tablebasic, name='tablebasic'),

@@ -96,8 +96,8 @@
 							<h4 class="modal-title">Delete</h4>
 							<p class="mb-4">Are you sure want to delete?</p>
 							<form method="post">{% csrf_token %}
-								<input name="pid" id="Pid">
-								<input id='Tid' name='tid'>
+								<input name="pid" type="hidden" id="Pid">
+								<input type="hidden" id='Tid' name='tid'>
 							<button class="btn btn-primary" type="submit">Save </button>
 							<button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
 						</form></div>

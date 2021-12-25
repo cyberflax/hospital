@@ -98,9 +98,11 @@ def booking_success(request):
                                                 cvv=cvv, exp_year=exyear, exp_month=exmonth, amount=amount,
                                                 doctor=profile, patient=patient)
                 appoinmentlists.save()
-                messages.success(request, "Booking confirm successfully.")
                 checks = appoinmentlist.objects.filter(patient=patient,doctor=profile,date=date, time1=t1, time2=t2)
+                messages.success(request, "Booking confirm successfully.")
                 res={'user':checks}
+                # return redirect(request.get_full_path())
+               
         return render(request,'patient/booking-success.html',res)
     else:
         return redirect('error500')
@@ -181,7 +183,7 @@ def profile_setting(request):
         return redirect('error500')
 def patient_register(request):
     
-    # if request.user.is_not_authenticated:
+    if request.user.is_authenticated != True:
         userlist=patient_record.objects.values('email')
         userlis={data['email'].lower() for data in userlist}
         if request.method == "POST":
@@ -210,8 +212,8 @@ def patient_register(request):
                 else:
                     messages.error(request, "Email or name is already register.")
         return render(request,'patient/patient-register.html')
-    # else:
-    #     return redirect('error500')
+    else:
+        return redirect('error500')
     
 def change_password(request):
     
@@ -313,7 +315,7 @@ def favt(request):
     else:
         return redirect('error500')
 def patient_dashboard(request):
-    
+    print(request.user.is_authenticated,'[[[[=========')
     if request.user.is_authenticated:
         pa=request.GET.get('Pid')
         patients =patient_record.objects.get(id=pa)

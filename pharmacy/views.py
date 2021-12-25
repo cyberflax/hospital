@@ -29,9 +29,10 @@ def pharmacy_details(request):
             if name in patients:
                 var = pha_review(name=name, review=review,dics=medical,YES=0,NO=0,rating=rating)
                 var.save()
+                messages.success(request, "Review posted.")
                 return redirect(path)
             else:
-                messages.success(request, "Your are not patient")
+                messages.warning(request, "Your are not patient.please register.")
 
         res = {'title': medical}
 
@@ -137,7 +138,7 @@ def product_all(request):
         return redirect('error500')
 def pharmacy_register(request):
     
-    # if request.user.is_authenticated:
+    if request.user.is_authenticated  !=True:
         userlist=pharmacy.objects.values('email')
         userlis={data['email'] for data in userlist}
         if request.method == "POST":
@@ -154,7 +155,7 @@ def pharmacy_register(request):
                         usr.save()
                         typeuser=userType(user=user,type='5')
                         typeuser.save()
-                        pharma=pharmacy(email=emails,user=user,name=names,contact=0,opentime=datetime.datetime.now(),clostime=datetime.datetime.now())
+                        pharma=pharmacy(email=emails,user=user,name=names)
                         pharma.save()
                         token=str(uuid.uuid4())
                         frgpwd=frgt_pwd(user=user,frg_token=token)
@@ -168,8 +169,8 @@ def pharmacy_register(request):
                     messages.error(request, "Email or name is already register.")
 
         return render(request,'pharmacy/pharmacy-register.html')
-    # else:
-    #     return redirect('error500')
+    else:
+        return redirect('error500')
 def medicine_cart(request):
     
     if request.user.is_authenticated:

@@ -7,6 +7,9 @@ from homepage.models import *
 from pharmacy.models import *
 from .models import *
 
+#for login
+from django.contrib.auth import authenticate,login,logout
+
 
 # Create your views here.
 
@@ -16,8 +19,6 @@ def adminhome(request):
         res['dct'] = Dr.objects.all()
         res['pnt'] = patient_record.objects.all()
         res['apmnt'] = appoinmentlist.objects.all()
-        msg.warning(request,'preeti')
-
     else:
         
         return redirect('error404')
@@ -272,14 +273,6 @@ def lockscreen(request):
     return render(request, 'Admin_hospital/lock-screen.html')
 
 
-def login(request):
-    if request.user.is_authenticated:
-        print('done')
-    else:
-        return redirect('error404')
-    return render(request, 'Admin_hospital/login.html')
-
-
 def patientlist(request):
     if request.user.is_authenticated:
 
@@ -295,7 +288,7 @@ def pharmacylist(request):
 
         phrmcy =pharmacy.objects.all()
         if request.method=='POST':
-            if request.POST.get('phone') is not None: #for add
+            if request.POST.get('name') is not None: #for add
                 name=request.POST['name']
                 phone = request.POST['phone']
                 add = request.POST['add']
@@ -307,14 +300,20 @@ def pharmacylist(request):
                 pharm = request.POST['phrmcy']
                 address = request.POST['address']
                 img = request.POST['img']
+                phone = request.POST['phone']
                 phar = pharmacy.objects.get(id=request.POST.get('phar') )
                 phar.name=pharm
                 phar.img=img
                 phar.address=address
+                phar.contact=phone
                 phar.save()
+                msg.success(request,'pharmacy edit successfully.')
+                return redirect(request.get_full_path())
             elif request.POST.get('pharids') is not None:  # for delete
                 phar = pharmacy.objects.get(id=request.POST.get('pharids'))
                 phar.delete()
+                msg.warning(request,'pharmacy delete.')                
+                return redirect(request.get_full_path())
     else:
         return redirect('error404')
     return render(request, 'Admin_hospital/pharmacy-list.html', {'pharma':phrmcy})
@@ -350,6 +349,13 @@ def productlist(request):
         return redirect('error404')
     return render(request, 'Admin_hospital/product-list.html',{"prod":prodct,'pharma':phrmcy})
 
+
+def loginpage(request):
+    if request.user.is_authenticated:
+        print('done')
+    else:
+        return redirect('error404')
+    return render(request, 'Admin_hospital/admin_login.html')
 
 def adminprofile(request):
     if request.user.is_authenticated:
@@ -402,49 +408,57 @@ def adminprofile(request):
         return redirect('error404')
     return render(request, 'Admin_hospital/adminprofile.html',{'profile':profile})
 def admin_pwd_chng(request):
-    next=request.GET.get('next')
-    if request.method=='POST':
-        old = request.POST['oldpwd']
-        new = request.POST['newpwd']
-        user = User.objects.get(id=request.user.id)
-        mail=user.email
-        check=user.check_password(old)
-        if check==True:
-            user.set_password(new)
-            user.save()
-            user=User.objects.get(email=mail)
-            login(request)
-            msg.error(request, "password updated")
-        else:
-            msg.error(request, "incorrect old password")
+    if request.user.is_authenticated:
+        next=request.GET.get('next')
+        if request.method=='POST':
+            old = request.POST['oldpwd']
+            new = request.POST['newpwd']
+            user = User.objects.get(id=request.user.id)
+            mail=user.email
+            check=user.check_password(old)
+            if check==True:
+                user.set_password(new)
+                user.save()
+                user=User.objects.get(email=mail)
+                login(request)
+                msg.error(request, "password updated")
+            else:
+                msg.error(request, "incorrect old password")
 
-    return redirect('adminhome')
+        return redirect('adminhome')
+    else:
+        return redirect('error500')
 def register(request):
-    if request.method == "POST":
-        name = request.POST['name']
-        email = request.POST['email']
-        password = request.POST['password']
-        confirm=request.POST['confrm']
-        usermail = User.objects.filter(email=email)
-        usernam=User.objects.filter(username=name)
-        # print(name,name.lower(),usernam)
-        if len(usermail) !=1 and len(usernam)!=1:
-            user =User.objects.create_superuser(username=name, email=email, password=password)
-            user.save()
-            users=hospital_admin_record(user=user,email=email,name=name)
-            users.save()
-            typeuser = userType(user=user, type='4')
-            typeuser.save()
-            token=str(uuid.uuid4())
-            frgpwd=frgt_pwd(user=user,frg_token=token)
-            frgpwd.save()
-            msg.success(request, "Your account has been successfully created")
-            return redirect('home')
-        else:
-            msg.error(request, "Email or name is already register.")
+    
+    if request.user.is_authenticated!=True:
+        if request.method == "POST":
+            name = request.POST['name']
+            email = request.POST['email']
+            password = request.POST['password']
+            confirm=request.POST['confrm']
+            usermail = User.objects.filter(email=email)
+            usernam=User.objects.filter(username=name)
+            # print(name,name.lower(),usernam)
+            if len(usermail) !=1 and len(usernam)!=1:
+                user =User.objects.create_superuser(username=name, email=email, password=password)
+                user.save()
+                users=hospital_admin_record(user=user,email=email,name=name)
+                users.save()
+                typeuser = userType(user=user, type='4')
+                typeuser.save()
+                token=str(uuid.uuid4())
+                frgpwd=frgt_pwd(user=user,frg_token=token)
+                frgpwd.save()
+                msg.success(request, "Your account has been successfully created")
+                return redirect('home')
+            else:
+                msg.error(request, "Email or name is already register.")
 
-    return render(request, 'Admin_hospital/register.html')
-def reviews(request):
+        return render(request, 'Admin_hospital/register.html')
+    else:
+        return redirect('error500')
+        
+def doc_reviews(request):
     if request.user.is_authenticated:
         res = {}
         res['rvw'] = reView.objects.all()
@@ -456,7 +470,7 @@ def reviews(request):
         review.delete()
     else:
          return redirect('error404')
-    return render(request, 'Admin_hospital/reviews.html', res)
+    return render(request, 'Admin_hospital/doc_reviews.html', res)
 
 
 def settings(request):
@@ -481,6 +495,7 @@ def specialities(request):
                 # products.img=img
                 products.save()
                 msg.success(request, 'speciality edit successfully.')
+                return redirect(request.get_full_path())
             elif request.POST.get('spesname') is not None:  # for add
                 name = request.POST['spesname']
                 img = request.POST['img']
@@ -494,12 +509,12 @@ def specialities(request):
                 else:
                     msg.warning(request, 'speciality is already in list')
                     return redirect(request.get_full_path())
-
-        prod = request.GET.get('speids')  # for delete
-        products = speciality.objects.filter(id=prod)
-        products.delete()
-        # msg.success(request, 'speciality deleted.')
-        # return redirect(request.get_full_path())
+            elif request.POST.get('speids') is not None:
+                prod = request.POST['speids']  # for delete
+                products = speciality.objects.filter(id=prod)
+                products.delete()
+                msg.warning(request, 'speciality deleted.')
+                return redirect(request.get_full_path())
     else:
         return redirect('error404')
     return render(request, 'Admin_hospital/specialities.html',{'product':special})

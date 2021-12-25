@@ -62,7 +62,7 @@
                         </li>
                         {% if request.user.userType.type == '2' %}
                         <li class="has-submenu">
-                            <a href="">
+                            <a href="#">
                                 <i class="fas fa-plus">
                                 </i>
                                 Doctors
@@ -294,7 +294,8 @@
                                 </div>
                                 <div class="user-text">
                                     <h6>
-                                        {{request.patient.patient_record.name}}
+                                        <!-- {{request.patient.patient_record.patient}} -->
+                                        {{request.user.patient_record.name}}
                                     </h6>
                                     <p class="text-muted mb-0">
                                         Patient
@@ -342,11 +343,12 @@
 
                                 </div>
                                 <div class="user-text">
-                                    <h6>
+                                    <h6>{{request.user.hospital_admin_record.name}}
                                         {{request.user.username}}
-                                          {{request.user.hospital_admin_record.name}}
+                                          
                                     </h6>
                                     <p class="text-muted mb-0">
+                                        {{request.superuser.hospital_admin_record.name}}
                                         {{request.super_user.hospital_admin_record.name}}
                                              {{request.user.username}}
                                     </p>
@@ -513,23 +515,16 @@
                                             Search for Doctors
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="/login">
-                                            Login
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'patient_register'%}">
-                                            Register
-                                        </a>
-                                    </li>
+
+    
+
                                     <li>
                                         <a href="{% url 'search' %}">
                                             Booking
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'patient_dashboard'%}">
+                                        <a href="{% url 'patient_dashboard'%}?Pid={{request.user.patient_record.id}}">
                                             Patient Dashboard
                                         </a>
                                     </li>
@@ -550,28 +545,56 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="chat.html">
+                                        <a href="{% url 'chat_doctor' %}">
                                             Chat
                                         </a>
                                     </li>
+                                   
                                     <li>
-                                        <a href="/login">
-                                            Login
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'Doctor_register'%}">
-                                            Register
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{% url 'doctor_dashboard'%}">
+                                        <a href="{% url 'doctor_dashboard'%}?id={{request.user.Dr.id}}">
                                             Doctor Dashboard
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
+
+{% else %}
+<div class="col-lg-3 col-md-6">
+    <div class="footer-widget footer-menu">
+        <h2 class="footer-title">
+            For Patients
+        </h2><ul>
+<li>
+    <a href="/login">
+        Login
+    </a>
+</li>
+<li>
+    <a href="{% url 'patient_register'%}">
+        Register
+    </a>
+</li></ul>
+</div>
+</div><div class="col-lg-3 col-md-6">
+    <div class="footer-widget footer-menu">
+        <h2 class="footer-title">
+            For Doctors
+        </h2>
+<ul>
+
+    <li>
+        <a href="/login">
+            Login
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'Doctor_register'%}">
+            Register
+        </a>
+    </li>
+</ul></div></div>
+
                         {% endif %}
                         <div class="col-lg-3 col-md-6">
                             <div class="footer-widget footer-contact">

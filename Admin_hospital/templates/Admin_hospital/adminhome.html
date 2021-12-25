@@ -159,7 +159,7 @@
                         <h4 class="card-title">
                             Doctors List
                         </h4>
-                    </div>
+                    </div>{% if dct|length is not 0 %}
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover table-center mb-0">
@@ -223,6 +223,9 @@
                             </table>
                         </div>
                     </div>
+                    {% else %}
+				<p style="color: blue;margin-left:20px; font-size: 30px;">No Doctor !</p>
+				{% endif %}
                 </div>
             </div>
             <div class="col-md-6 d-flex">
@@ -231,7 +234,7 @@
                         <h4 class="card-title">
                             Patients List
                         </h4>
-                    </div>
+                    </div>{% if pnt|length is not 0 %}
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover table-center mb-0">
@@ -287,6 +290,9 @@
                             </table>
                         </div>
                     </div>
+                    {% else %}
+				<p style="color: blue;margin-left:20px; font-size: 30px;">No Patient !</p>
+				{% endif %}
                 </div>
             </div>
         </div>
@@ -297,7 +303,7 @@
                         <h4 class="card-title">
                             Appointment List
                         </h4>
-                    </div>
+                    </div>{% if apmnt|length is not 0 %}
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-hover table-center mb-0">
@@ -390,6 +396,9 @@
                             </table>
                         </div>
                     </div>
+                    {% else %}
+				<p style="color: blue;margin-left:20px; font-size: 30px;">No Appointment !</p>
+				{% endif %}
                 </div>
             </div>
         </div>

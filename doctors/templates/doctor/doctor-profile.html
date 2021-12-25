@@ -16,7 +16,7 @@
            Home
           </a>
          </li>
-         <li aria-current="page" class="breadcrumb-item active">
+         <li aria-current="page" style="color: blue;" class="breadcrumb-item active">
           Doctor Profile
          </li>
         </ol>
@@ -41,14 +41,18 @@
          </div>
          <div class="doc-info-cont">
           <h4 class="doc-name">
-           {{title.name}}
+           Dr. {{title.name}}
           </h4>
 
           <p class="doc-speciality"> {{title.qulification}}
           </p>
           <p class="doc-department">
-           <img alt="Speciality" class="img-fluid" src="{% static 'assets/img/specialities/specialities-05.png' %}"/>
-          {{title.specialization}}
+            {% if  title.specialization.spec|length is not 0 %}
+           <img alt="Speciality" class="img-fluid" src="/media/{{title.specialization.img}}"/>
+           {% else %}
+           <img alt="Speciality" class="img-fluid" src="/media/blank.png"/>
+          {% endif %}
+          {{title.specialization.spec}}
           </p>
           <div class="rating">
            <i class="fas fa-star filled">

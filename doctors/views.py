@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from .models import *
 from patient.models import *
-from Admin_hospital.models import speciality
+from Admin_hospital.models import *
 from django.contrib import messages
 from django.contrib.auth.models import User
 from datetime import date
@@ -44,7 +44,7 @@ def Doctor_profile(request,id):
     
 def Doctor_register(request):
     
-    # if request.user.is_not_authenticated:
+    if request.user.is_authenticated != True:
         userlist=Dr.objects.values('email')
         userlis={data['email'].lower() for data in userlist}
         if request.method == "POST":
@@ -73,8 +73,8 @@ def Doctor_register(request):
             else:
                 messages.error(request, "Email or name is already register.")
         return render(request,'doctor/doctor-register.html')
-    # else:
-    #     return redirect('error500')
+    else:
+        return redirect('error500')
 def change_password(request):
     
     if request.user.is_authenticated:
@@ -99,25 +99,33 @@ def change_password(request):
         return redirect('error500')
 def dlogin(request):
     
-    # if request.user.is_not_authenticated:
+    if request.user.is_authenticated != True:
         if request.method=='POST':
             loginemail = request.POST['email']
-            username = User.objects.get(email=loginemail).username
-            pass1 = request.POST['password']
-            user= authenticate(username=username,password=pass1)
-            if user is not None:
-                login(request,user)
-                if not request.user.is_authenticated:
-                    messages.success(request, 'user none')
-                    return redirect('dlogin')
+            user=User.objects.filter(email=loginemail)
+            if len(user)==1 :
+                username = User.objects.get(email=loginemail).username
+                pass1 = request.POST['password']
+                user= authenticate(username=username,password=pass1)
+                users=User.objects.get(email=loginemail)
+                check=users.check_password(pass1)
+                if check==True:
+                    # if user is not None:
+                            login(request,user)
+                            # if not request.user.is_authenticated:
+                            #     messages.success(request, 'user none')
+                            #     return redirect('dlogin')
+                            # else:
+                            messages.success(request,F'{username} you are successfully logged In')
+                            return redirect('home')
                 else:
-                    messages.success(request,F'{username} you are successfully logged In')
-                    return redirect('home')
-            messages.error(request, 'Invalid email or password')
+                    messages.warning(request, 'Wrong password')
+            else:
+                messages.warning(request,'Email is not registered')
             return redirect('dlogin')
         return render(request,'login.html')
-    # else:
-    #     return redirect('error500')
+    else:
+        return redirect('error500')
 def dlogout(request):
     logout(request)
     messages.success(request,'you are successfully logged Out')
@@ -125,6 +133,7 @@ def dlogout(request):
 def doctor_dashboard(request):
     
     if request.user.is_authenticated:
+        
         dr = Dr.objects.get(id=request.user.Dr.id)
         list= checkout.objects.filter(dr_name=dr)
         totalapp=len(list)
@@ -136,144 +145,150 @@ def doctor_dashboard(request):
     else:
         return redirect('error500')
 def doctor_profile_setting(request):
+    
     if request.user.is_authenticated:
-        userids=request.GET.get('profile')
-        doctor=Dr.objects.filter(id=userids)
-        profile = Dr.objects.get(id=userids)
-        if request.method == "POST":
-                    fname = request.POST['fname']
-                    lname = request.POST['lname']
-                    user = User.objects.get(id=request.user.id)
-                    user.first_name = fname
-                    user.last_name = lname
-                    user.save()
-                    img = request.POST['img']
-                    qulification = request.POST['qulification']
-                    speciality = request.POST['speciality']
-                    fees1 = request.POST['f1']
-                    fees2= request.POST['f2']
-                    city = request.POST['city']
-                    gender = request.POST['gender']
-                    if len(doctor)>0:
-                        ob = doctor[0]
-                        ob.user=user
-                        ob.name = request.user.username
-                        ob.email = request.user.email
-                        ob.img = img
-                        ob.qulification= qulification
-                        ob.specialization=speciality
-                        ob.address = city
-                        ob.fees_starting=fees1
-                        ob.fees_end = fees2
-                        ob.gender=gender
-                        ob.save()
-                    about = request.POST['about']
-                    user1 = Ov_view(doc=profile, about=about)
-                    user1.save()
-
-                    profile1 = Ov_view.objects.get(doc=user1)
-
-                    # services = request.POST['services']
-                    # ser=servies_add.objects.get(service=services)
-                    # user1 = servi_ses(dr=profile1,servics=ser)
-                    # user1.save()
-
-                    #
-                    # if len(ser)>0:
-                    #     ob=ser[0]
-                    #     ob.service=services
-                    #     # ob.save()
-                    #     print(ob,ob.id,'ooo')
-                    #     users1 = servi_ses(dr=profile1)
-                    #     users1.servics.add(request.ob.service)
-                    #     users1.save()
-                    # else:
-                    #     print('invalid servise')
-
-                    # specialist = request.POST['specialist']
-                    # spec=specifications_add.objects.get(specifications=specialist)
-                    # user1 = Specific_ation(dr=profile1,specification=spec)
-                    # user1.save()
-                    # us = user1.specification.create(specifications=spec)
-                    # print(user1,'//specc')
-
-                    aw_name = request.POST['aw_name']
-                    year = request.POST['year']
-                    field = request.POST['field']
-                    awrd=Awards.objects.filter(dr=profile1, aw_name=aw_name,aw_desc=field)
-                    if len(awrd)>0:
-                        aw=awrd[0]
-                        aw.dr = profile1
-                        aw.aw_name = aw_name
-                        aw.aw_year = year
-                        aw.aw_desc = field
-                        aw.save()
-                    else:
-                        user1 = Awards(dr=profile1, aw_name=aw_name,aw_year=year,aw_desc=field)
+            userids=request.GET.get('profile')
+            doctor=Dr.objects.filter(id=userids)
+            profile = Dr.objects.get(id=userids)
+            if request.method == "POST":
+                        fname = request.POST['fname']
+                        lname = request.POST['lname']
+                        user = User.objects.get(id=request.user.id)
+                        user.first_name = fname
+                        user.last_name = lname
+                        user.save()
+                        img = request.POST['img']
+                        qulification = request.POST['qulification']
+                        # speciality = request.POST['speciality']
+                        fees1 = request.POST['f1']
+                        fees2= request.POST['f2']
+                        city = request.POST['city']
+                        gender = request.POST['gender']
+                        if len(doctor)>0:
+                            ob = doctor[0]
+                            ob.user=user
+                            ob.name = request.user.username
+                            ob.email = request.user.email
+                            ob.img = img
+                            ob.qulification= qulification
+                            # ob.specialization=speciality
+                            ob.address = city
+                            ob.fees_starting=fees1
+                            ob.fees_end = fees2
+                            ob.gender=gender
+                            ob.save()
+                        about = request.POST['about']
+                        user1 = Ov_view(doc=profile, about=about)
                         user1.save()
 
-                    institude = request.POST['institude']
-                    YOC = request.POST['YOC']
-                    YOA = request.POST['YOA']
-                    degree = request.POST['degree']
-                    edu=Educat_ion.objects.filter(dr=profile1,degree=degree)
-                    if len(edu) > 0:
-                        ed = edu[0]
-                        ed.dr = profile1
-                        ed.univercity = institude
-                        ed.degree = degree
-                        ed.YOP = YOC
-                        ed.YOA = YOA
-                        ed.save()
-                    else:
-                        user1 = Educat_ion(dr=profile1, univercity=institude,degree=degree,YOP=YOC,YOA=YOA)
-                        user1.save()
+                        profile1 = Ov_view.objects.get(doc=user1)
 
-                    hosp_name = request.POST['hosp_name']
-                    yop = request.POST['yop']
-                    yop1 = request.POST['yop1']
-                    designation=request.POST['designation']
-                    exp=Exp_erince.objects.filter(dr=profile1,exp_filled =hosp_name,experince=designation)
-                    if len(exp)>0:
-                        ex=exp[0]
-                        ex.dr = profile1
-                        ex.exp_filled = hosp_name
-                        ex.YO_exp_start = yop
-                        ex.YO_exp_till = yop1
-                        ex.experince = designation
-                        ex.save()
-                    else:
-                        user1 = Exp_erince(dr=profile1,exp_filled =hosp_name,YO_exp_start = yop,YO_exp_till = yop1,experince=designation)
-                        user1.save()
+                        # services = request.POST['services']
+                        # ser=servies_add.objects.get(service=services)
+                        # user1 = servi_ses(dr=profile1,servics=ser)
+                        # user1.save()
 
-                    name = request.POST['cli_name']
-                    fee = request.POST['fees']
-                    add = request.POST['clinic_add']
-                    loc= Loca_tions.objects.filter(doc=profile,clinics_name=name)
-                    if len(loc)>0:
-                        locs=loc[0]
-                        locs.doc = profile
-                        locs.clinics_name = name
-                        locs.clinic_add = add
-                        locs.fees = fee
-                        locs.save()
-                    else:
-                        user1 = Loca_tions(doc=profile,clinics_name=name, clinic_add=add,fees=fee)
-                        user1.save()
-            # add2 = request.POST['add2']
-            # add3 = request.POST['add3']
-            # city = request.POST['city']
-            # state = request.POST['state']
-            # country = request.POST['country']
-            # postalcode = request.POST['postalcode']
-            #
-            # membership = request.POST['membership']
-            # registration = request.POST['registration']
-            # # res_year = request.POST['res_year']
-                    messages.success(request, 'profile updated ')
-    spec=speciality.objects.all()
-    res={'spec':specifications_add.objects.all(),'special':spec,'serv':servies_add.objects.all()}
-    return render(request,'doctor/doctor-profile-settings.html',res)
+                        #
+                        # if len(ser)>0:
+                        #     ob=ser[0]
+                        #     ob.service=services
+                        #     # ob.save()
+                        #     print(ob,ob.id,'ooo')
+                        #     users1 = servi_ses(dr=profile1)
+                        #     users1.servics.add(request.ob.service)
+                        #     users1.save()
+                        # else:
+                        #     print('invalid servise')
+
+                        # specialist = request.POST['specialist']
+                        # spec=specifications_add.objects.get(specifications=specialist)
+                        # user1 = Specific_ation(dr=profile1,specification=spec)
+                        # user1.save()
+                        # us = user1.specification.create(specifications=spec)
+                        # print(user1,'//specc')
+
+                        aw_name = request.POST['aw_name']
+                        year = request.POST['year']
+                        field = request.POST['field']
+                        awrd=Awards.objects.filter(dr=profile1, aw_name=aw_name,aw_desc=field)
+                        if len(awrd)>0:
+                            aw=awrd[0]
+                            aw.dr = profile1
+                            aw.aw_name = aw_name
+                            aw.aw_year = year
+                            aw.aw_desc = field
+                            aw.save()
+                        else:
+                            user1 = Awards(dr=profile1, aw_name=aw_name,aw_year=year,aw_desc=field)
+                            user1.save()
+
+                        institude = request.POST['institude']
+                        YOC = request.POST['YOC']
+                        YOA = request.POST['YOA']
+                        degree = request.POST['degree']
+                        edu=Educat_ion.objects.filter(dr=profile1,degree=degree)
+                        if len(edu) > 0:
+                            ed = edu[0]
+                            ed.dr = profile1
+                            ed.univercity = institude
+                            ed.degree = degree
+                            ed.YOP = YOC
+                            ed.YOA = YOA
+                            ed.save()
+                        else:
+                            user1 = Educat_ion(dr=profile1, univercity=institude,degree=degree,YOP=YOC,YOA=YOA)
+                            user1.save()
+
+                        hosp_name = request.POST['hosp_name']
+                        yop = request.POST['yop']
+                        yop1 = request.POST['yop1']
+                        designation=request.POST['designation']
+                        exp=Exp_erince.objects.filter(dr=profile1,exp_filled =hosp_name,experince=designation)
+                        if len(exp)>0:
+                            ex=exp[0]
+                            ex.dr = profile1
+                            ex.exp_filled = hosp_name
+                            ex.YO_exp_start = yop
+                            ex.YO_exp_till = yop1
+                            ex.experince = designation
+                            ex.save()
+                        else:
+                            user1 = Exp_erince(dr=profile1,exp_filled =hosp_name,YO_exp_start = yop,YO_exp_till = yop1,experince=designation)
+                            user1.save()
+
+                        name = request.POST['cli_name']
+                        fee = request.POST['fees']
+                        add = request.POST['clinic_add']
+                        loc= Loca_tions.objects.filter(doc=profile,clinics_name=name)
+                        if len(loc)>0:
+                            locs=loc[0]
+                            locs.doc = profile
+                            locs.clinics_name = name
+                            locs.clinic_add = add
+                            locs.fees = fee
+                            locs.save()
+                        else:
+                            user1 = Loca_tions(doc=profile,clinics_name=name, clinic_add=add,fees=fee)
+                            user1.save()
+                # add2 = request.POST['add2']
+                # add3 = request.POST['add3']
+                # city = request.POST['citys']
+                # state = request.POST['state']
+                # country = request.POST['country']
+                # postalcode = request.POST['postalcode']
+                #
+                # membership = request.POST['membership']
+                # registration = request.POST['registration']
+                # # res_year = request.POST['res_year']
+                        messages.success(request, 'profile updated ')
+                        return redirect(request.get_full_path())
+                        # spec=speciality.objects.all()
+            res={'spec':specifications_add.objects.all(),
+            # 'special':speciality.objects.all(),
+            'serv':servies_add.objects.all()}
+            return render(request,'doctor/doctor-profile-settings.html',res)
+    else:
+        return redirect('error500')
     
     
 def reviews(request):

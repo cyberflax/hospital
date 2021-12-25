@@ -7,7 +7,7 @@
      <div class="row align-items-center">
       <div class="col-md-12 col-12">
        <h2 class="breadcrumb-title">
-        Dashboard
+        Medical Record
        </h2>
        <nav aria-label="breadcrumb" class="page-breadcrumb">
         <ol class="breadcrumb">
@@ -16,8 +16,8 @@
            Home
           </a>
          </li>
-         <li aria-current="page" class="breadcrumb-item active">
-          Dashboard
+         <li aria-current="page" style="color: blue;" class="breadcrumb-item active">
+          Medical Record
          </li>
         </ol>
        </nav>
@@ -225,26 +225,46 @@
                <tbody>{%for i in record%}
                 <tr>
                  <td>
-                  <a href="/media/{{i.attachment}}">
+                  <a href="#">
                    #MR-00{{i.id}}
                   </a>
                  </td>
                  <td>
                   {{i.date}}
                  </td>
-                 <td>
+                 <!-- <td>
                   {{i.desc}}
                  </td>
                  <td>
-                  <a href="#">
+                  <a href="/media/{{i.attachment}}">
                    {{i.attachment}}
                   </a>
+                 </td> -->
+                 <td>{% if i.desc|length is not 0 or i.desc is not blank %}
+                  {{i.desc}}
+                  {% else %}
+                  <p style="color:red">
+                    No Desc.</p>{% endif %}
+                 </td>
+                 <td>{% if  i.attachment is not blank %}
+                  <a href="/media/{{i.attachment}}">
+                   {{i.attachment}}
+                  </a>
+                  {% else %}
+                  <a href="/media/{{blank.png}}" style="color:red">
+                    No Atachment</a>{% endif %}
                  </td>
                  <td>
                   <h2 class="table-avatar">
                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
+                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
+                  
+                    {% if i.doctor.img|length is not 0  %}
                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                   </a>
+                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                   {% endif %} 
+                  
+                  </a>
                    <a href="{%url 'Doctor_profile' i.doctor.id %}">
                  {{i.doctor.name}}
                     <span>
@@ -255,8 +275,10 @@
                  </td>
                  <td>
                   <div class="table-action">
-                   <a class="btn btn-sm bg-info-light" href="javascript:void(0);">
-                    <i class="feather-eye">
+                    <a class="btn btn-sm bg-info-light"  data-target="#medical_details" data-toggle="modal"
+                    onclick="$('#attch').val('{{i.attachment}}');$('#date').val('{{i.date}}');
+                    $('#desc').val('{{i.desc}}');$('#Did').val('{{i.doctor.name}}');">
+<i class="feather-eye">
                     </i>
                    </a>
                    <a class="btn btn-sm bg-primary-light" href="javascript:void(0);">
@@ -287,3 +309,50 @@
     </div>
    </div>
    {%endblock%}
+
+
+   
+{% block body1%}
+
+<div class="modal fade custom-modal" id="medical_details">
+  <div class="modal-dialog modal-dialog-centered">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h5 class="modal-title">
+     Medical Details
+     </h5>
+     <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <span aria-hidden="true">
+       ×
+      </span>
+     </button>
+    </div>
+     <div class="modal-body">
+     <ul class="info-details">
+      <li>
+       <span class="title">
+        Doctor : <input id='Did' class="mx-2" style="border:none; display: inline; width: 150px;" >
+       </span>
+      </li>
+       <li>
+       <span class="title">
+        Description : <input id='desc' class="mx-2" style="border:none; display: inline; width: 150px;">
+       </span>
+
+      </li>
+       <li>
+       <span class="title">
+        Attachment : <input id='attch'  class="mx-2" style="border:none; display: inline; width: 150px;">
+       </span>
+      </li>
+      <li>
+       <span class="title">
+        Date :<input class="mx-2" style="border:none; display: inline; width: 150px;" id="date" />
+       </span>
+
+      </li>
+     </ul>
+    </div>
+   </div>
+  </div>
+ </div>{% endblock body1 %}

@@ -16,7 +16,7 @@
            Home
           </a>
          </li>
-         <li aria-current="page" class="breadcrumb-item active">
+         <li aria-current="page" style="color: blue;"  class="breadcrumb-item active">
           Profile
          </li>
         </ol>
@@ -131,13 +131,22 @@
              Appointments
             </a>
            </li>{% endif %}
+           {% if request.user.userType.type == '1' %}
            <li class="nav-item">
             <a class="nav-link " data-toggle="tab" href="#pres">
              <span>
               Prescription
              </span>
             </a>
+           </li>{% else %}
+           <li class="nav-item">
+            <a class="nav-link active " data-toggle="tab" href="#pres">
+             <span>
+              Prescription
+             </span>
+            </a>
            </li>
+           {% endif %}
            <li class="nav-item">
             <a class="nav-link" data-toggle="tab" href="#medical">
              <span class="med-records">
@@ -194,7 +203,10 @@
                  <td>
                   <h2 class="table-avatar">
                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.dr_name.id %}">
+                     {% if i.dr_name.img|length is not 0  %}
                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.dr_name.img}}"/>
+                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                   {% endif %} 
                    </a>
                    <a href="{%url 'Doctor_profile' i.dr_name.id %}">
                     {{i.dr_name.name}}
@@ -244,7 +256,8 @@
            {% endif %}
 
           </div>{% endif %}
-          <div class="tab-pane fade show " id="pres">
+          {% if request.user.userType.type == '2' %}
+          <div class="tab-pane fade show active " id="pres">
            {% if prec|length is not 0 %}
             {% if request.user.userType.type == '2' %}
            <div class="text-right card-body">
@@ -252,7 +265,8 @@
                data-target="#add_prescription" data-toggle="modal" >
              Add Prescription
             </a>
-           </div>{% endif %}
+           </div>
+           {% endif %}
 
            <div class="border-top card-table mb-0">
             <div class="card-body">
@@ -289,8 +303,19 @@
                  <td>
                   <h2 class="table-avatar">
                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
+                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
+                  
+                  
+                    {% if i.doctor.img|length is not 0  %}
                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                   </a>
+                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                   {% endif %}
+                  
+                  
+                  
+                  
+                  
+                  </a>
                    <a href="{%url 'Doctor_profile' i.doctor.id %}">
                     {{i.doctor.name}}
                     <span>
@@ -325,7 +350,89 @@
             {% else %}
                <p style="color:blue;font-size:20px;" class="my-3 mx-3" > Prescription Not Available !</p>
            {% endif %}
-          </div>
+          </div>{% endif %}
+          {% if request.user.userType.type == '1' %}
+          <div class="tab-pane fade show " id="pres">
+            {% if prec|length is not 0 %}
+ 
+            <div class="border-top card-table mb-0">
+             <div class="card-body">
+              <div class="table-responsive">
+               <table class="table table-hover table-center mb-0">
+                <thead>
+                 <tr>
+                  <th>
+                   Date
+                  </th>
+                  <th>
+                  Prescription
+                  </th>
+                  <th>
+                   Created by
+                  </th>
+                  <th>
+                  </th>
+                 </tr>
+                </thead>
+                <tbody>{%for i in prec%}
+                 <tr>
+                  <td>
+                   {{i.date}}
+                  </td>
+                  <td>{% if i.prec_name is not none %}
+                    <a href="/media/{{i.prec_name}}" style="color:green">
+                 {{i.prec_name}}</a>
+                       {% else %}
+                 <a href="/media/{{blank.png}}" style="color:red">
+                   No prec.</a>{% endif %}
+ 
+                  </td>
+                  <td>
+                   <h2 class="table-avatar">
+                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
+                     <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
+                     {% if i.doctor.img|length is not 0  %}
+                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
+                     {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                    {% endif %}
+                   
+                    </a>
+                    <a href="{%url 'Doctor_profile' i.doctor.id %}">
+                     {{i.doctor.name}}
+                     <span>
+                      {{i.doctor.specialization}}
+                     </span>
+                    </a>
+                   </h2>
+                  </td>
+                  <td class="text-right">
+                   <div class="table-action">
+                    <a class="btn btn-sm bg-primary-light" href="javascript:void(0);">
+                     <i class="feather-printer">
+                     </i>
+                    </a>
+                    <a class="btn btn-sm bg-info-light" data-target="#pres_details" data-toggle="modal"
+                       onclick="$('#da1').val('{{i.date}}');
+                       $('#pr1').val(' {{i.prec_name}}');$('#Di1').val('{{i.doctor.name}}');">
+                     <i class="feather-eye">
+                     </i>
+                    </a>
+                   </div>
+                  </td>
+                 </tr>{%endfor%}
+ 
+                </tbody>
+               </table>
+              </div>
+             </div>
+            </div>
+ 
+ 
+             {% else %}
+                <p style="color:blue;font-size:20px;" class="my-3 mx-3" > Prescription Not Available !</p>
+            {% endif %}
+           </div>{% endif %}
+
           <div class="tab-pane fade" id="medical">
            {% if medical|length is not 0 %}
             {% if request.user.userType.type == '2' %}
@@ -363,7 +470,8 @@
                <tbody>{%for i in medical%}
                 <tr>
                  <td>
-                  <a href="/media/{{i.attachment}}" >
+                  <!-- <a href="/media/{{i.attachment}}" > -->
+                    <a href="#">
 
                    #MR-00{{i.id}}
                   </a>
@@ -388,8 +496,13 @@
                  <td>
                   <h2 class="table-avatar">
                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
+                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
+                    {% if i.doctor.img|length is not 0  %}
                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                   </a>
+                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                   {% endif %}
+                    
+                  </a>
                    <a href="{%url 'Doctor_profile' i.doctor.id %}">
                     {{i.doctor.name}}
                     <span>
@@ -465,8 +578,13 @@
                  <td>
                   <h2 class="table-avatar">
                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
+                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
+                  
+                    {% if i.doctor.img|length is not 0  %}
                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                   </a>
+                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                   {% endif %}
+                  </a>
                    <a href="{%url 'Doctor_profile' i.doctor.id %}">
                     {{i.doctor.name}}
                     <span>
