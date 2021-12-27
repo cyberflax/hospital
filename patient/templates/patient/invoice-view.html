@@ -61,11 +61,13 @@
              Invoice From
             </strong>
             <p class="invoice-details invoice-details-two">
-            {{user.0.doctor.name}}{{bills.0.doctor.name}}
+            {{bills.0.doctor.name}}
+            {{user.0.doctor.name}}
              <br/>
-            {{user.0.doctor.address}} {{bills.0.doctor.address}}
+            {{bills.0.doctor.address}}
+            {{user.0.doctor.address}}
              <br/>
-<!--             Newyork, USA-->
+            <!-- Newyork, USA -->
              <br/>
             </p>
            </div>
@@ -76,8 +78,11 @@
              Invoice To
             </strong>
             <p class="invoice-details">
-             {{user.0.patient.name}}  {{bills.0.patient.name}}
-             <br/> {{user.0.patient.address}}{{bills.0.patient.address}}
+             
+              {{bills.0.patient.name}}{{user.0.patient}}
+             <br/> 
+             
+             {{bills.0.patient.address}}{{user.0.patient.address}}
              <br/>
             </p>
            </div>
@@ -149,7 +154,8 @@
                 $0
                </td>
                <td class="text-right">
-                ${{user.0.doctor.fees_starting}}{{bills.0.doctor.fees_starting}}
+                ${{user.0.doctor.fees_starting}}
+                <!-- {{bills.0.doctor.fees_starting}} -->
                </td>
               </tr>
               <tr>
@@ -200,7 +206,8 @@
                </th>
                <td>
                 <span>
-                 ${{user.0.amount}}{{bills.0.amount}}
+                 ${{user.0.amount}}
+                 <!-- {{bills.0.amount}} -->
                 </span>
                </td>
               </tr>
@@ -209,7 +216,9 @@
            </div>
           </div>
          </div>
-        </div>{% else %}
+        </div>
+        
+        {% else %}
            <p class="invoice-details invoice-details-two" style="font-size:20px">
 
                 Total Amount :
@@ -224,7 +233,7 @@
           Other information
          </h4>
          <p class="mb-0">
-        {{user.0.dr_name.Ov_view.about}} {{bills.0.doctor.Ov_view.about}}  </p>
+         {{bills.0.doctor.Ov_view.about}}  </p>
         </div>
        </div>
       </div>

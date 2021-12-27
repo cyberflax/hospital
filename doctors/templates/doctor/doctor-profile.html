@@ -545,10 +545,11 @@
            </div>
            <div class="form-group">
             <label>
-             Title of your review/ Your Name
+             <!-- Title of your review/  -->
+             Your Name
             </label>
-            <input class="form-control" name="name" id="nameid"
-                  required placeholder="If you could say it in one sentence, what would you say?" type="text"/>
+            <input class="form-control" name="name" id="nameid" readonly
+             value="{{request.user.patient_record.name}}"/>
            </div>
            <div class="form-group">
             <label>

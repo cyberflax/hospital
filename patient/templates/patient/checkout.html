@@ -15,7 +15,7 @@
                                 Home
                             </a>
                         </li>
-                        <li aria-current="page" style="color: blue;"  class="breadcrumb-item active">
+                        <li aria-current="page" style="color: blue;" class="breadcrumb-item active">
                             Checkout
                         </li>
                     </ol>
@@ -25,7 +25,7 @@
     </div>
 </div>
 <div class="content">
-    <div class="container">
+    <div class="container">{% if data|length is  0 %}
         <div class="row">
             <div class="col-md-5 col-lg-4 theiaStickySidebar">
                 <div class="card booking-card">
@@ -38,9 +38,9 @@
                         <div class="booking-doc-info">
                             <a class="booking-doc-img" href="{% url 'Doctor_profile' title.id %}">
                                 {% if title.img|length is not 0 %}
-                                <img alt="User Image" src="/media/{{title.img}}"/>
-                                {% else %}<img alt="User Image" src="/media/default.jpg"/>
-                               {% endif %} 
+                                <img alt="User Image" src="/media/{{title.img}}" />
+                                {% else %}<img alt="User Image" src="/media/default.jpg" />
+                                {% endif %}
                             </a>
                             <div class="booking-info">
                                 <h4>
@@ -75,34 +75,34 @@
                                     <li>
                                         Date
                                         <span>
-            {{date}}
-             </span>
+                                            {{date}}
+                                        </span>
                                     </li>
                                     <li>
                                         Time
                                         <span>
-              {{t.0.time1}}-{{t.0.time2}}
-             </span>
+                                            {{t.0.time1}}-{{t.0.time2}}
+                                        </span>
                                     </li>
                                 </ul>
                                 <ul class="booking-fee">
                                     <li>
                                         Consulting Fee
                                         <span>
-              ${{title.fees_starting}}
-             </span>
+                                            ${{title.fees_starting}}
+                                        </span>
                                     </li>
                                     <li>
                                         Booking Fee
                                         <span>
-              $10
-             </span>
+                                            $10
+                                        </span>
                                     </li>
                                     <li class="mb-0">
                                         Video Call
                                         <span>
-              $50
-             </span>
+                                            $50
+                                        </span>
                                     </li>
                                 </ul>
                             </div>
@@ -112,12 +112,12 @@
                         <div class="booking-total">
                             <ul class="booking-total-list">
                                 <li>
-            <span>
-             Total
-            </span>
+                                    <span>
+                                        Total
+                                    </span>
                                     <span class="total-cost">
-             ${{total}}
-            </span>
+                                        ${{total}}
+                                    </span>
                                 </li>
                             </ul>
                         </div>
@@ -126,7 +126,7 @@
             </div>
             <div class="col-md-7 col-lg-8">
                 <div class="card book-info">
-                    <form  action="{%url 'booking_success'%}?time1={{t.0.id}}&Did={{title.id}}
+                    <form action="{%url 'booking_success'%}?time1={{t.0.id}}&Did={{title.id}}
                     &pid={{request.user.patient_record.id}}" method="post" id="formpau">{%csrf_token%}
                         <div class="info-widget">
                             <div class="card-header">
@@ -142,7 +142,7 @@
                                                 User Name
                                             </label>
                                             <input class="form-control" name="name" id="name" readonly
-                                                   value="{{request.user.username}}"/>
+                                                value="{{request.user.username}}" />
                                         </div>
                                     </div>
 
@@ -152,7 +152,7 @@
                                                 Email
                                             </label>
                                             <input class="form-control" name="email" id="email" readonly
-                                                   value="{{request.user.email}}"/>
+                                                value="{{request.user.email}}" />
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-12">
@@ -161,7 +161,7 @@
                                                 Phone
                                             </label>
                                             <input class="form-control" name="phone" id="phonexx" required
-                                                   value="{{request.user.patient_record.mobile}}"/>
+                                                value="{{request.user.patient_record.mobile}}" />
                                         </div>
                                     </div>
                                 </div>
@@ -179,9 +179,9 @@
                                     </h4>
                                     <div class="payment-list">
                                         <label class="payment-radio credit-card-option">
-                                            <input checked="" name="radio" type="radio"/>
+                                            <input checked="" name="radio" type="radio" />
                                             <span class="checkmark">
-              </span>
+                                            </span>
                                             Credit card
                                         </label>
                                         <div class="row">
@@ -191,17 +191,17 @@
                                                         Name on Card
                                                     </label>
 
-                                                    <input class="form-control" name="time1" required id="date1" type="hidden"
-                                                           value="{{t1}}"/>
-                                                    <input class="form-control" name="time2" required id="t1" type='hidden'
-                                                           value="{{t2}}"/>
-                                                    <input class="form-control" name="date" required id="date" type='hidden'
-                                                           value="{{date}}"/>
+                                                    <input class="form-control" name="time1" required id="date1"
+                                                        type="hidden" value="{{t1}}" />
+                                                    <input class="form-control" name="time2" required id="t1"
+                                                        type='hidden' value="{{t2}}" />
+                                                    <input class="form-control" name="date" required id="date"
+                                                        type='hidden' value="{{date}}" />
                                                     <input class="form-control" name="amount" id="amount" type="hidden"
-                                                           value="{{total}}"/>
+                                                        value="{{total}}" />
 
-                                                    <input class="form-control" name="cardname" id="card_name" required
-                                                           type="text"/>
+                                                    <input class="form-control" name="cardname" id="card_name" required=''
+                                                        type="text" />
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -210,7 +210,7 @@
                                                         Card Number
                                                     </label>
                                                     <input class="form-control" name="cardno" required id="card_number"
-                                                           type="text"/>
+                                                        type="text" />
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -218,8 +218,8 @@
                                                     <label for="expiry_month">
                                                         Expiry Month
                                                     </label>
-                                                    <input class="form-control" id="expiry_month" required
-                                                           name='exmonth' type="text"/>
+                                                    <input class="form-control" id="expiry_month" required=''
+                                                        name='exmonth' type="text" />
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -227,8 +227,8 @@
                                                     <label for="expiry_year">
                                                         Expiry Year
                                                     </label>
-                                                    <input class="form-control" id="expiry_year" required name="exyear"
-                                                           type="text"/>
+                                                    <input class="form-control" id="expiry_year" required='' name="exyear"
+                                                        type="text" />
                                                 </div>
                                             </div>
                                             <div class="col-md-4">
@@ -236,23 +236,23 @@
                                                     <label for="cvv">
                                                         CVV
                                                     </label>
-                                                    <input class="form-control" id="cvv" required name='cvv'
-                                                           type="text"/>
+                                                    <input class="form-control" id="cvv" required='' name='cvv'
+                                                        type="text" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="payment-list">
                                         <label class="payment-radio paypal-option">
-                                            <input name="radio" type="radio"/>
+                                            <input name="radio" type="radio" />
                                             <span class="checkmark">
-              </span>
+                                            </span>
                                             Paypal
                                         </label>
                                     </div>
                                     <div class="terms-accept">
                                         <div class="custom-checkbox">
-                                            <input id="terms_accept1" required  type="checkbox"/>
+                                            <input id="terms_accept1" required type="checkbox" />
                                             <label for="terms_accept1">
                                                 I have read and accept
                                                 <a href="{%url 'term_con'%}">
@@ -265,10 +265,11 @@
 
                                     </div>
 
-                                     <div class="submit-section mt-4">
-                                     <a class="cards-btns" onclick="$('#formpau').submit()"/>
-                                         <button  class="btn btn-primary submit-btn" type="submit">Proceed</button>
-                                     </a></div>
+                                    <div class="submit-section mt-4">
+                                        <a class="cards-btns" onclick="$('#formpau').submit()" />
+                                        <button class="btn btn-primary submit-btn" type="submit">Proceed</button>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -276,6 +277,13 @@
                 </div>
             </div>
         </div>
+
+        {% else %}
+<p style="color:rgb(235, 75, 75); font-size:25px" >
+Appointment Book At This Time.
+
+</p>
+        {% endif %}
     </div>
 </div>
 {%endblock%}

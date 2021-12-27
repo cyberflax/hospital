@@ -387,7 +387,8 @@
          <div class="doc-review review-listing">
           <ul class="comments-list">
            <li>
-            <div class="comment">
+              <!-- for review -->
+            <!-- <div class="comment">
              <img alt="User Image" class="avatar rounded-circle" src="assets/img/patients/patient.jpg"/>
              <div class="comment-body">
               <div class="meta-data">
@@ -442,10 +443,11 @@
                </p>
               </div>
              </div>
-            </div>
+            </div> -->
             <ul class="comments-reply">
-             <li>
-              <div class="comment">
+       <!--  FOr reply -->
+               <!-- <li> -->
+              <!-- <div class="comment">
                <img alt="User Image" class="avatar rounded-circle" src="assets/img/doctors/doctor-thumb-02.jpg"/>
                <div class="comment-body">
                 <div class="meta-data">
@@ -467,8 +469,8 @@
                  </a>
                 </div>
                </div>
-              </div>
-             </li>
+              </div> -->
+             <!-- </li> -->
             </ul>
            </li>{% if review|length is not 0 %}
  {% for i in review %}
@@ -534,7 +536,7 @@
              </div>
             </div>
            </li>{%endfor%}{% else %}
-           <p style="font-size:20px;color:blue">No Review !</p>{% endif %}
+           <p style="font-size:25px;margin-top: 10px;margin-left: 10px; margin-left: 10px;color:blue">No Review !</p>{% endif %}
           </ul>
          </div>
         </div>
@@ -554,7 +556,7 @@
               *
              </span>
             </label>
-            <input class="form-control" name="name" required type="text"/>
+            <input class="form-control" name="name" value="{{request.user.patient_record.name}}" readonly/>
            </div>
            <div class="form-group">
             <label>

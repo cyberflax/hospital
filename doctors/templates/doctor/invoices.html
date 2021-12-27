@@ -183,7 +183,7 @@
        </div>
       </div>
       <div class="col-md-7 col-lg-8 col-xl-9">
-       {% if invoice|length is not 0%}
+       {% if invoice|length is not 0 or bill|length is not 0 %}
        <div class="card card-table">
         <div class="card-body">
          <div class="table-responsive">
@@ -211,7 +211,7 @@
             <tr>
              <td>
               <a href="{%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Oid={{i.id}}">
-               #INV-{{i.id}}
+               #INV-00{{i.id}}
               </a>
              </td>
              <td>
@@ -222,7 +222,7 @@
                <a href="/patient-profile?profile={{i.patient.id}}">
                 {{i.patient.name}}
                 <span>
-                 #PT-{{i.patient.id}}
+                 #PT-00{{i.patient.id}}
                 </span>
                </a>
               </h2>
@@ -240,11 +240,11 @@
                 <i class="feather-eye">
                 </i>
                </a>
-               <a class="btn btn-sm bg-success-light" href="javascript:void(0);">
+               <!-- <a class="btn btn-sm bg-success-light" href="javascript:void(0);">
                 <i class="feather-check-circle">
                 </i>
-               </a>
-               <a class="btn btn-sm bg-danger-light" href="{%url 'invoices'%}?pid={{i.patient.id}}&Oid={{i.id}}&invoice={{i.doctor.id}}">
+               </a> -->
+               <a class="btn btn-sm bg-danger-light" href="{%url 'invoices'%}?pid={{i.patient.id}}&Oid={{i.id}}">
                 <i class="feather-x-circle">
                 </i>
                </a>
@@ -252,7 +252,51 @@
               </div>
              </td>
           </tr> {%endfor%}
+          {%for i in bill%}
+          <tr>
+           <td>
+            <a href="{%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
+             #INV-00{{i.id}}
+            </a>
+           </td>
+           <td>
+            <h2 class="table-avatar">
+             <a class="avatar avatar-sm mr-2" href="/patient-profile?profile={{i.patient.id}}">
+              <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.patient.img}}"/>
+             </a>
+             <a href="/patient-profile?profile={{i.patient.id}}">
+              {{i.patient.name}}
+              <span>
+               #PT-00{{i.patient.id}}
+              </span>
+             </a>
+            </h2>
+           </td>
+           <td>
+           {{i.paid_on_date}}
+           </td>
+           <td>
+            ${{i.amount}}
+           </td>
+           <td class="text-left">
+            <div class="table-action">
+             <a class="btn btn-sm bg-info-light" href="{%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
+<!--               {%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{request.user.Dr.id}}&Oid={{i.id}}-->
+              <i class="feather-eye">
+              </i>
+             </a>
+             <!-- <a class="btn btn-sm bg-success-light" href="javascript:void(0);">
+              <i class="feather-check-circle">
+              </i>
+             </a> -->
+             <a class="btn btn-sm bg-danger-light" href="{%url 'invoices'%}?pat={{i.patient.id}}&aid={{i.id}}">
+              <i class="feather-x-circle">
+              </i>
+             </a>
 
+            </div>
+           </td>
+        </tr> {%endfor%}
            </tbody>
           </table>
          </div>

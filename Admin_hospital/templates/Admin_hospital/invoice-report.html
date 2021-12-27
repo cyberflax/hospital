@@ -2,158 +2,212 @@
 {% load static %}
 {% block body %}
 <div class="page-wrapper" xmlns="http://www.w3.org/1999/html">
-			<div class="content container-fluid">
-				<div class="page-header">
-					<div class="row">
-						<div class="col-sm-12">
-							<h3 class="page-title">Invoice Report</h3>
-							<ul class="breadcrumb">
-								<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
-								<li class="breadcrumb-item active" style="color:blue">Invoice Report</li>
-							</ul>
-						</div>
-					</div>
-				</div>{% if trs|length is not 0 %}
-				<div class="row">
-					<div class="col-sm-12">
-						<div class="card">
-							<div class="card-body">
-								<div class="table-responsive">
-									<table class="datatable table table-hover table-center mb-0">
-										<thead>
-											<tr>
-												<th>Invoice Number</th>
-												<th>Patient ID</th>
-												<th>Patient Name</th>
-												<th>Total Amount</th>
-												<th>Created Date</th>
-												<th class="text-center">Status</th>
-												<th class="text-right">Actions</th>
-											</tr>
-										</thead>
-										<tbody>
-											{% for t in trs %}
-											<tr>
-												<td><a href="{%url 'invoice_view'%}?Pid={{t.patient.id}}&Did={{t.doctor.id}}&Oid={{t.id}}">#IN0001</a></td>
-												<td>#PT00{{forloop.counter}}</td>
-												<td>
-													<h2 class="table-avatar">
-														<a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{t.patient.id}}">
-<!--															<img alt="User Image" class="avatar-img rounded-circle"-->
-<!--																src="/media/{{t.patient.img}}" />-->
-
-       {% if t.patient.img|length is not 0 %}
-       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{t.patient.img}}" width="31"/>
-            {% else %}
-             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
-          {% endif %}
-
-														</a>
-														<a href="{%url 'patient_profile'%}?profile={{t.patient.id}}">{{t.patient}} </a>
-													</h2>
-												</td>
-												<td>${{t.amount}}</td>
-												<td>{{t.created_date|date:'d  M  Y'}}</td>
-												<td class="text-center">
-													<span class="badge badge-pill bg-success inv-badge">Paid</span>
-												</td>
-												<td class="text-right">
-													<div class="actions">
-														<a class="btn btn-sm bg-success-light mr-2" data-toggle="modal"
-															href="#edit_invoice_report">
-															<i class="fe fe-pencil"></i> Edit
-														</a>
-														<a class="btn btn-sm bg-danger-light" data-toggle="modal" onclick="$('#aptid').val('{{t.id}}');"
-															href="#delete_modal">
-															<i class="fe fe-trash"></i> Delete
-														</a>
-													</div>
-												</td>
-											</tr>
-										{% endfor %}
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
+	<div class="content container-fluid">
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">Invoice Report</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
+						<li class="breadcrumb-item active" style="color:blue">Invoice Report</li>
+					</ul>
 				</div>
-				{% else %}
-				<p style="color: blue;font-size: 30px;">No Invoice Report Available !</p>
-				{% endif %}
 			</div>
-		</div>
-		{% block body1 %}
-		<div aria-hidden="true" class="modal fade" id="edit_invoice_report" role="dialog">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Edit Invoice Report</h5>
-						<button aria-label="Close" class="close" data-dismiss="modal" type="button">
-						</button>
-					</div>
-					<div class="modal-body">
-						<form>
-							<div class="row form-row">
-								<div class="col-12 col-sm-6">
-									<div class="form-group">
-										<label>Invoice Number</label>
-										<input class="form-control" type="text" value="#INV-0001" />
-									</div>
-								</div>
-								<div class="col-12 col-sm-6">
-									<div class="form-group">
-										<label>Patient ID</label>
-										<input class="form-control" type="text" value="	#PT002" />
-									</div>
-								</div>
-								<div class="col-12 col-sm-6">
-									<div class="form-group">
-										<label>Patient Name</label>
-										<input class="form-control" type="text" value="R Amer" />
-									</div>
-								</div>
-								<div class="col-12 col-sm-6">
-									<div class="form-group">
-										<label>Patient Image</label>
-										<input class="form-control" type="file" />
-									</div>
-								</div>
-								<div class="col-12 col-sm-6">
-									<div class="form-group">
-										<label>Total Amount</label>
-										<input class="form-control" type="text" value="$200.00" />
-									</div>
-								</div>
-								<div class="col-12 col-sm-6">
-									<div class="form-group">
-										<label>Created Date</label>
-										<input class="form-control" type="text" value="29th Oct 2019" />
-									</div>
-								</div>
-							</div>
-							<button class="btn btn-primary btn-block" type="submit">Save Changes</button>
-						</form>
+		</div>{% if trs|length is not 0 or bill|length is not 0 %}
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>Invoice Number</th>
+										<th>Patient ID</th>
+										<th>Patient Name</th>
+										<th>Total Amount</th>
+										<th>Created Date</th>
+										<th class="text-center">Status</th>
+										<th class="text-right">Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for t in trs %}
+									<tr>
+										<td><a
+												href="{%url 'invoice_view'%}?Pid={{t.patient.id}}&Did={{t.doctor.id}}&Oid={{t.id}}">#IN00{{t.id}}</a>
+										</td>
+										<td>#PT00{{t.patient.id}}</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar avatar-sm mr-2"
+													href="{%url 'patient_profile'%}?profile={{t.patient.id}}">
+													<!--															<img alt="User Image" class="avatar-img rounded-circle"-->
+													<!--																src="/media/{{t.patient.img}}" />-->
+
+													{% if t.patient.img|length is not 0 %}
+													<img alt="Fred Ortego" class="avatar-img rounded-circle"
+														src="/media/{{t.patient.img}}" width="31" />
+													{% else %}
+													<img alt="Fred Ortego" class="avatar-img rounded-circle" width="31"
+														src="/media/default.jpg" />
+													{% endif %}
+
+												</a>
+												<a href="{%url 'patient_profile'%}?profile={{t.patient.id}}">{{t.patient}}
+												</a>
+											</h2>
+										</td>
+										<td>${{t.amount}}</td>
+										<td>{{t.created_date|date:'d M Y'}}</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Paid</span>
+										</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-success-light mr-2" data-toggle="modal"
+													href="#edit_invoice_report">
+													<i class="fe fe-pencil"></i> Edit
+												</a>
+												<a class="btn btn-sm bg-danger-light" data-toggle="modal"
+													onclick="$('#aptid').val('{{t.id}}');" href="#delete_modal">
+													<i class="fe fe-trash"></i> Delete
+												</a>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+									{% for t in bill %}
+									<tr>
+										<td><a
+												href="{%url 'invoice_view'%}?Pid={{t.patient.id}}&Did={{t.doctor.id}}&Bid={{t.id}}">#IN00{{t.id}}</a>
+										</td>
+										<td>#PT00{{t.patient.id}}</td>
+										<td>
+											<h2 class="table-avatar">
+												<a class="avatar avatar-sm mr-2"
+													href="{%url 'patient_profile'%}?profile={{t.patient.id}}">
+													<!--															<img alt="User Image" class="avatar-img rounded-circle"-->
+													<!--																src="/media/{{t.patient.img}}" />-->
+
+													{% if t.patient.img|length is not 0 %}
+													<img alt="Fred Ortego" class="avatar-img rounded-circle"
+														src="/media/{{t.patient.img}}" width="31" />
+													{% else %}
+													<img alt="Fred Ortego" class="avatar-img rounded-circle" width="31"
+														src="/media/default.jpg" />
+													{% endif %}
+
+												</a>
+												<a href="{%url 'patient_profile'%}?profile={{t.patient.id}}">{{t.patient}}
+												</a>
+											</h2>
+										</td>
+										<td>${{t.amount}}</td>
+										<td>{{t.paid_on_date|date:'d M Y'}}</td>
+										<td class="text-center">
+											<span class="badge badge-pill bg-success inv-badge">Paid</span>
+										</td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-success-light mr-2" data-toggle="modal"
+													href="#edit_invoice_report">
+													<i class="fe fe-pencil"></i> Edit
+												</a>
+												<a class="btn btn-sm bg-danger-light" data-toggle="modal"
+													onclick="$('#bid').val('{{t.id}}');" href="#delete_modal">
+													<i class="fe fe-trash"></i> Delete
+												</a>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<di aria-hidden="true" class="modal fade" id="delete_modal" role="dialog">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="form-content p-2">
-							<h4 class="modal-title">Delete</h4>
-							<p class="mb-4">Are you sure want to delete?</p>
-							<form method="post">{% csrf_token %}
-								<input id="aptid" hidden name="aptid">
-							<button class="btn btn-primary" type="submit">Save </button>
-							<button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
-							</form>
+		{% else %}
+		<p style="color: blue;font-size: 30px;">No Invoice Report Available !</p>
+		{% endif %}
+	</div>
+</div>
+{% block body1 %}
+<div aria-hidden="true" class="modal fade" id="edit_invoice_report" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Edit Invoice Report</h5>
+				<button aria-label="Close" class="close" data-dismiss="modal" type="button">
+				</button>
+			</div>
+			<div class="modal-body">
+				<form>
+					<div class="row form-row">
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Invoice Number</label>
+								<input class="form-control" type="text" value="#INV-0001" />
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Patient ID</label>
+								<input class="form-control" type="text" value="	#PT002" />
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Patient Name</label>
+								<input class="form-control" type="text" value="R Amer" />
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Patient Image</label>
+								<input class="form-control" type="file" />
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Total Amount</label>
+								<input class="form-control" type="text" value="$200.00" />
+							</div>
+						</div>
+						<div class="col-12 col-sm-6">
+							<div class="form-group">
+								<label>Created Date</label>
+								<input class="form-control" type="text" value="29th Oct 2019" />
+							</div>
 						</div>
 					</div>
+					<button class="btn btn-primary btn-block" type="submit">Save Changes</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<di aria-hidden="true" class="modal fade" id="delete_modal" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="form-content p-2">
+					<h4 class="modal-title">Delete</h4>
+					<p class="mb-4">Are you sure want to delete?</p>
+					<form method="post">{% csrf_token %}
+						<input id="aptid" hidden name="aptid">
+						
+						<input id="bid" hidden name="bid">
+						<button class="btn btn-primary" type="submit">Save </button>
+						<button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+					</form>
 				</div>
 			</div>
-			{% endblock body1 %}
-			{% endblock body %}
-7
+		</div>
+	</div>
+	{% endblock body1 %}
+	{% endblock body %}
+	7

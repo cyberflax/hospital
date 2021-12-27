@@ -56,8 +56,14 @@ def checkouts(request):
         time1 = request.GET.get('time1')
         book = for_bookings.objects.get(id=date)
         t=book_timed.objects.filter(id=time1)
-        res = {'title': profile, 'total': total,'date':book.date,'t':t}
-
+        time=book_timed.objects.get(id=time1)
+        alredy_data=checkout.objects.filter(dr_name=profile, patient=patient,date=book.date,
+         time1=time.time1)
+        if len(alredy_data)>0:
+                messages.warning(request,'Appointment is already book at this timing.')
+                # return redirect(request.get_full_path())
+                return redirect(request.META.get('HTTP_REFERER'))
+        res = {'title': profile, 'total': total,'date':book.date,'t':t,'data':alredy_data}
         return render(request,'patient/checkout.html',res)
     else:
         return redirect('error500')
@@ -84,11 +90,10 @@ def booking_success(request):
             amount = request.POST['amount']
             # date = (date[8:] + "-" + str(month.get(date[:3])) + "-" + date[5:7]).replace(' ', '')
             date=datetime.datetime.strptime(date, '%b. %d, %Y').strftime('%Y-%m-%d')
-
-            alredy_data=checkout.objects.filter(dr_name=profile, patient=patient,date=date, time1=t1, time2=t2)
+            alredy_data=checkout.objects.filter(dr_name=profile, patient=patient,date=date,
+              time1=t1,time2=t2)
             if len(alredy_data)>0:
                 messages.warning(request,'Appointment is already book at this timing.')
-                return redirect(request.get_full_path())
             else:
                 check = checkout(phone=phone, date=date, time1=t1, time2=t2, card_name=card_name, card_no=card_no,
                             cvv=cvv, exp_year=exyear, exp_month=exmonth, amount=amount, email=request.user.email,
@@ -99,10 +104,12 @@ def booking_success(request):
                                                 doctor=profile, patient=patient)
                 appoinmentlists.save()
                 checks = appoinmentlist.objects.filter(patient=patient,doctor=profile,date=date, time1=t1, time2=t2)
-                messages.success(request, "Booking confirm successfully.")
+                # messages.success(request, "Booking confirm successfully.")
                 res={'user':checks}
-                # return redirect(request.get_full_path())
-               
+                messages.success(request, "Booking confirm successfully.")
+            # return redirect(request.get_full_path())
+            
+              
         return render(request,'patient/booking-success.html',res)
     else:
         return redirect('error500')
@@ -111,13 +118,13 @@ def invoice_view(request):
     if request.user.is_authenticated:
         bid = request.GET.get('Pid')
         bids = request.GET.get('Did')
-        bi = request.GET.get('Oid')
+        oid = request.GET.get('Oid')
         Bid = request.GET.get('Bid')
         dr=Dr.objects.get(id=bids)
         patient=patient_record.objects.get(id=bid)
-        checks = appoinmentlist.objects.filter(doctor=dr,patient=patient,id=bi)
+        check = appoinmentlist.objects.filter(doctor=dr,patient=patient,id=oid)
         billing=billings.objects.filter(doctor=dr,patient=patient,id=Bid)
-        res = {'user': checks,'bills':billing}
+        res = {'bills':billing,'user':check}
         return render(request,'patient/invoice-view.html',res)
     else:
         return redirect('error500')
@@ -247,6 +254,8 @@ def patient_profile(request):
         bill=billings.objects.filter(patient=patients)
         medical=medical_records.objects.filter(patient=patients)
         app=appoinmentlist.objects.filter(patient=patients).last()
+        
+        appt=appoinmentlist.objects.filter(patient=patients)
         path = request.get_full_path()
         if request.method=='POST':
             if request.POST.get('Did') is not None:
@@ -278,10 +287,11 @@ def patient_profile(request):
                 dr=Dr.objects.get(id=Did)
                 pres=billings(doctor=dr,paid_on_date=date,amount=amount,patient=patients,invoice_no=0)
                 pres.save()
-                return redirect(path)
+                # return redirect(path)
 
         listapp = checkout.objects.filter(patient=patients)
-        res={'list':list,'prec':prec,'bill':bill,'medical':medical,'last':app,'listapp':listapp}
+        res={'list':list,'prec':prec,'bill':bill,'medical':medical,
+        'last':app,'listapp':listapp,'appt':appt}
         return render(request,'patient/patient-profile.html',res)
     else:
         return redirect('error500')
@@ -315,7 +325,7 @@ def favt(request):
     else:
         return redirect('error500')
 def patient_dashboard(request):
-    print(request.user.is_authenticated,'[[[[=========')
+    
     if request.user.is_authenticated:
         pa=request.GET.get('Pid')
         patients =patient_record.objects.get(id=pa)
@@ -323,8 +333,8 @@ def patient_dashboard(request):
         prec = prescriptions.objects.filter(patient=patients)
         bill = billings.objects.filter(patient=patients)
         medical = medical_records.objects.filter(patient=patients)
-
-        res={'list':list,'prec':prec,'bill':bill,'medical':medical}
+        app=appoinmentlist.objects.filter(patient=patients)
+        res={'list':list,'prec':prec,'bill':bill,'medical':medical,'app':app}
         return render(request, 'patient/patient-dashboard.html',res)
     else:
         return redirect('error500')

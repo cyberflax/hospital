@@ -148,7 +148,8 @@ def pharmacy_register(request):
                 usermail = User.objects.filter(email=emails)
                 usernam = User.objects.filter(username=names)
 
-                if len(usermail) !=1 and len(usernam)!=1:
+                if len(usermail) !=1 :
+                    if len(usernam)!=1:
                         user = User.objects.create_user(username=names, email=emails, password=passwords)
                         user.save()
                         usr = pharmacy_admin_record(user=user)
@@ -165,9 +166,11 @@ def pharmacy_register(request):
                         else:
                             messages.success(request, "Your account has been successfully created")
                         return redirect('home')
+                    else:
+                        messages.warning(request,'username is already register.')
                 else:
-                    messages.error(request, "Email or name is already register.")
-
+                    messages.warning(request, "Email is already register.")
+                    return redirect(request.get_full_path())
         return render(request,'pharmacy/pharmacy-register.html')
     else:
         return redirect('error500')

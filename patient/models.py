@@ -1,4 +1,6 @@
+from typing import Tuple
 from django.db import models
+from django.db.models.deletion import CASCADE
 import model_utils
 from django.contrib.auth.models import User
 # Create your models here.
@@ -96,6 +98,7 @@ class medical_records(models.Model):
     def __str__(self):
         return self.patient.name+' - '+self.doctor.name
 class billings(models.Model):
+    appoinment=models.OneToOneField(appoinmentlist,on_delete=CASCADE,blank=True,null=True)
     patient = models.ForeignKey(patient_record, on_delete=models.CASCADE, related_name='billingss')
     doctor = models.ForeignKey(Dr, on_delete=models.CASCADE, related_name='bill')
     invoice_no = models.IntegerField()

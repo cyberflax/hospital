@@ -19,11 +19,12 @@ def adminhome(request):
         res['dct'] = Dr.objects.all()
         res['pnt'] = patient_record.objects.all()
         res['apmnt'] = appoinmentlist.objects.all()
+        return render(request, 'Admin_hospital/adminhome.html', res)
+
     else:
         
         return redirect('error404')
-    return render(request, 'Admin_hospital/adminhome.html', res)
-
+   
 
 def addblog(request):
 
@@ -42,21 +43,24 @@ def addblog(request):
             dr=Dr.objects.get(name=doc)
             blog=dr_blogs(title=title,img=img,desc=desc,ctgry=cate,subcate=subcate,doc=dr)
             blog.save()
+            msg.success(request,'Blog Added Successfully.')
             return redirect('blog')
+        return render(request, 'Admin_hospital/add-blog.html',res)
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/add-blog.html',res)
-
+    
 
 def appointmentlist(request):
 
     if request.user.is_authenticated:
         res = {}
         res['apmnt'] = appoinmentlist.objects.all()
+        return render(request, 'Admin_hospital/appointment-list.html', res)
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/appointment-list.html', res)
-
+   
 def blogcategeory(request):
     
     if request.user.is_authenticated:
@@ -97,9 +101,10 @@ def blogcategeory(request):
               # for delete
                 products = blog_subcategory.objects.filter(id=request.POST.get('catids'))
                 products.delete()
+    
+        return render(request,'Admin_hospital/blog-category.html',{'cat':ctgry})
     else:
         return redirect('error404')
-    return render(request,'Admin_hospital/blog-category.html',{'cat':ctgry})
 def blogdetails(request):
 
     if request.user.is_authenticated:
@@ -112,55 +117,58 @@ def blogdetails(request):
             var = reView( name=name, review=review, dics=doctor, YES=0, NO=0, rating=0)
             var.save()
             return redirect(request.get_full_path())
+        return render(request, 'Admin_hospital/blog-details.html',{'blog':blog})
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/blog-details.html',{'blog':blog})
-
+   
 
 def bloggrid(request):
 
     if request.user.is_authenticated:
-        print('done')
+        return render(request, 'Admin_hospital/blog-grid.html')
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/blog-grid.html')
-
+    
 
 def blog(request):
 
     if request.user.is_authenticated:
         res = {}
         res['blg'] = dr_blogs.objects.all()
+        return render(request, 'Admin_hospital/blog.html', res)
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/blog.html', res)
-
+    
 
 def components(request):
     if request.user.is_authenticated:
-        print('done')
+         return render(request, 'Admin_hospital/components.html')
+
     else:
      return redirect('error404')
-    return render(request, 'Admin_hospital/components.html')
-
+   
 
 def datatables(request):
     if request.user.is_authenticated:
-        print('done')
+         return render(request, 'Admin_hospital/data-tables.html')
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/data-tables.html')
-
+   
 
 def doctorlist(request):
 
     if request.user.is_authenticated:
         res = {}
         res['dct'] = Dr.objects.all()
+        return render(request, 'Admin_hospital/doctor-list.html', res)
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/doctor-list.html', res)
-
+    
 
 def editblog(request):
 
@@ -169,7 +177,7 @@ def editblog(request):
         editdr = Dr.objects.all()
         edit=request.GET.get('edit')
         blog=dr_blogs.objects.get(id=edit)
-        print(blog,'//')
+        
         if request.method=='POST':
             title = request.POST['title']
             img = request.FILES['img']
@@ -186,11 +194,14 @@ def editblog(request):
             blog.subcate=subcate
             blog.doc=dr
             blog.save()
+            msg.success(request,'Blog Edit successfully.')
+            return redirect('blog')
         res={'editdr':editdr,'blog':blog}
+        return render(request, 'Admin_hospital/edit-blog.html',res)
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/edit-blog.html',res)
-
+   
 
 def error404(request):
     return render(request, 'Admin_hospital/error-404.html')
@@ -206,82 +217,99 @@ def forgotpassword(request):
 
 def formbasicinput(request):
     if request.user.is_authenticated:
-        print('done')
+         return render(request, 'Admin_hospital/form-basic-inputs.html')
+
     else:
      return redirect('error404')
-    return render(request, 'Admin_hospital/form-basic-inputs.html')
-
+   
 
 def formhorizontal(request):
     if request.user.is_authenticated:
-        print('done')
+        return render(request, 'Admin_hospital/form-horizontal.html')
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/form-horizontal.html')
-
+    
 
 def forminputgroups(request):
     if request.user.is_authenticated:
-        print('done')
+        return render(request, 'Admin_hospital/form-input-groups.html')
+
     else:
       return redirect('error404')
-    return render(request, 'Admin_hospital/form-input-groups.html')
-
+    
 
 def formmask(request):
     if request.user.is_authenticated:
-        print('done')
+       return render(request, 'Admin_hospital/form-mask.html')
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/form-mask.html')
-
+    
 
 def formvalidation(request):
     if request.user.is_authenticated:
-        print('done')
+       return render(request, 'Admin_hospital/form-validation.html')
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/form-validation.html')
-
+    
 
 def formvertical(request):
     if request.user.is_authenticated:
-        print('done')
+         return render(request, 'Admin_hospital/form-vertical.html')
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/form-vertical.html')
-
+   
 
 def invoicereport(request):
     if request.user.is_authenticated:
 
         res = {}
         res['trs'] = appoinmentlist.objects.all()
-        ids = request.POST.get('aptid')  # for delete
-        apt = appoinmentlist.objects.filter(id=ids)
-        apt.delete()
+        res['bill']=billings.objects.all()
+        print(res['bill'],'///////',billings.objects.all())
+         # for delete
+        if request.method=='POST':
+            if len(request.POST.get('aptid')) != 0:
+                ids = request.POST.get('aptid') 
+                apt = appoinmentlist.objects.get(id=ids)
+                check=checkout.objects.filter(patient=apt.patient,dr_name=apt.doctor,
+                time2=apt.time2,date=apt.date,time1=apt.time1)
+                if len(check) != 0:
+                    check.delete()
+                apt.delete()
+            elif len(request.POST.get('bid')) != 0:
+                bills = request.POST.get('bid')
+                bill = billings.objects.filter(id=bills)
+                bill.delete()
+            return redirect(request.get_full_path())
+                # return redirect(request.META.get('HTTP_REFERER'))
+        return render(request, 'Admin_hospital/invoice-report.html', res)
+
     else:
          return redirect('error404')
-    return render(request, 'Admin_hospital/invoice-report.html', res)
-
+   
 
 def lockscreen(request):
     if request.user.is_authenticated:
-        print('done')
+        return render(request, 'Admin_hospital/lock-screen.html')
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/lock-screen.html')
-
+    
 
 def patientlist(request):
     if request.user.is_authenticated:
 
         res = {}
         res['pnt'] = patient_record.objects.all()
+        return render(request, 'Admin_hospital/patient-list.html', res)
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/patient-list.html', res)
-
+    
 
 def pharmacylist(request):
     if request.user.is_authenticated:
@@ -311,13 +339,15 @@ def pharmacylist(request):
                 return redirect(request.get_full_path())
             elif request.POST.get('pharids') is not None:  # for delete
                 phar = pharmacy.objects.get(id=request.POST.get('pharids'))
-                phar.delete()
+                user=User.objects.get(email=phar.email)
+                user.delete()
                 msg.warning(request,'pharmacy delete.')                
                 return redirect(request.get_full_path())
+        return render(request, 'Admin_hospital/pharmacy-list.html', {'pharma':phrmcy})
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/pharmacy-list.html', {'pharma':phrmcy})
-
+    
 
 def productlist(request):
     if request.user.is_authenticated:
@@ -345,18 +375,18 @@ def productlist(request):
             elif request.POST.get('pid') is not None:  # for delete
                 phar = pha_product.objects.get(id=request.POST['pid'])
                 phar.delete()
+        return render(request, 'Admin_hospital/product-list.html',{"prod":prodct,'pharma':phrmcy})
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/product-list.html',{"prod":prodct,'pharma':phrmcy})
-
+    
 
 def loginpage(request):
     if request.user.is_authenticated:
-        print('done')
+        return render(request, 'Admin_hospital/admin_login.html')
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/admin_login.html')
-
+    
 def adminprofile(request):
     if request.user.is_authenticated:
 
@@ -404,9 +434,10 @@ def adminprofile(request):
                     prof.img = img
                     prof.save()
                     return redirect(request.get_full_path())
+        
+        return render(request, 'Admin_hospital/adminprofile.html',{'profile':profile})
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/adminprofile.html',{'profile':profile})
 def admin_pwd_chng(request):
     if request.user.is_authenticated:
         next=request.GET.get('next')
@@ -466,20 +497,21 @@ def doc_reviews(request):
         dr = request.GET.get('Did')  # for delete
         rev = request.POST.get('rvw')
         review = reView.objects.filter(id=rev)
-        print(review,dr,rev,'/xxxx')
+       
         review.delete()
+        return render(request, 'Admin_hospital/doc_reviews.html', res)
+
     else:
          return redirect('error404')
-    return render(request, 'Admin_hospital/doc_reviews.html', res)
-
+    
 
 def settings(request):
     if request.user.is_authenticated:
-        print('done')
+        return render(request, 'Admin_hospital/settings.html')
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/settings.html')
-
+    
 
 def specialities(request):
     if request.user.is_authenticated:
@@ -515,39 +547,53 @@ def specialities(request):
                 products.delete()
                 msg.warning(request, 'speciality deleted.')
                 return redirect(request.get_full_path())
+        return render(request, 'Admin_hospital/specialities.html',{'product':special})
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/specialities.html',{'product':special})
-
+    
 
 def tablebasic(request):
     if request.user.is_authenticated:
-        print('done')
+       return render(request, 'Admin_hospital/tables-basic.html')
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/tables-basic.html')
-
+    
 
 def transactionslist(request):
     if request.user.is_authenticated:
 
         res = {}
+        res['bill']=billings.objects.all()
         res['trs'] = appoinmentlist.objects.all()
-
          # for delete
-        trans = request.POST.get('tid')
-        tran = appoinmentlist.objects.filter(id=trans)
-        tran.delete()
+        if request.method=='POST':
+            if len(request.POST.get('tid')) != 0:
+                trans = request.POST.get('tid')
+                tran = appoinmentlist.objects.get(id=trans)
+                check=checkout.objects.filter(patient=tran.patient,dr_name=tran.doctor,
+                time2=tran.time2,date=tran.date,time1=tran.time1)
+                if len(check) != 0:
+                    check.delete()
+                tran.delete()
+            elif len(request.POST.get('bid')) != 0:
+                bills = request.POST.get('bid')
+                bill = billings.objects.filter(id=bills)
+                bill.delete()
+            return redirect(request.get_full_path())
+                # return redirect(request.META.get('HTTP_REFERER'))
+        return render(request, 'Admin_hospital/transactions-list.html', res)
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/transactions-list.html', res)
-
+    
 
 def blankpage(request):
     if request.user.is_authenticated:
-        print('done')
+        return render(request, 'Admin_hospital/Blank-Pages.html')
+
     else:
         return redirect('error404')
-    return render(request, 'Admin_hospital/Blank-Pages.html')
-
+   
 

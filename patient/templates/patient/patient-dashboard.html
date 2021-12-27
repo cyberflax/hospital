@@ -638,7 +638,7 @@
            {% endif %}
           </div>
           <div class="tab-pane fade" id="pat_billing">
-            {% if bill|length is not 0 %}
+            {% if bill|length is not 0 or app|length is not 0 %}
            <div class="card-table mb-0">
             <div class="card-body">
              <div class="table-responsive">
@@ -708,7 +708,52 @@
                   </div>
                  </td>
                 </tr>
-               {%endfor%}
+               {%endfor%}{% for a in app %}
+               <tr>
+                  <td>
+                   <a href="{%url 'invoice_view'%}?Pid={{a.patient.id}}&Did={{a.doctor.id}}&Oid={{a.id}}">
+                    #INV-00{{a.id}}
+                   </a>
+                  </td>
+                  <td>
+                   <h2 class="table-avatar">
+                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' a.doctor.id %}">
+                     <!-- <img alt="User Image" class="avatar-img rounded-circle" src=" /media/{{i.doctor.img}}"/> -->
+                    
+                   
+                     {% if a.doctor.img|length is not 0  %}
+                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{a.doctor.img}}"/>
+                     {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                    {% endif %}
+                   
+                   </a>
+                    <a href="{%url 'Doctor_profile' a.doctor.id %}">
+                      {{a.doctor.name}}
+                     <span>
+                     {{a.doctor.specialization}}
+                     </span>
+                    </a>
+                   </h2>
+                  </td>
+                  <td>
+                   ${{a.amount}}
+                  </td>
+                  <td>
+                   {{a.created_date}}
+                  </td>
+                  <td>
+                   <div class="table-action">
+                    <a class="btn btn-sm bg-info-light" href="{%url 'invoice_view'%}?Pid={{a.patient.id}}&Did={{a.doctor.id}}&Oid={{a.id}}">
+                     <i class="feather-eye">
+                     </i>
+                    </a>
+                    <a class="btn btn-sm bg-primary-light" href="javascript:void(0);">
+                     <i class="feather-printer">
+                     </i>
+                    </a>
+                   </div>
+                  </td>
+                 </tr>{% endfor %}
                </tbody>
               </table>
              </div>

@@ -351,24 +351,24 @@ def appo_delete(request):
 def schedule(request):
     
     if request.user.is_authenticated:
+        path1=request.get_full_path()
         dr = Dr.objects.get(id=request.user.Dr.id)
+        path3=request.get_full_path()
         time = for_bookings.objects.filter(name=dr)
         day = for_bookings.objects.values('day')
         days = {datas['day'] for datas in day}
         x = request.GET.get('dayy')
         # x2=book_times.objects.get(dr=x)
         x1 = book_times.objects.filter(dr=x)
-
         time1 = request.GET.get('timeid')
         day = request.GET.get('dayid')
         p = book_times.objects.filter(id=day)
-
         # pcun=p.times.all().count()
         for i in p:
             z = i.times.remove(time1)
             if i.times.all().count()==0:
                 p.delete()
-            redirect(request.get_full_path())
+            return redirect(request.META.get('HTTP_REFERER'))
         res = {'time': time, 'days': days, 'x': x1}
         return render(request,'doctor/schedule-timings.html',res)
     else:
@@ -376,16 +376,28 @@ def schedule(request):
 def invoices(request):
     
     if request.user.is_authenticated:
-        doctor = request.GET.get('invoice')
-        dr = Dr.objects.get(id=doctor)
+        # doctor = request.GET.get('invoice')
+        dr = Dr.objects.get(id=request.user.Dr.id)
         invoice = appoinmentlist.objects.filter(doctor=dr)
+        bill=billings.objects.filter(doctor=dr)
         if request.GET.get('Oid') is not None:
             oderid = request.GET.get('Oid')
             pat_id = request.GET.get('pid')
             pat=patient_record.objects.get(id=pat_id)
-            check = appoinmentlist.objects.get(patient=pat,id=oderid)
+            app = appoinmentlist.objects.get(patient=pat,id=oderid)
+            check=checkout.objects.filter(patient=pat,dr_name=dr,time2=app.time2,date=app.date,time1=app.time1)
+            if len(check) is not 0:
+                check.delete()
+            app.delete()
+            return redirect(request.META.get('HTTP_REFERER'))
+        elif request.GET.get('aid') is not None:
+            aid = request.GET.get('aid')
+            pat = request.GET.get('pat')
+            pat=patient_record.objects.get(id=pat)
+            check = billings.objects.get(patient=pat,id=aid)
             check.delete()
-        res = {'invoice': invoice}
+            return redirect(request.META.get('HTTP_REFERER'))
+        res = {'invoice': invoice,'bill':bill}
         return render(request,'doctor/invoices.html',res)
     else:
         return redirect('error500')
@@ -490,11 +502,11 @@ def allpatient(request):
             pa_id=data.patient
             dr_id=data.dr_name
             my_patients = mypatient.objects.filter(Dr_names=dr_id, pa_names=pa_id)
-
-            prec=prescriptions(patient=pa_id,date=data.date,doctor=dr_id,prec_name='blank')
+            # app=appoinmentlist(doctor=dr_id,patient=pa_id,date=data.date,time1=data.time1,time2=data.time2)
+            prec=prescriptions(patient=pa_id,date=data.date,doctor=dr_id,prec_name='none')
             prec.save()
-            bill=billings(patient=pa_id,doctor=dr_id,amount=data.amount,paid_on_date=data.date,invoice_no=0)
-            bill.save()
+            # bill=billings(appoinment=app,patient=pa_id,doctor=dr_id,amount=data.amount,paid_on_date=data.date,invoice_no=0)
+            # bill.save()
             medical=medical_records(patient=pa_id,desc='',attachment='',date=data.date,doctor=dr_id)
             medical.save()
 
