@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.deletion import CASCADE
 from doctors.models import userType
 # Create your models here.
 
@@ -93,6 +94,7 @@ class product_cart(models.Model):
         return self.pharmacy_name
 class pharmacy_prod_order(models.Model):
     username=models.CharField(max_length=40)
+    email=models.ForeignKey(User,null=True,on_delete=CASCADE)
     phone=models.IntegerField()
     address=models.TextField(max_length=50)
     shipping_details=models.TextField(max_length=50)

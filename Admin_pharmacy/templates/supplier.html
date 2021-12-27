@@ -70,14 +70,20 @@
              <td>
               <h2 class="table-avatar">
                <span class="avatar avatar-sm mr-2">
+                  {% if i.product.img|length is not 0 %}
                 <img alt="product image" class="avatar-img" src="/media/{{i.product.img}}"/>
+             {% else %}  
+              <img alt="product image" class="avatar-img" src="/media/black.png"/>
+              {% endif %}
                </span>
                {{i.product.name}}
               </h2>
              </td>
              <td>  <h2 class="table-avatar">
-                  <span class="avatar avatar-sm mr-2">
+                  <span class="avatar avatar-sm mr-2">{% if i.img|length is not 0 %}
                 <img alt="product image" class="avatar-img" src="/media/{{i.img}}"/>
+               {% else %} <img alt="product image" class="avatar-img" src="/media/blank.png"/>
+              {% endif %}
                </span>
                  {{i.name}}</h2>
              </td>
@@ -144,7 +150,7 @@
        are you sure you want to delete?
       </p>
      </div><form method="get">
-     <input name="suppid" id="suppid">
+     <input name="suppid" hidden id="suppid">
      <div class="modal-footer">
      <button  class="btn btn-success" type="submit">
         Yes

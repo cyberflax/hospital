@@ -63,12 +63,14 @@
            <tbody>{% for i in list.0.pha_product.all %}{% if i.quntity <= 5%}
             <tr>
              <td>
-              {{forloop.counter}}
+              #00{{forloop.counter0}}
              </td>
              <td>
               <h2 class="table-avatar">
-               <span class="avatar avatar-sm mr-2">
+               <span class="avatar avatar-sm mr-2">{% if i.img|length is not 0%}
                 <img alt="product image" class="avatar-img" src="/media/{{i.img}}"/>
+             {% else %}   <img alt="product image" class="avatar-img" src="/media/black.png"/>
+             {% endif %}
                </span>
                {{i.name}}
               </h2>

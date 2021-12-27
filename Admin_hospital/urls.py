@@ -39,7 +39,7 @@ urlpatterns = [
 
     path('register/', views.register, name='register'),
     path('reviews/', views.doc_reviews, name='doc_reviews'),
-    path('settings/', views.settings, name='settings'),
+    path('adminsettings/', views.adminsettings, name='adminsettings'),
     path('specialities/', views.specialities, name='specialities'),
     path('table-basic/', views.tablebasic, name='tablebasic'),
     path('transactions-list/', views.transactionslist, name='transactionslist'),

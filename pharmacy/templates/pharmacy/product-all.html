@@ -25,7 +25,7 @@
      </div>
     </div>
    </div>
-   <div class="content">{% if total|length is not 0 %}
+   <div class="content">{% if total is not 0 %}
     <div class="container-fluid">
      <div class="row">
       <div class="col-md-5 col-lg-3 col-xl-3 theiaStickySidebar">
@@ -67,7 +67,7 @@
          <p class="doc-location mb-2 text-ellipse pharmacy-location">
           <i class="feather-map-pin mr-1">
           </i>
-          {% for t in title %}{{t.0.doc.address}}{% endfor %}
+         {% for i in add %} {{i}}{% endfor %}
          </p>
          <span class="sort-title">
           Showing {{count}} of {{total}} products
@@ -102,8 +102,8 @@
         </div>
        </div>
        <div class="row">
-        {% for t in title%}
-        {% for i in t%}
+        {% for t in title %}
+        {% for i in t %}{% if i.expiry_date >= today %}
         <div class="col-md-12 col-lg-6 col-xl-4 product-custom">
          <div class="profile-widget">
           <div class="doc-img">
@@ -139,7 +139,9 @@
            </div>
           </div>
          </div>
-        </div>{%endfor%}{%endfor%}
+        </div>
+        {% endif %}
+        {% endfor %}{% endfor %}
 
 
         <div class="col-md-12 load-more">

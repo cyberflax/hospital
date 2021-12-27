@@ -9,7 +9,7 @@
 					<h3 class="page-title">List of Patient</h3>
 					<ul class="breadcrumb">
 						<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
-<!--						<li class="breadcrumb-item"><a href="javascript:(0);">Users</a></li>-->
+
 						<li class="breadcrumb-item active" style="color:blue">Patient</li>
 					</ul>
 				</div>
@@ -39,17 +39,13 @@
 											<td>#PT0{{forloop.counter}}</td>
 											<td>
 												<h2 class="table-avatar">
-					<a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{p.id}}">
-<!--						<img	alt="User Image" class="avatar-img rounded-circle"-->
-<!--															src="/media/{{p.img}}" />-->
-
-       {% if p.img|length is not 0 %}
-       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{p.img}}" width="31"/>
-            {% else %}
-             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+       {% if p.img|length is not 0 %}<a class="avatar avatar-sm mr-2" href="/media/{{p.img}}">
+       <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{p.img}}" width="31"/></a>
+            {% else %}<a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+             <img alt="User Image" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/></a>
           {% endif %}
 
-					</a>
+					
 													<a href="{%url 'patient_profile'%}?profile={{p.id}}">{{p.name}} </a>
 												</h2>
 											</td>

@@ -19,9 +19,13 @@
 					<div class="col-sm-12">
 						<div class="blog-view">
 							<div class="blog blog-single-post">
-								<div class="blog-image">
+								<div class="blog-image">{% if blog.img|length != 0 %}
 									<a href="/media/{{blog.img}}"><img alt="" class="img-fluid"
 											src="/media/{{blog.img}}" /></a>
+{% else %}
+											<a href="/media/default.jpg"><img alt="" class="img-fluid"
+												src="/media/default.jpg" /></a>{% endif %}
+
 								</div>
 								<h3 class="blog-title">{{blog.title}}</h3>
 								<div class="blog-info clearfix">
@@ -29,8 +33,13 @@
 										<ul>
 											<li>
 												<div class="post-author">
-													<a href="{% url 'Doctor_profile'  blog.doc.id %}"><img alt="Post Author"
-															src="/media/{{blog.doc.img}}" /> <span>Dr.
+													<a href="{% url 'Doctor_profile'  blog.doc.id %}">
+														{% if blog.doc.img|length != 0 %}
+														<img alt="Post Author" src="/media/{{blog.doc.img}}" /> 
+														{% else %}<img alt="Post Author"
+														src="/media/default.jpg" />{% endif %}
+
+															<span>Dr.
 															{{blog.doc.name}}</span></a>
 												</div>
 											</li>
@@ -66,10 +75,15 @@
 								<div class="card-body">
 									<div class="about-author">
 										<div class="about-author-img">
-											<div class="author-img-wrap">
-												<a href="{% url 'Doctor_profile' blog.doc.id %}"><img alt=""
+											<div class="author-img-wrap">{% if blog.doc.img|length != 0 %}
+												<a href="/media/{{blog.doc.img}}"><img alt=""
 														class="img-fluid rounded-circle"
 														src="/media/{{blog.doc.img}}" /></a>
+
+														{% else %}
+												<a href="/media/default.jpg"><img alt=""
+													class="img-fluid rounded-circle"
+													src="/media/default.jpg" /></a>{% endif %}
 											</div>
 										</div>
 										<div class="author-details">
@@ -88,8 +102,10 @@
 										{% for r in blog.doc.reView.all %}
 										<li>
 											<div class="comment">
-												<div class="comment-author">
+												<div class="comment-author">{% if r.patient.img|length != 0 %}
 													<img alt="" class="avatar" src="/media/{{r.patient.img}}" />
+													{% else %}
+													<img alt="" class="avatar" src="/media/default.jpg" />{% endif%}
 												</div>
 												<div class="comment-block">
 													<span class="comment-by">

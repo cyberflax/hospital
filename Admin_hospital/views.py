@@ -74,12 +74,12 @@ def blogcategeory(request):
                 cats= blog_subcategory.objects.get(id=request.POST.get('subid'))
                 cats.subcat = subcat
                 cats.save()
+                msg.success(request,' Blog-category edit successfully')
             elif request.POST.get('cat') is not None:  # for add
                 cat = request.POST['cat']
                 subcat = request.POST['subcat']
                 cats = blog_categeory.objects.values('cat')
                 data = {data['cat'].lower() for data in cats}
-                
                 subcats = blog_subcategory.objects.values('subcat')
                 datas = {data['subcat'].lower() for data in subcats}
                 if cat.lower() not in data:
@@ -101,6 +101,7 @@ def blogcategeory(request):
               # for delete
                 products = blog_subcategory.objects.filter(id=request.POST.get('catids'))
                 products.delete()
+                msg.success(request,'Category Deleted.')
     
         return render(request,'Admin_hospital/blog-category.html',{'cat':ctgry})
     else:
@@ -116,6 +117,7 @@ def blogdetails(request):
             review = request.POST['review']
             var = reView( name=name, review=review, dics=doctor, YES=0, NO=0, rating=0)
             var.save()
+            msg.success(request,'Review Posted.')
             return redirect(request.get_full_path())
         return render(request, 'Admin_hospital/blog-details.html',{'blog':blog})
 
@@ -269,7 +271,6 @@ def invoicereport(request):
         res = {}
         res['trs'] = appoinmentlist.objects.all()
         res['bill']=billings.objects.all()
-        print(res['bill'],'///////',billings.objects.all())
          # for delete
         if request.method=='POST':
             if len(request.POST.get('aptid')) != 0:
@@ -280,11 +281,14 @@ def invoicereport(request):
                 if len(check) != 0:
                     check.delete()
                 apt.delete()
+                msg.success(request,'Invoice Deleted.')
+                return redirect(request.get_full_path())
             elif len(request.POST.get('bid')) != 0:
                 bills = request.POST.get('bid')
                 bill = billings.objects.filter(id=bills)
                 bill.delete()
-            return redirect(request.get_full_path())
+                msg.success(request,'Invoice Deleted successfully.')
+                return redirect(request.get_full_path())
                 # return redirect(request.META.get('HTTP_REFERER'))
         return render(request, 'Admin_hospital/invoice-report.html', res)
 
@@ -341,7 +345,7 @@ def pharmacylist(request):
                 phar = pharmacy.objects.get(id=request.POST.get('pharids'))
                 user=User.objects.get(email=phar.email)
                 user.delete()
-                msg.warning(request,'pharmacy delete.')                
+                msg.success(request,'pharmacy delete.')                
                 return redirect(request.get_full_path())
         return render(request, 'Admin_hospital/pharmacy-list.html', {'pharma':phrmcy})
 
@@ -362,6 +366,7 @@ def productlist(request):
                 phar=pharmacy.objects.get(id=request.POST['pharma'])
                 product=pha_product(doc=phar,name=prod,price=price,img=img,expiry_date='1888-11-1')
                 product.save()
+                msg.success(request,'Product added.')
                 return redirect(request.get_full_path())
             elif  request.POST.get('prodid') is not None:  #for edit
                 prod = request.POST['name']
@@ -372,9 +377,13 @@ def productlist(request):
                 phar.img=img
                 phar.price=price
                 phar.save()
+                msg.success(request,'Product Edit successfully.')
+                return redirect(request.get_full_path())
             elif request.POST.get('pid') is not None:  # for delete
                 phar = pha_product.objects.get(id=request.POST['pid'])
                 phar.delete()
+                msg.success(request,'Product deleted.')
+                return redirect(request.get_full_path())
         return render(request, 'Admin_hospital/product-list.html',{"prod":prodct,'pharma':phrmcy})
     else:
         return redirect('error404')
@@ -420,6 +429,7 @@ def adminprofile(request):
                 profiles.email = email
                 profiles.zipcode = zip
                 profiles.save()
+                msg.success(request,'Profile Updated.')
                 return redirect(request.get_full_path())
             elif request.POST.get('adminid') is not None:
                 id = request.POST['adminid']  # admin edit
@@ -433,6 +443,7 @@ def adminprofile(request):
                     prof.name = name
                     prof.img = img
                     prof.save()
+                    msg.success(request,'Profile edited success.')
                     return redirect(request.get_full_path())
         
         return render(request, 'Admin_hospital/adminprofile.html',{'profile':profile})
@@ -452,7 +463,7 @@ def admin_pwd_chng(request):
                 user.save()
                 user=User.objects.get(email=mail)
                 login(request)
-                msg.error(request, "password updated")
+                msg.success(request, "password updated")
             else:
                 msg.error(request, "incorrect old password")
 
@@ -470,20 +481,23 @@ def register(request):
             usermail = User.objects.filter(email=email)
             usernam=User.objects.filter(username=name)
             # print(name,name.lower(),usernam)
-            if len(usermail) !=1 and len(usernam)!=1:
-                user =User.objects.create_superuser(username=name, email=email, password=password)
-                user.save()
-                users=hospital_admin_record(user=user,email=email,name=name)
-                users.save()
-                typeuser = userType(user=user, type='4')
-                typeuser.save()
-                token=str(uuid.uuid4())
-                frgpwd=frgt_pwd(user=user,frg_token=token)
-                frgpwd.save()
-                msg.success(request, "Your account has been successfully created")
-                return redirect('home')
+            if len(usermail) !=1 :
+                if len(usernam)!=1:
+                    user =User.objects.create_superuser(username=name, email=email, password=password)
+                    user.save()
+                    users=hospital_admin_record(user=user,email=email,name=name)
+                    users.save()
+                    typeuser = userType(user=user, type='4')
+                    typeuser.save()
+                    token=str(uuid.uuid4())
+                    frgpwd=frgt_pwd(user=user,frg_token=token)
+                    frgpwd.save()
+                    msg.success(request, "Your account has been successfully created")
+                    return redirect('home')
+                else: 
+                    msg.error(request, "Username is already register.")
             else:
-                msg.error(request, "Email or name is already register.")
+                msg.error(request, "Email is already register.")
 
         return render(request, 'Admin_hospital/register.html')
     else:
@@ -499,13 +513,14 @@ def doc_reviews(request):
         review = reView.objects.filter(id=rev)
        
         review.delete()
+        msg.success(request,'Review deleted.')
         return render(request, 'Admin_hospital/doc_reviews.html', res)
 
     else:
          return redirect('error404')
     
 
-def settings(request):
+def adminsettings(request):
     if request.user.is_authenticated:
         return render(request, 'Admin_hospital/settings.html')
 
@@ -539,13 +554,13 @@ def specialities(request):
                     msg.success(request, 'speciality added.')
                     return redirect(request.get_full_path())
                 else:
-                    msg.warning(request, 'speciality is already in list')
+                    msg.error(request, 'speciality is already in list')
                     return redirect(request.get_full_path())
             elif request.POST.get('speids') is not None:
                 prod = request.POST['speids']  # for delete
                 products = speciality.objects.filter(id=prod)
                 products.delete()
-                msg.warning(request, 'speciality deleted.')
+                msg.success(request, 'speciality deleted.')
                 return redirect(request.get_full_path())
         return render(request, 'Admin_hospital/specialities.html',{'product':special})
 
@@ -577,11 +592,15 @@ def transactionslist(request):
                 if len(check) != 0:
                     check.delete()
                 tran.delete()
+                msg.success(request,'transaction deleted')
+                
+                return redirect(request.get_full_path())
             elif len(request.POST.get('bid')) != 0:
                 bills = request.POST.get('bid')
                 bill = billings.objects.filter(id=bills)
                 bill.delete()
-            return redirect(request.get_full_path())
+                msg.success(request,'transaction deleted')
+                return redirect(request.get_full_path())
                 # return redirect(request.META.get('HTTP_REFERER'))
         return render(request, 'Admin_hospital/transactions-list.html', res)
 

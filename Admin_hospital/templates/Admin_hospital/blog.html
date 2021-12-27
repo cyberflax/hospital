@@ -20,7 +20,7 @@
 									Add Blog</a>
 						</div>
 					</div>
-				</div>{% if blg|length is not 0%}
+				</div>{% if blg|length != 0 %}
 				<div class="row">
 					<div class="col-sm-12">
 						<div class="row mb-5">
@@ -46,26 +46,20 @@
 							<div class="col-md-6 col-xl-4 col-sm-12">
 								<div class="blog grid-blog">
 									<div class="blog-image">
-										<a href="{% url 'blogdetails' %}?Bid={{b.id}}">
-<!--											<img alt="Post Image" class="img-fluid"-->
-<!--												src="/media/{{b.img}}" />-->
 
-       {% if b.img|length is not 0 %}
-       <img alt="Post Image" class="img-fluid" src="/media/{{b.img}}" width="31"/>
-            {% else %}
-             <img alt="Post Image" class="img-fluid" width="31" src="/media/default.jpg"/>
+       {% if b.img|length is not 0 %}<a href="/media/{{b.img}}">
+       <img alt="Post Image" class="img-fluid" src="/media/{{b.img}}" width="31"/></a>
+            {% else %}<a href="/media/default.jpg">
+             <img alt="Post Image" class="img-fluid" width="31" src="/media/default.jpg"/></a>
           {% endif %}
 
-										</a>
+									
 									</div>
 									<div class="blog-content">
 										<ul class="entry-meta meta-item">
 											<li>
 												<div class="post-author">
 													<a href="{% url 'Doctor_profile' b.doc.id %}">
-<!--														<img alt="Post Author"-->
-<!--															src="/media/{{b.doc.img}}" /> -->
-
 
        {% if b.doc.img|length is not 0 %}
        <img alt="Post Author"  src="/media/{{b.doc.img}}" width="31"/>

@@ -35,17 +35,14 @@
 									<tr>
 										<td>
 											<h2 class="table-avatar">
-												<a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' d.id %}">
-<!--													<img alt="User Image" class="avatar-img rounded-circle"-->
-<!--														src="/media/{{d.img}}" /></a>-->
-
-       {% if d.img|length is not 0 %}
-       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{d.img}}" width="31"/>
-            {% else %}
-             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+											
+       {% if d.img|length is not 0 %}<a class="avatar avatar-sm mr-2" href="/media/{{d.img}}">
+       <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{d.img}}" width="31"/></a>
+            {% else %}<a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+             <img alt="User Image" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/></a>
 													{% endif %}</a>
 
-													<a href="{% url 'Doctor_profile' d.id %}">{{d.name}}</a>
+													<a href="{% url 'Doctor_profile' d.id %}">Dr. {{d.name}}</a>
 											</h2>
 										</td>
 										<td>{{d.specialization}}</td>

@@ -16,6 +16,8 @@
            Dashboard
           </a>
          </li>
+
+         
          <li class="breadcrumb-item active" style="color:blue">
           Expired
          </li>
@@ -63,13 +65,16 @@
            <tbody>{% for i in li.0.pha_product.all%}{% if i.expiry_date <= date %}
             <tr>
              <td>
-              {{forloop.counter}}
+              #00{{forloop.counter0}}
              </td>
              <td>
               <h2 class="table-avatar">
                <span class="avatar avatar-sm mr-2">
+               {%  if i.img|length is not 0 %}
                 <img alt="product image" class="avatar-img" src="/media/{{i.img}}"/>
-               </span>
+       {% else %}         <img alt="product image" class="avatar-img" src="/media/{{i.img}}"/>
+             {% endif %}
+              </span>
                {{i.name}}
               </h2>
              </td>

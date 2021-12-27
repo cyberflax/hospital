@@ -32,7 +32,7 @@ def pharmacy_details(request):
                 messages.success(request, "Review posted.")
                 return redirect(path)
             else:
-                messages.warning(request, "Your are not patient.please register.")
+                messages.error(request, "Your are not patient.please register.")
 
         res = {'title': medical}
 
@@ -92,6 +92,7 @@ def product_all(request):
         list=[]
         re={}
         total=0
+        today=datetime.date.today()
         bdid=request.GET.get('@//@/')# for product description
         if bdid is None:
             list.append(pha_product.objects.all())
@@ -130,8 +131,15 @@ def product_all(request):
         count = 0
         for i in list:
             for j in i:
-                count += 1
-        res = {'title':list,'cat':re,'count':count,'total':total}
+                if j.expiry_date >= today:
+                    count += 1
+        lis=[]
+        for i in list:
+          for j in i:
+            li=j.doc.address
+            if li not in lis:
+                lis.append(li)
+        res = {'title':list,'cat':re,'count':count,'total':total,'today':today,'add':lis}
 
         return render(request,'pharmacy/product-all.html',res)
     else:
@@ -167,9 +175,9 @@ def pharmacy_register(request):
                             messages.success(request, "Your account has been successfully created")
                         return redirect('home')
                     else:
-                        messages.warning(request,'username is already register.')
+                        messages.error(request,'username is already register.')
                 else:
-                    messages.warning(request, "Email is already register.")
+                    messages.error(request, "Email is already register.")
                     return redirect(request.get_full_path())
         return render(request,'pharmacy/pharmacy-register.html')
     else:
@@ -213,7 +221,7 @@ def add_to_cart(request):
         # else:
         #     messages.warning(request,'Please Login')
         #     return redirect('dlogin')
-        # return redirect('medicine_cart')
+        return redirect('medicine_cart')
     else:
         return redirect('error500')    
 def minus(request):
@@ -278,8 +286,8 @@ def product_checkout(request):
             allprice = products.price * data.quntity
             total += allprice
             if products.quntity < data.quntity:
-                messages.warning(request, F'{products.name} product quntity is only {products.quntity} available')
-                return redirect('medicine_cart')
+                messages.warning(request, F'{products.name} product is out of stock quntity is  {products.quntity} available')
+                return redirect(request.META.get('HTTP_REFERER'))
             else:
                 li.append([products, allprice, data.quntity])
             sub = total + 25  # shippnig/tax
@@ -294,6 +302,7 @@ def product_order(request):
         itemlist = product_cart.objects.filter(user_id=request.user.id)
         li = []
         total = 0
+        
         for data in itemlist:
             pharmacy_name = data.pharmacy_name
             product_id = data.product_id
@@ -312,11 +321,12 @@ def product_order(request):
                 cvv= request.POST['cvv']
                 expyear = request.POST['exp_year']
                 expmonth = request.POST['exp_month']
+                mail=User.objects.get(email=request.user.email)
                 var = pharmacy_prod_order(username=request.user.username,phone=contact_no,address=address,
                                         shipping_details=shipping,card_name=cardname,card_no=cardno,
                                         exp_month=expmonth,exp_year=expyear,cvv=cvv,product_id=products,
                                         pharmacys=products.doc,price=products.price,total=sub,product_name=products.name,
-                                        quntitys=data.quntity,invoice=0)
+                                        quntitys=data.quntity,invoice=0,email=mail)
                 var.save()
                 prods = pha_product.objects.filter(id=data.product_id)
                 qunt=products.quntity-data.quntity

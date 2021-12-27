@@ -8,7 +8,7 @@
 <div class="col">
 <h3 class="page-title">Profile</h3>
 <ul class="breadcrumb">
-<li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
 <li class="breadcrumb-item active" style="color:blue">Profile</li>
 </ul>
 </div>
@@ -19,14 +19,14 @@
 <div class="profile-header">
 <div class="row align-items-center">
 <div class="col-auto profile-image">
-<a href="#">
-    {% if profile.0.img|length is not 0 %}
-<img alt="User Image" class="rounded-circle" src="/media/{{profile.0.img}}"/>
 
-     {% else %}
-            <img alt="User Image" class="rounded-circle" width="31" src="/media/default.jpg"/>
+    {% if profile.0.img|length is not 0 %}<a href="/media/{{profile.0.img}}">
+<img alt="User Image" class="rounded-circle" src="/media/{{profile.0.img}}"/></a>
+
+     {% else %}<a href="/media/default.jpg">
+            <img alt="User Image" class="rounded-circle" width="31" src="/media/default.jpg"/></a>
          {% endif %}
-</a>
+
 </div>
 <div class="col ml-md-n2 profile-user-info">
 <h4 class="user-name mb-0"> {{profile.0.name}}</h4>

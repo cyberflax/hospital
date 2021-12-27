@@ -39,22 +39,19 @@
 										<td>#PN0{{forloop.counter}}</td>
 										<td>
 											<h2 class="table-avatar">
-												<a class="avatar avatar-sm mr-2" >
-<!--													<img alt="product image" class="avatar-img rounded-circle"-->
-<!--														src="/media/{{p.img}}" />-->
+												
 
-
-       {% if p.img|length is not 0 %}
-       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{p.img}}" width="31"/>
-            {% else %}
-             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+       {% if p.img|length is not 0 %}<a class="avatar avatar-sm mr-2" href="/media/{{p.img}}">
+       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{p.img}}" width="31"/></a>
+            {% else %}<a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/></a>
           {% endif %}
-												</a>
+												
 												<a>
 													{{p.name}}</a>
 											</h2>
 										</td>
-										<td>{{p.address}}<br /> Cyrus, MN 56323 </td>
+										<td>{{p.address}} </td>
 										<td>12-05-2020</td>
 										<td>{{p.contact}}</td>
 										<td class="text-right">

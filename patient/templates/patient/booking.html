@@ -138,7 +138,7 @@
                                                   {% if x.0.times.all|length is not 0 %}
 {% for time in x.0.times.all %}
 
-                <a class="timing "  data-toggle="tab" onclick="$('#date').val('{{x.0.dr.id}}');$('#time').val('{{time.id}}');">
+                <a class="timing "   data-toggle="tab" onclick="$('#date').val('{{x.0.dr.id}}');$('#time').val('{{time.id}}');">
                     <span>
                     {{time.time1 }}-{{time.time2}}
                 </span>
@@ -152,8 +152,9 @@
                                         </ul>
                                     </div>
                                 </div>
-                    <input id="time" name="time1" type="hidden" value="">
-                      <input id="date" name="date" type="hidden" value="">
+                        <div style="display:none">
+                    <input id="time" name="time1" type="text" required />
+                      <input id="date" name="date" type="text" value=""></div>
                             </div>
 
                         </div>

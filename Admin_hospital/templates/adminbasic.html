@@ -38,10 +38,10 @@
         
         <div class="header">
             <div class="header-left">
-                <a class="logo" href="{% url 'home' %}">
+                <a class="logo" href="/">
                     <img alt="Logo" src="{% static 'admin/assets/img/logo.png' %}" />
                 </a>
-                <a class="logo logo-small" href="index.html">
+                <a class="logo logo-small" href="#">
                     <img alt="Logo" height="30" src="{% static 'admin/assets/img/logo-small.png' %}" width="30" />
                 </a>
 
@@ -197,59 +197,36 @@
                         </div>
                     </div>
                 </li>
-                <li class="nav-item dropdown has-arrow">
-                    <!--                    <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#">-->
-                    <!--                        <span class="user-img">-->
-                    <!--                            <img alt="Ryan Taylor" class="rounded-circle"-->
-                    <!--                                src="{% static 'admin/assets/img/profiles/avatar-01.jpg' %}" width="31" />-->
-
-                    <!-- {{request.user.hospital_admin_record.img}}{{request.user.id}} -->
-                    {% if request.user.hospital_admin_record.img|length is not 0 %}
-                    <a class="dropdown-toggle nav-link" data-toggle="dropdown"
-                        href="/media/{{request.user.hospital_admin_record.img}}">
-                        <span class="user-img">
-                            <img alt="Fred Ortego" class="rounded-circle"
-                                src="/media/{{request.user.hospital_admin_record.img}}" width="31" />
-                        </span></a> {% else %}<a class="dropdown-toggle nav-link" data-toggle="dropdown"
-                        href="/media/default.jpg">
-                        <span class="user-img">
-                            <img alt="Fred Ortego" class="rounded-circle" width="31" src="/media/default.jpg" />
-                        </span></a> {% endif %}
-
-                    <div class="dropdown-menu">
-                        <div class="user-header">
-                            <div class="avatar avatar-sm">
-                                <!--                                <img alt="User Image" class="avatar-img rounded-circle"-->
-                                <!--                                    src="{% static 'admin/assets/img/profiles/avatar-01.jpg' %}" />-->
-
-                                {% if request.user.hospital_admin_record.img|length is not 0 %}
-                                <img alt="Fred Ortego" class="rounded-circle"
-                                    src="/media/{{request.user.hospital_admin_record.img}}" width="31" />
-                                {% else %}
-                                <img alt="Fred Ortego" class="rounded-circle" width="31" src="/media/default.jpg" />
-                                {% endif %}
-
-                            </div>
-                            <div class="user-text">
-                                <h6>
-                                    {{request.user.username}}
-                                </h6>
-                                <p class="text-muted mb-0">
-                                    Administrator
-                                </p>
-                            </div>
-                        </div>
-                        <a class="dropdown-item" href="{% url 'adminprofile' %}">
-                            My Profile
-                        </a>
-                        <a class="dropdown-item" href="{% url 'settings' %}">
-                            Settings
-                        </a>
-                        <a class="dropdown-item" href="{% url 'dlogout' %}">
-                            Logout
-                        </a>
-                    </div>
-                </li>
+              
+<li class="nav-item dropdown has-arrow">
+    <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#">
+    <span class="user-img">
+        {% if request.user.hos_admin_record.img|length is not 0 %}
+        <img alt="" class="rounded-circle" src="/media/{{request.user.hos_admin_record.img}}" width="31"/>
+    {% else %} <img alt="" class="rounded-circle" src="/media/default.jpg" width="31"/>
+    
+    {% endif %}
+    </span>
+    </a>
+    <div class="dropdown-menu">
+    <div class="user-header">
+    <div class="avatar avatar-sm">
+        {% if request.user.hos_admin_record.img|length is not 0 %}
+    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{request.user.hos_admin_record.img}}"/>
+    {% else %} <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg" />
+    
+    {% endif %}   
+</div>
+    <div class="user-text">
+    <h6>{{request.user.hos_admin_record.name}}</h6>
+    <p class="text-muted mb-0">Administrator</p>
+    </div>
+    </div>
+    <a class="dropdown-item" href="{% url 'adminprofile' %}">My Profile</a>
+    <a class="dropdown-item" href="{% url 'adminsettings' %}">Settings</a>
+    <a class="dropdown-item" href="{% url 'dlogout'%}">Logout</a>
+    </div>
+    </li>
             </ul>
 
       
@@ -329,7 +306,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{% url 'settings' %}">
+                                <a href="{% url 'adminsettings' %}">
                                     <i class="fe fe-vector">
                                     </i>
                                     <span>
@@ -637,25 +614,30 @@
             </div>
             <div class="content" id='msg'>
                 <div class="container-fluid">
-                    <!-- <div class="row">
-                        <div class="col-12"> -->
                             <h5>
         
                                 {% if messages %}
                                 {% for message in messages %}
-                                <div class="alert alert-{{message.tags}} alert-success">
-                                    <button type="button" class="close" data-dismiss="alert">
-                                        ×
+                                {% if message.tags == 'error' %}
+                                <div class="alert alert-danger {{message.tags}}">
+                                    <strong>Message Error!</strong>  {{message}}
+                                    <button class="close" data-dismiss="alert" type="button">
+                                        <span aria-hidden="true">�</span>
                                     </button>
-                                    <strong>Message: {{message}}</strong>
                                 </div>
+                                    {% else %}
+                                    <div class="alert alert-{{message.tags}}">
+                                        <button type="button" class="close" data-dismiss="alert">
+                                            <span aria-hidden="true">�</span>
+                                        </button>
+                                        <strong>Message Success:</strong> {{message}}
+                                    </div>
+                                {% endif %}
                                 {% endfor %}
                                 {% endif %}
         
 
                             </h5>
-                        <!-- </div>
-                    </div> -->
                 </div>
             </div>
         

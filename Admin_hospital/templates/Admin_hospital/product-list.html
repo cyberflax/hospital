@@ -41,14 +41,13 @@
                                         <h2 class="table-avatar">
                                             <a class="avatar avatar-sm mr-2" data-toggle="modal"
                                         onclick="$('#prodid').val('{{p.id}}');"  href="#edit_specialities_details">
-<!--                                                <img alt="product image" class="avatar-img rounded-circle"-->
-<!--                                                     src="/media/{{p.img}}"/>-->
+
 
 
        {% if p.img|length is not 0 %}
-       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{p.img}}" width="31"/>
+       <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{p.img}}" width="31"/>
             {% else %}
-             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+             <img alt="User Image" class="avatar-img rounded-circle" width="31" src="/media/black.png"/>
           {% endif %}
 
                                             </a>

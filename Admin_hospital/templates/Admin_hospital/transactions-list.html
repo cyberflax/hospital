@@ -81,17 +81,13 @@
 												<td>#PT-00{{t.patient.id}}</td>
 												<td>
 													<h2 class="table-avatar">
-														<a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{t.patient.id}}">
-<!--															<img alt="User Image" class="avatar-img rounded-circle"-->
-<!--																src="/media/{{t.patient.img}}" />-->
-
-
-       {% if t.patient.img|length is not 0 %}
-       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{t.patient.img}}" width="31"/>
-            {% else %}
-             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
+													
+       {% if t.patient.img|length is not 0 %}<a class="avatar avatar-sm mr-2" href="/media/{{t.patient.img}}">
+       <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{t.patient.img}}" width="31"/></a>
+            {% else %}<a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+             <img alt="User Image" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/></a>
           {% endif %}
-														</a>
+														
 														<a href="{%url 'patient_profile'%}?profile={{t.patient.id}}">{{t.patient}} </a>
 													</h2>
 												</td>

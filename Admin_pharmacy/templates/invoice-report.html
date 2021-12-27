@@ -60,9 +60,11 @@
              </td>
              <td>
               <h2 class="table-avatar">
-               <span class="avatar avatar-sm mr-2">
+               <span class="avatar avatar-sm mr-2">{% if i.product_id.img|length is not 0 %}
                 <img alt="Product Image" class="avatar-img" src="/media/{{i.product_id.img}}"/>
-               </span>
+           {% else %}     <img alt="Product Image" class="avatar-img" src="/media/black.png"/>
+              {% endif %}
+              </span>
                {{i.product_name}}
               </h2>
              </td>

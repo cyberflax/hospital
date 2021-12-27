@@ -2,128 +2,131 @@
 {% load static %}
 {% block body %}
 <div class="page-wrapper" xmlns="http://www.w3.org/1999/html">
-			<div class="content container-fluid">
-				<div class="page-header">
-					<div class="row">
-						<div class="col-sm-12">
-							<h3 class="page-title">Reviews</h3>
-							<ul class="breadcrumb">
-								<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
-								<li class="breadcrumb-item active" style="color:blue">Reviews</li>
-							</ul>
-						</div>
-					</div>
-				</div>{% if rvw|length is not 0 %}
-				<div class="row">
-					<div class="col-sm-12">
-						<div class="card">
-							<div class="card-body">
-								<div class="table-responsive">
-									<table class="datatable table table-hover table-center mb-0">
-										<thead>
-											<tr>
-												<th>Patient Name</th>
-												<th>Doctor Name</th>
-												<th>Ratings</th>
-												<th>Description</th>
-												<th>Date</th>
-												<th class="text-right">Actions</th>
-											</tr>
-										</thead>
-										<tbody>
-											{% for r in rvw %}
-											<tr>
-												<td>
-													<h2 class="table-avatar">
-					<a class="avatar avatar-sm mr-2" href="{%url 'patient_profile'%}?profile={{r.patient.id}}">
-<!--						<img	alt="User Image" class="avatar-img rounded-circle"-->
-<!--																src="/media/{{r.patient.img}}" />-->
-
-       {% if r.patient.img|length is not 0 %}
-       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{r.patient.img}}" width="31"/>
-            {% else %}
-             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
-          {% endif %}
-														</a>
-														<a href="{%url 'patient_profile'%}?profile={{r.patient.id}}">{{r.name}} </a>
-													</h2>
-												</td>
-												<td>
-													<h2 class="table-avatar">
-														<a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' r.dics.id %}">
-<!--															<img alt="User Image" class="avatar-img rounded-circle"-->
-<!--																src="/media/{{r.dics.img}}" />-->
-
-       {% if r.dics.img|length is not 0 %}
-       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{r.dics.img}}" width="31"/>
-            {% else %}
-             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/>
-          {% endif %}
-														</a>
-														<a href="{% url 'Doctor_profile' r.dics.id %}">{{r.dics.name}}</a>
-													</h2>
-												</td>
-												<td>
-
-                {%for  j in "x"|ljust:"5"%}
-    {%if r.rating > forloop.counter0 %}
-                <i class="fe fe-star text-warning" >
-                </i>
-                {%else%}
-                <i class="fe fe-star-o text-secondary">
-                </i>
-                {%endif%}
-                {%endfor%}
-
-
-
-
-												</td>
-												<td>
-													{{r.review}}
-												</td>
-												<td>{{r.created|date:'d M Y'}}  <br /><small>{{r.time|time:'h:i A'}}</small></td>
-												<td class="text-right">
-													<div class="actions">
-														<a class="btn btn-sm bg-danger-light" data-toggle="modal"
-					onclick="$('#Did').val('{{r.dics.id}}');$('#rid').val('{{r.id}}');"	href="#delete_modal">
-															<i class="fe fe-trash"></i> Delete
-														</a>
-													</div>
-												</td>
-											</tr>
-											{% endfor %}
-
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
+	<div class="content container-fluid">
+		<div class="page-header">
+			<div class="row">
+				<div class="col-sm-12">
+					<h3 class="page-title">Reviews</h3>
+					<ul class="breadcrumb">
+						<li class="breadcrumb-item"><a href="{% url 'adminhome' %}">Dashboard</a></li>
+						<li class="breadcrumb-item active" style="color:blue">Reviews</li>
+					</ul>
 				</div>
-				{% else %}
-				<p style="color: blue;font-size: 30px;">No Reviews !</p>
-				{% endif %}
 			</div>
-		</div>
-		{% block body1 %}
-		<div aria-hidden="true" class="modal fade" id="delete_modal" role="dialog">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-body">
-						<div class="form-content p-2">
-							<h4 class="modal-title">Delete</h4>
-							<p class="mb-4">Are you sure want to delete?</p>
-							<form method="post">{% csrf_token %}
-								<input name="Did" id="Did" hidden>
-								<input name="rvw" id="rid" hidden>
-							<button class="btn btn-primary" type="submit">Save </button>
-							<button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
-						</form>
+		</div>{% if rvw|length is not 0 %}
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="table-responsive">
+							<table class="datatable table table-hover table-center mb-0">
+								<thead>
+									<tr>
+										<th>Patient Name</th>
+										<th>Doctor Name</th>
+										<th>Ratings</th>
+										<th>Description</th>
+										<th>Date</th>
+										<th class="text-right">Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for r in rvw %}
+									<tr>
+										<td>
+											<h2 class="table-avatar">													src="/media/{{r.patient.img}}" />-->
+
+													{% if r.patient.img|length is not 0 %}
+													<a class="avatar avatar-sm mr-2" href="/media/{{r.patient.img}}">
+													<img alt="User Image" class="avatar-img rounded-circle"
+														src="/media/{{r.patient.img}}" width="31" /></a>
+													{% else %}<a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+													<img alt="User Image" class="avatar-img rounded-circle" width="31"
+														src="/media/default.jpg" /></a>
+													{% endif %}
+												
+												<a href="{% url 'patient_profile'%}?profile={{r.patient.id}}">{{r.name}}
+												</a>
+											</h2>
+										</td>
+										<td>
+											<h2 class="table-avatar">
+																			
+											
+
+													{% if r.dics.img|length is not 0 %}<a href="/media/{{r.dics.img}}">
+													<img alt="Fred Ortego" class="avatar-img rounded-circle"
+														src="/media/{{r.dics.img}}" width="31" /></a>
+													{% else %}<a href="/media/default.jpg">
+													<img alt="Fred Ortego" class="avatar-img rounded-circle" width="31"
+														src="/media/default.jpg" /></a>
+													{% endif %}
+												
+												<a href="{% url 'Doctor_profile' r.dics.id %}">Dr. {{r.dics.name}}</a>
+											</h2>
+										</td>
+										<td>
+
+											{%for j in "x"|ljust:"5"%}
+											{%if r.rating > forloop.counter0 %}
+											<i class="fe fe-star text-warning">
+											</i>
+											{%else%}
+											<i class="fe fe-star-o text-secondary">
+											</i>
+											{%endif%}
+											{%endfor%}
+
+
+
+
+										</td>
+										<td>
+											{{r.review}}
+										</td>
+										<td>{{r.created|date:'d M Y'}} <br /><small>{{r.time|time:'h:i A'}}</small></td>
+										<td class="text-right">
+											<div class="actions">
+												<a class="btn btn-sm bg-danger-light" data-toggle="modal"
+													onclick="$('#Did').val('{{r.dics.id}}');$('#rid').val('{{r.id}}');"
+													href="#delete_modal">
+													<i class="fe fe-trash"></i> Delete
+												</a>
+											</div>
+										</td>
+									</tr>
+									{% endfor %}
+
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		{% endblock body1 %}
-		{% endblock body %}
+		{% else %}
+		<p style="color: blue;font-size: 30px;">No Reviews !</p>
+		{% endif %}
+	</div>
+</div>
+{% block body1 %}
+<div aria-hidden="true" class="modal fade" id="delete_modal" role="dialog">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="form-content p-2">
+					<h4 class="modal-title">Delete</h4>
+					<p class="mb-4">Are you sure want to delete?</p>
+					<form method="post">{% csrf_token %}
+						<input name="Did" id="Did" hidden>
+						<input name="rvw" id="rid" hidden>
+						<button class="btn btn-primary" type="submit">Save </button>
+						<button class="btn btn-danger" data-dismiss="modal" type="button">Close</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock body1 %}
+{% endblock body %}

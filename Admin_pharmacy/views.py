@@ -19,8 +19,9 @@ def index(request):
             supp=supplier.objects.filter(user=docs)
             user=pharmacy_prod_order.objects.filter(pharmacys=docs)
             for i in user:
-                if [i.username,i.phone,i.address] not in list:
-                    list.append([i.username,i.phone,i.address])
+                if [i.username,i.phone,i.address,i.email] not in list:
+                    list.append([i.username,i.phone,i.address,i.email])
+                    # list.append(User.objects.filter(email=i.email))
             dics={'product':list,'date':date.today(),'supp':len(supp),'prod':len(product)}
             return render(request,'home.html',dics)
     
@@ -199,16 +200,19 @@ def products(request):
         if request.method=='POST': # for edit
                 pro=request.POST['phar_ids']
                 name = request.POST['prodname']
+                cate = request.POST['category']
                 price = request.POST['price']
                 dis = request.POST['discount']
                 gen = request.POST['gen_name']
                 product1 = pha_product.objects.get(id=pro)
                 product1.price=price
                 product1.name=name
+                product1.categorie=cate
                 product1.discount = dis
                 product1.genatic_name=gen
                 product1.save()
-        return render(request,'products.html',{'product':products,'today':date.today()})
+        return render(request,'products.html',
+        {'product':products,'today':date.today(),'cates':category.objects.all()})
     
     else:
         return redirect('error404')
@@ -287,6 +291,7 @@ def purchase(request):
 def add_purchase(request):
     
     if request.user.is_authenticated:
+        supp=supplier.objects.all()
         pharmcy=pharmacy.objects.get(id=request.user.pharmacy.id)
         if request.method=='POST':
             medname = request.POST['med_name']
@@ -295,13 +300,16 @@ def add_purchase(request):
             img = request.FILES['img']
             cate = request.POST['cate']
             exdate = request.POST['exdate']
-
+            # su_name=request.POST['supp']
+            # suppl=supplier.objects.get(name=su_name)
             product = Purchase.objects.values('med_name')
             data = {data['med_name'].lower() for data in product}
             if medname.lower() not in data:
-                prod=Purchase(pharmacys=pharmcy,med_name=medname,price=price,quntity=qun,img=img,category=cate,ex_date=exdate)
+                prod=Purchase(pharmacys=pharmcy,med_name=medname,price=price,
+                quntity=qun,img=img,category=cate,ex_date=exdate)
                 prod.save()
-        return render(request,'add-purchase.html')
+                return redirect('purchase')
+        return render(request,'add-purchase.html',{'supp':supp})
         
     else:
         return redirect('error404')
@@ -378,7 +386,8 @@ def add_supplier(request):
             prod_name = supplier.objects.values('email').filter(user=pharmcy)
             list = {data['email'].lower() for data in prod_name}
             if email.lower() not in list:
-                supp=supplier(user=pharmcy,name=name,img=img,email=email,mobile=mobile,company=company,address=add)
+                supp=supplier(user=pharmcy,name=name,img=img,email=email,mobile=mobile,
+                company=company,address=add)
                 supp.save()
                 return redirect('supplier')
         return render(request,'add-supplier.html')
