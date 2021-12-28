@@ -12,7 +12,7 @@
         </h3>
         <ul class="breadcrumb">
          <li class="breadcrumb-item">
-          <a href="{% url 'indexs'%}">
+          <a href="{% url 'indexs' %}">
            Dashboard
           </a>
          </li>
@@ -69,7 +69,7 @@
              </td>
              <td>
               <h2 class="table-avatar">
-               <span class="avatar avatar-sm mr-2">{% if i.img|length is not 0%}
+               <span class="avatar avatar-sm mr-2">{% if i.img|length is not 0 %}
                 <img alt="product image" class="avatar-img" src="/media/{{i.img}}"/>
                 {% else %}<img alt="product image" class="avatar-img" src="/media/black.png"/>
               {% endif %}

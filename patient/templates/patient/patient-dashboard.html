@@ -47,7 +47,7 @@
             <h5>
              <i class="feather-gift">
              </i>
-            {{request.user.patient_record.DOB}}, {{request.user.patient_record.age}}years
+            {{request.user.patient_record.DOB}}({{request.user.patient_record.age}}years)
             </h5>
             <h5 class="mb-0">
              <i class="feather-map-pin">
@@ -62,7 +62,7 @@
          <nav class="dashboard-menu">
           <ul>
            <li class="active">
-            <a href="{% url 'patient_dashboard'%}?Pid={{request.user.patient_record.id}}">
+            <a href="{% url 'patient_dashboard' %}?Pid={{request.user.patient_record.id}}">
              <span>
               Dashboard
              </span>
@@ -71,7 +71,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'favourites'%}?pa={{request.user.patient_record.id}}">
+            <a href="{% url 'favourites' %}?pa={{request.user.patient_record.id}}">
              <span>
               Favourites
              </span>
@@ -142,7 +142,7 @@
             </a>
            </li>
            <li>
-            <a href="{%url 'profile_setting'%}?profile={{request.user.patient_record.id}}">
+            <a href="{% url 'profile_setting' %}?profile={{request.user.patient_record.id}}">
              <span>
               Profile Settings
              </span>
@@ -151,7 +151,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'change_password'%}">
+            <a href="{% url 'change_password' %}">
              <span>
               Change Password
              </span>
@@ -160,7 +160,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'dlogout'%}">
+            <a href="{% url 'dlogout' %}">
              <span>
               Logout
              </span>
@@ -385,19 +385,22 @@
                  </th>
                 </tr>
                </thead>
-               <tbody>{% for i in list%}
+               <tbody>{% for i in list %}
                 <tr>
                  <td>
                   <h2 class="table-avatar">
-                   <a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' i.dr_name.id %}">
-                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.dr_name.img}}"/> -->
-                 
+                
                  
                     {% if i.dr_name.img|length is not 0  %}
-                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.dr_name.img}}"/>
-                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                    <a class="avatar avatar-sm mr-2" href="/media/{{i.dr_name.img}}">
+                 
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.dr_name.img}}"/></a>
+                    {% else %}
+                    <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                 
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/></a>
                    {% endif %}
-                  </a>
+                  
                    <a href="{% url 'Doctor_profile' i.dr_name.id %}">
                     {{i.dr_name.name}}
                     <span>
@@ -441,7 +444,7 @@
                    </a>
                   </div>
                  </td>
-                </tr>{%endfor%}
+                </tr>{% endfor %}
 
                </tbody>
               </table>
@@ -475,7 +478,7 @@
                  </th>
                 </tr>
                </thead>
-               <tbody>{%for i in prec%}
+               <tbody>{% for i in prec %}
                 <tr>
                  <td>
                   {{i.date}}
@@ -485,15 +488,17 @@
                  </td>
                  <td>
                   <h2 class="table-avatar">
-                   <a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' i.doctor.id %}">
-                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
-                  
+                 
                   
                     {% if i.doctor.img|length is not 0  %}
-                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                    <a class="avatar avatar-sm mr-2" href="/media/{{i.doctor.img}}">
+                   
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/></a>
+                    {% else %}
+                    <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                      <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/></a>
                    {% endif %}
-                  </a>
+                  
                    <a href="{% url 'Doctor_profile' i.doctor.id %}">
                     {{i.doctor.name}}
                     <span>
@@ -516,7 +521,7 @@
                    </a>
                   </div>
                  </td>
-                </tr>{%endfor%}
+                </tr>{% endfor %}
 
                </tbody>
               </table>
@@ -555,7 +560,7 @@
                  </th>
                 </tr>
                </thead>
-               <tbody>{%for i in medical%}
+               <tbody>{% for i in medical %}
                 <tr>
                  <td>
 
@@ -590,15 +595,18 @@
                  </td>
                  <td>
                   <h2 class="table-avatar">
-                   <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
-                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
-                   
+                
                   
                     {% if i.doctor.img|length is not 0  %}
-                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                    <a class="avatar avatar-sm mr-2" href="/media/{{i.doctor.img}}">
+                   
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/></a>
+                    {% else %}
+                    <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                   
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/></a>
                    {% endif %}
-                  </a>
+                  
                    <a href="{%url 'Doctor_profile' i.doctor.id %}">
                  {{i.doctor.name}}
                     <span>
@@ -627,7 +635,7 @@
                   </div>
                  </td>
                 </tr>
-               {%endfor%}
+               {% endfor %}
                </tbody>
               </table>
              </div>
@@ -662,26 +670,31 @@
                  </th>
                 </tr>
                </thead>
-               <tbody>{%for i in bill%}
+               <tbody>{% for i in bill %}
                 <tr>
                  <td>
-                  <a href="{%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
+                  <a href="{% url 'invoice_view' %}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
                    #INV-00{{i.id}}
                   </a>
                  </td>
                  <td>
                   <h2 class="table-avatar">
-                   <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
+                   <a class="avatar avatar-sm mr-2" href="{% url 'Doctor_profile' i.doctor.id %}">
                     <!-- <img alt="User Image" class="avatar-img rounded-circle" src=" /media/{{i.doctor.img}}"/> -->
                    
                   
                     {% if i.doctor.img|length is not 0  %}
-                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                    <a class="avatar avatar-sm mr-2" href="/media/{{i.doctor.img}}">
+                    
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/></a>
+                    {% else %}
+                    <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                    
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/></a>
                    {% endif %}
                   
-                  </a>
-                   <a href="{%url 'Doctor_profile' i.doctor.id %}">
+                  
+                   <a href="{% url 'Doctor_profile' i.doctor.id %}">
                      {{i.doctor.name}}
                     <span>
                     {{i.doctor.specialization}}
@@ -697,7 +710,7 @@
                  </td>
                  <td>
                   <div class="table-action">
-                   <a class="btn btn-sm bg-info-light" href="{%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
+                   <a class="btn btn-sm bg-info-light" href="{% url 'invoice_view' %}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
                     <i class="feather-eye">
                     </i>
                    </a>
@@ -708,26 +721,29 @@
                   </div>
                  </td>
                 </tr>
-               {%endfor%}{% for a in app %}
+               {% endfor %}{% for a in app %}
                <tr>
                   <td>
-                   <a href="{%url 'invoice_view'%}?Pid={{a.patient.id}}&Did={{a.doctor.id}}&Oid={{a.id}}">
+                   <a href="{% url 'invoice_view' %}?Pid={{a.patient.id}}&Did={{a.doctor.id}}&Oid={{a.id}}">
                     #INV-00{{a.id}}
                    </a>
                   </td>
                   <td>
                    <h2 class="table-avatar">
-                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' a.doctor.id %}">
-                     <!-- <img alt="User Image" class="avatar-img rounded-circle" src=" /media/{{i.doctor.img}}"/> -->
-                    
+                
                    
                      {% if a.doctor.img|length is not 0  %}
-                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{a.doctor.img}}"/>
-                     {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                     <a class="avatar avatar-sm mr-2" href="/media/{{a.doctor.img}}">
+                    
+                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{a.doctor.img}}"/></a>
+                     {% else %}
+                     <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                    
+                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/></a>
                     {% endif %}
                    
-                   </a>
-                    <a href="{%url 'Doctor_profile' a.doctor.id %}">
+                  
+                    <a href="{% url 'Doctor_profile' a.doctor.id %}">
                       {{a.doctor.name}}
                      <span>
                      {{a.doctor.specialization}}
@@ -743,7 +759,7 @@
                   </td>
                   <td>
                    <div class="table-action">
-                    <a class="btn btn-sm bg-info-light" href="{%url 'invoice_view'%}?Pid={{a.patient.id}}&Did={{a.doctor.id}}&Oid={{a.id}}">
+                    <a class="btn btn-sm bg-info-light" href="{% url 'invoice_view' %}?Pid={{a.patient.id}}&Did={{a.doctor.id}}&Oid={{a.id}}">
                      <i class="feather-eye">
                      </i>
                     </a>
@@ -770,7 +786,7 @@
      </div>
     </div>
    </div>
-   {%endblock%}
+   {% endblock %}
 
 
 {% block body1%}
@@ -898,4 +914,4 @@
     </div>
    </div>
   </div>
- {% endblock body1%}
+ {% endblock body1 %}

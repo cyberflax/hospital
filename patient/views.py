@@ -60,7 +60,7 @@ def checkouts(request):
         alredy_data=checkout.objects.filter(dr_name=profile, patient=patient,date=book.date,
          time1=time.time1)
         if len(alredy_data)>0:
-                messages.warning(request,'Appointment is already book at this timing.')
+                messages.error(request,'Appointment is already book at this timing.')
                 # return redirect(request.get_full_path())
                 return redirect(request.META.get('HTTP_REFERER'))
         res = {'title': profile, 'total': total,'date':book.date,'t':t,'data':alredy_data}
@@ -93,7 +93,7 @@ def booking_success(request):
             alredy_data=checkout.objects.filter(dr_name=profile, patient=patient,date=date,
               time1=t1,time2=t2)
             if len(alredy_data)>0:
-                messages.warning(request,'Appointment is already book at this timing.')
+                messages.error(request,'Appointment is already book at this timing.')
             else:
                 check = checkout(phone=phone, date=date, time1=t1, time2=t2, card_name=card_name, card_no=card_no,
                             cvv=cvv, exp_year=exyear, exp_month=exmonth, amount=amount, email=request.user.email,
@@ -107,7 +107,7 @@ def booking_success(request):
                 # messages.success(request, "Booking confirm successfully.")
                 res={'user':checks}
                 messages.success(request, "Booking confirm successfully.")
-            # return redirect(request.get_full_path())
+                # return redirect(request.get_full_path())
             
               
         return render(request,'patient/booking-success.html',res)
@@ -136,6 +136,7 @@ def order_list(request):
         if ids is not None:
             order=pharmacy_prod_order.objects.get(id=ids)
             order.delete()
+            messages.success('Order Deleted.')
         return render(request,'patient/order-list.html',{'list':list})
     else:
         return redirect('error500')
@@ -201,7 +202,8 @@ def patient_register(request):
                 usermail=User.objects.filter(email=emails)
                 usernam = User.objects.filter(username=names)
 
-                if len(usermail)!= 1 and len(usernam)!=1:
+                if len(usermail)!= 1 :
+                    if len(usernam)!=1:
                         user = User.objects.create_user(username=names, email=emails, password=passwords)
                         user.save()
                         user1 = patient_record(patient=user, name=names,age=0, email=emails,DOB='1998-4-2',mobile=0)
@@ -216,8 +218,10 @@ def patient_register(request):
                         else:
                             messages.success(request, "Your account has been successfully created")
                         return redirect('home')
+                    else:
+                        messages.error(request, "Username is already register.")
                 else:
-                    messages.error(request, "Email or name is already register.")
+                    messages.error(request, "Email is already register.")
         return render(request,'patient/patient-register.html')
     else:
         return redirect('error500')
@@ -265,10 +269,11 @@ def patient_profile(request):
                 desc = request.POST['dese']
                 Did = request.POST['Did']
                 dr=Dr.objects.get(id=Did)
-                print(file,desc,'ffff',Did)
+                
                 # med=medical_records.objects.filter(doctor=dr,date=date,patient=patients,time=time1)
                 med=medical_records(doctor=dr,date=date,attachment=file,desc=desc,patient=patients)
                 med.save()
+                messages.success(request,'Medical record added.')
                 return redirect(path)
 
             elif request.POST.get('Dids') is not None:
@@ -278,6 +283,7 @@ def patient_profile(request):
                 dr=Dr.objects.get(id=Did)
                 pres=prescriptions(doctor=dr,date=date,patient=patients,prec_name=pres)
                 pres.save()
+                messages.success(request,'Prescription added.')
                 return redirect(path)
 
             elif request.POST.get('Did1') is not None:
@@ -287,7 +293,8 @@ def patient_profile(request):
                 dr=Dr.objects.get(id=Did)
                 pres=billings(doctor=dr,paid_on_date=date,amount=amount,patient=patients,invoice_no=0)
                 pres.save()
-                # return redirect(path)
+                messages.success(request,'Billing detail added.')
+                return redirect(path)
 
         listapp = checkout.objects.filter(patient=patients)
         res={'list':list,'prec':prec,'bill':bill,'medical':medical,
@@ -321,6 +328,7 @@ def favt(request):
         else:
             favs = favourite(dr_name=dr, pa_name=pa)
             favs.save()
+            messages.success(request,'Doctor added in favourite list.')
         return redirect('favourites')
     else:
         return redirect('error500')

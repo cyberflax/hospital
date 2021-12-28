@@ -32,13 +32,14 @@
        <div class="profile-sidebar">
         <div class="widget-profile pro-widget-content">
          <div class="profile-info-widget">
-          <a class="booking-doc-img" href="{%url 'patient_profile'%}?profile={{request.user.patient_record.id}}">
              {% if request.user.patient_record.img|length is not 0 %}
-           <img alt="User Image" src="/media/{{request.user.patient_record.img}}"/>
-           {% else %}
-            <img alt="User Image" src="/media/default.jpg"/>
+             <a class="booking-doc-img" href="/media/{{request.user.patient_record.img}}">
+         
+           <img alt="User Image" src="/media/{{request.user.patient_record.img}}"/></a>
+           {% else %} <a class="booking-doc-img" href="/media/default.jpg">
+            <img alt="User Image" src="/media/default.jpg"/></a>
          {% endif %}
-          </a>
+         
           <div class="profile-det-info">
            <h3>
            {{request.user.username}}
@@ -47,7 +48,7 @@
             <h5>
              <i class="feather-gift">
              </i>
-             {{request.user.patient_record.DOB}}, {{request.user.patient_record.age}} years
+             {{request.user.patient_record.DOB}}({{request.user.patient_record.age}} years)
             </h5>
             <h5 class="mb-0">
              <i class="feather-map-pin">
@@ -62,7 +63,7 @@
          <nav class="dashboard-menu">
           <ul>
            <li>
-            <a href="{% url 'patient_dashboard'%}?Pid={{request.user.patient_record.id}}">
+            <a href="{% url 'patient_dashboard' %}?Pid={{request.user.patient_record.id}}">
              <span>
               Dashboard
              </span>
@@ -71,7 +72,7 @@
             </a>
            </li>
            <li class="active">
-            <a href="{% url 'favourites'%}?pa={{request.user.patient_record.id}}">
+            <a href="{% url 'favourites' %}?pa={{request.user.patient_record.id}}">
              <span>
               Favourites
              </span>
@@ -142,7 +143,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'profile_setting'%}?profile={{request.user.patient_record.id}}">
+            <a href="{% url 'profile_setting' %}?profile={{request.user.patient_record.id}}">
              <span>
               Profile Settings
              </span>
@@ -151,7 +152,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'change_password'%}">
+            <a href="{% url 'change_password' %}">
              <span>
               Change Password
              </span>
@@ -160,7 +161,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'dlogout'%}">
+            <a href="{% url 'dlogout' %}">
              <span>
               Logout
              </span>
@@ -175,13 +176,16 @@
       </div>
       <div class="col-md-7 col-lg-8 col-xl-9">
        <div class="row row-grid">{% if fav|length is not 0 %}
-        {% for i in fav%}
+        {% for i in fav %}
         <div class="col-md-6 col-lg-4 col-xl-3">
          <div class="profile-widget">
-          <div class="doc-img">
-           <a href="{% url 'Doctor_profile' i.dr_name.id %}">
+          <div class="doc-img">{% if i.dr_name.img|length != 0 %}
+           <a href="/media/{{i.dr_name.img}}">
             <img alt="User Image" class="img-fluid" src="/media/{{i.dr_name.img}}"/>
-           </a>
+           </a>{% else %}
+           <a href="/media/default.jpg">
+            <img alt="User Image" class="img-fluid" src="/media/default.jpg"/>
+           </a>{% endif %}
            <a class="fav-btn" href="javascript:void(0)">
             <i class="far fa-bookmark">
             </i>
@@ -190,7 +194,7 @@
           <div class="pro-content">
            <h3 class="title">
             <a href="{% url 'Doctor_profile' i.dr_name.id %}">
-             {{i.dr_name.name}}
+             Dr.{{i.dr_name.name}}
             </a>
             <i class="fas fa-check-circle verified">
             </i>
@@ -236,7 +240,7 @@
             <a class="btn btn-primary view-btn" href="{% url 'Doctor_profile' i.dr_name.id %}">
              View Profile
             </a>
-            <a class="btn book-btn" href="{% url 'booking'%}?@//@/={{i.dr_name.id}}">
+            <a class="btn book-btn" href="{% url 'booking' %}?@//@/={{i.dr_name.id}}">
              Book Now
             </a>
            </div>
@@ -244,7 +248,7 @@
          </div>
         </div>
 
-        {%endfor%} {% else %}
+        {% endfor %} {% else %}
            <p style="color:blue;font-size:30px;" class="my-3 mx-3" >No Favourite !</p>
   {% endif %}
        </div>

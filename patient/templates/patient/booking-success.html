@@ -48,7 +48,7 @@
           {{user.0.date}} ( {{user.0.time1}} to  {{user.0.time2}})
          </strong>
         </p>
-        <a class="btn btn-primary view-inv-btn" href="{%url 'invoice_view'%}?Did={{user.0.doctor.id}}&Pid={{user.0.patient.id}}&Oid={{user.0.id}}">
+        <a class="btn btn-primary view-inv-btn" href="{% url 'invoice_view' %}?Did={{user.0.doctor.id}}&Pid={{user.0.patient.id}}&Oid={{user.0.id}}">
          View Invoice
         </a>
        </div>
@@ -61,4 +61,4 @@
       Appointment is already Booked. </div></div>
     {% endif %}
    </div>
- {%endblock%}
+ {% endblock %}

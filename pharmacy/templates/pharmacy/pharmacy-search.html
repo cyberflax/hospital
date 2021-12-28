@@ -142,17 +142,19 @@
          <div class="doctor-widget">
           <div class="doc-info-left">
            <div class="doctor-img1">
-            <a href="/pharmacy-details?@//@/={{i.id}}">
                {% if i.img|length is not 0 %}
-             <img alt="User Image" class="img-fluid" src="/media/{{i.img}}"/>
+               
+            <a href="/media/{{i.img}}">
+             <img alt="User Image" class="img-fluid" src="/media/{{i.img}}"/></a>
             {% else %}
+            <a href="/media/black.png">
              <img alt="User Image" class="img-fluid" 
-              src="/media/default.jpg"/>{% endif %}
-            </a>
+              src="/media/black.png"/></a>{% endif %}
+            
            </div>
            <div class="doc-info-cont">
             <h4 class="doc-name mb-2">
-             <a href="/pharmacy-details?@//@/={{i.id}}">
+             <a href="{% url 'pharmacy_details' %}?@//@/={{i.id}}">
               {{i.user}}
              </a>
             </h4>
@@ -199,10 +201,10 @@
           </div>
           <div class="doc-info-right">
            <div class="clinic-booking">
-            <a class="apt-btn" href="/pharmacy-details?@//@/={{i.id}}">
+            <a class="apt-btn" href="{% url 'pharmacy_details' %}?@//@/={{i.id}}">
              View Details
             </a>
-            <a class="view-pro-btn" href="/product-all?@//@/={{i.id}}">
+            <a class="view-pro-btn" href="{% url 'product_all' %}?@//@/={{i.id}}">
              Browse Products
             </a>
            </div>
@@ -210,7 +212,7 @@
          </div>
         </div>
        </div>
-       {%endfor%}
+       {% endfor %}
 
        <div class="load-more">
         <a class="btn btn-primary submit-btn" href="javascript:void(0);">
@@ -226,4 +228,4 @@
                {% endif %}
     </div>
    </div>
-  {%endblock%}
+  {% endblock %}

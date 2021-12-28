@@ -32,13 +32,16 @@
        <div class="profile-sidebar">
         <div class="widget-profile pro-widget-content">
          <div class="profile-info-widget">
-          <a class="booking-doc-img" href="{%url 'patient_profile'%}?profile={{request.user.patient_record.id}}">
-           {% if request.user.patient_record.img|length is not 0 %}
-        <img alt="User Image" src="/media/{{request.user.patient_record.img}}"/>
+         {% if request.user.patient_record.img|length is not 0 %}
+         <a class="booking-doc-img" href="/media/{{request.user.patient_record.img}}">
+           
+        <img alt="User Image" src="/media/{{request.user.patient_record.img}}"/></a>
            {% else %}
-            <img alt="User Image" src="/media/default.jpg"/>
+           <a class="booking-doc-img" href="/media/default.jpg">
+           
+            <img alt="User Image" src="/media/default.jpg"/></a>
          {% endif %}
-          </a>
+          
           <div class="profile-det-info">
            <h3>
             {{request.user.patient_record.patient}}
@@ -62,7 +65,7 @@
          <nav class="dashboard-menu">
           <ul>
            <li>
-            <a href="{%url 'patient_dashboard'%}?Pid={{request.user.patient_record.id}}">
+            <a href="{% url 'patient_dashboard' %}?Pid={{request.user.patient_record.id}}">
              <span>
               Dashboard
              </span>
@@ -71,7 +74,7 @@
             </a>
            </li>
            <li>
-            <a href="{%url 'favourites'%}?pa={{request.user.patient_record.id}}">
+            <a href="{% url 'favourites' %}?pa={{request.user.patient_record.id}}">
              <span>
               Favourites
              </span>
@@ -160,7 +163,7 @@
             </a>
            </li>
            <li>
-            <a href="{%url 'dlogout'%}">
+            <a href="{% url 'dlogout' %}">
              <span>
               Logout
              </span>
@@ -369,4 +372,4 @@
      </div>
     </div>
    </div>
-{%endblock%}
+{% endblock %}

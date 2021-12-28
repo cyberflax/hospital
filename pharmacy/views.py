@@ -18,8 +18,6 @@ def pharmacy_details(request):
         pha= pharmacy.objects.all()
         medical = pharmacy.objects.get(id=bid)
         reviews = pha_review.objects.filter(dics=medical.id)
-
-        path = request.get_full_path()
         patient = patient_record.objects.values('name')
         patients = {data['name'] for data in patient}
         if request.method == "POST":
@@ -30,7 +28,7 @@ def pharmacy_details(request):
                 var = pha_review(name=name, review=review,dics=medical,YES=0,NO=0,rating=rating)
                 var.save()
                 messages.success(request, "Review posted.")
-                return redirect(path)
+                return redirect(request.get_full_path())
             else:
                 messages.error(request, "Your are not patient.please register.")
 
@@ -286,7 +284,7 @@ def product_checkout(request):
             allprice = products.price * data.quntity
             total += allprice
             if products.quntity < data.quntity:
-                messages.warning(request, F'{products.name} product is out of stock quntity is  {products.quntity} available')
+                messages.error(request, F'{products.name} product is out of stock quntity is  {products.quntity} available')
                 return redirect(request.META.get('HTTP_REFERER'))
             else:
                 li.append([products, allprice, data.quntity])

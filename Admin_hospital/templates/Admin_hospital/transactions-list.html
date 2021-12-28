@@ -33,7 +33,7 @@
 										<tbody>
 											{% for t in trs %}
 											<tr>
-				<td><a href="{%url 'invoice_view'%}?Pid={{t.patient.id}}&Did={{t.doctor.id}}&Bid={{t.id}}">#IN-00{{t.id}}</a></td>
+				<td><a href="{%url 'invoice_view'%}?Pid={{t.patient.id}}&Did={{t.doctor.id}}&Oid={{t.id}}">#IN-00{{t.id}}</a></td>
 												<td>#PT-00{{t.patient.id}}</td>
 												<td>
 													<h2 class="table-avatar">

@@ -82,7 +82,7 @@ class prescriptions(models.Model):
     patient = models.ForeignKey(patient_record, on_delete=models.CASCADE, related_name='prescription')
     date = models.DateField()
     # time=models.TimeField()
-    prec_name=models.ImageField()
+    prec_name=models.ImageField(null=True)
     doctor = models.ForeignKey(Dr, on_delete=models.CASCADE, related_name='prescription')
 
     def __str__(self):

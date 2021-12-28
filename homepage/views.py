@@ -77,10 +77,10 @@ def blog_details(request):
         name = request.POST['name']
         review = request.POST['review']
         patient1 = patient_record.objects.get(name=name)
-        print( 'ratttttttt', name, review, patient1)
         if name in patients:
             var = reView(patient=patient1, name=name, review=review, dics=doctor, YES=0, NO=0, rating=0)
             var.save()
+            messages.success(request,'Review posted.')
             return redirect(request.get_full_path())
         else:
             messages.success(request, "Your are not patient")
@@ -103,4 +103,7 @@ def blog_list(request):
 
 def term_con(request):
     return render(request,'term-condition.html')
+
+def privacy(request):
+    return render(request,'privacy-policy.html')
 

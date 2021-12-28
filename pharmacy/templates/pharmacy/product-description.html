@@ -46,17 +46,17 @@
          </div>
          <span class="badge success-status">
           In stock
-         </span>{% if request.user.is_authenticated%}
+         </span>{% if request.user.is_authenticated %}
          <div class="custom-increment pt-4">
           <div class="input-group1">
-         <a href="/minus?quntity={{title.id}}&next={{title.doc.name}}" >
+         <a href="{% url 'minus' %}?quntity={{title.id}}&next={{title.doc.name}}" >
               <button id='minusButton'  class="btn btn-default btn-xs">
         <i class="fas fa-minus mr-2"></i>
         </button>
 </a>
            <input class="input-number" id="quantity" name="quantity" type="text" value="0"/>
 
-<a href="/plus?quntity={{title.id}}&next={{title.doc.name}}" >
+<a href="{% url 'plus' %}?quntity={{title.id}}&next={{title.doc.name}}" >
               <button id='plusButton' class="btn btn-default btn-xs">
         <i class="fas fa-plus ml-2"></i>
         </button>
@@ -66,11 +66,11 @@
          <div class="clinic-details mt-4">
           <div class="clinic-booking">
 
-           <a class="apt-btn" href="/addcart?@//@/={{title.id}}&next={{title.doc.id}}">
+           <a class="apt-btn" href="{% url 'addcart' %}?@//@/={{title.id}}&next={{title.doc.id}}">
             Add To Cart
            </a>
           </div>
-         </div>{%endif%}
+         </div>{% endif %}
          <div class="flex-fill mt-4 mb-0">
           <ul class="list-group clinic-group">
            <li class="list-group-item">
@@ -167,8 +167,10 @@
         <div class="card-body product-description">
          <div class="doctor-widget">
           <div class="doc-info-left">
-           <div class="doctor-img1">
+           <div class="doctor-img1">{% if title.img|length != 0 %}
             <img alt="User Image" class="img-fluid" src="/media/{{title.img}}"/>
+            {% else %}<img alt="User Image" class="img-fluid" src="/media/black.png"/>
+          {% endif %}
            </div>
            <div class="doc-info-cont">
             <h4 class="doc-name">
@@ -189,12 +191,12 @@
             <div class="feature-product">
              <span>
               Applied for:
-             </span>{% if title.pha_apply.all|length is not 0%}
-             <ul>{%for i in title.pha_apply.all%}
+             </span>{% if title.pha_apply.all|length is not 0 %}
+             <ul>{% for i in title.pha_apply.all %}
               <li>
                {{i.applied_for}}
               </li>
-              {%endfor%}
+              {% endfor %}
              </ul>
              {% else %}
                <p style="font-size:12px;color:blue"> Applied Details Not Available !</p>
@@ -229,7 +231,7 @@
                Highlights
               </h4>{% if title.pha_highlight.all|length is not 0 %}
               <div class="experience-box">
-               <ul class="experience-list">{%for i in title.pha_highlight.all%}
+               <ul class="experience-list">{% for i in title.pha_highlight.all %}
                 <li>
                  <div class="experience-user">
                   <div class="before-circle">
@@ -243,7 +245,7 @@
                   </div>
                  </div>
                 </li>
-               {%endfor%}
+               {% endfor %}
                </ul></div>
                {% else %}
                <p style="font-size:15px;color:blue"> No Highlight</p>
@@ -310,4 +312,4 @@
      </div>
     </div>
    </div>
-{%endblock%}
+{% endblock %}

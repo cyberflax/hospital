@@ -513,7 +513,7 @@ def doc_reviews(request):
         review = reView.objects.filter(id=rev)
        
         review.delete()
-        msg.success(request,'Review deleted.')
+        # msg.success(request,'Review deleted.')
         return render(request, 'Admin_hospital/doc_reviews.html', res)
 
     else:

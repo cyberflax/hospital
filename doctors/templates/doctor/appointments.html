@@ -32,7 +32,7 @@
        <div class="profile-sidebar">
         <div class="widget-profile pro-widget-content">
          <div class="profile-info-widget">
-          <a class="booking-doc-img" href="{%url 'Doctor_profile' request.user.Dr.id %}">
+          <a class="booking-doc-img" href="{% url 'Doctor_profile' request.user.Dr.id %}">
             {% if request.user.Dr.img|length is not 0 %}
            <img alt="User Image" src="/media/{{request.user.Dr.img}}"/>
            {% else %}
@@ -55,7 +55,7 @@
          <nav class="dashboard-menu">
           <ul>
            <li>
-            <a href="{%url 'doctor_dashboard'%}?id={{request.user.Dr.id}}">
+            <a href="{% url 'doctor_dashboard' %}?id={{request.user.Dr.id}}">
              <span>
               Dashboard
              </span>
@@ -64,7 +64,7 @@
             </a>
            </li>
            <li class="active">
-            <a href="{%url 'appointments'%}?doctor={{request.user.Dr.id}}">
+            <a href="{% url 'appointments' %}?doctor={{request.user.Dr.id}}">
              <span>
               Appointments
              </span>
@@ -73,7 +73,7 @@
             </a>
            </li>
            <li>
-            <a href="{%url 'my_patient'%}?doctor={{request.user.Dr.id}}">
+            <a href="{% url 'my_patient' %}?doctor={{request.user.Dr.id}}">
              <span>
               My Patients
              </span>
@@ -82,7 +82,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'schedule'%}">
+            <a href="{% url 'schedule' %}">
              <span>
               Schedule Timings
              </span>
@@ -101,7 +101,7 @@
             </a>
            </li>
            <li>
-            <a href="{%url 'invoices'%}?invoice={{request.user.Dr.id}}">
+            <a href="{% url 'invoices' %}?invoice={{request.user.Dr.id}}">
              <span>
               Invoices
              </span>
@@ -120,7 +120,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'reviews'%}">
+            <a href="{% url 'reviews' %}">
              <span>
               Reviews
              </span>
@@ -129,7 +129,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'chat_doctor'%}">
+            <a href="{% url 'chat_doctor' %}">
              <span>
               Message
              </span>
@@ -138,7 +138,7 @@
             </a>
            </li>
            <li>
-            <a href="{%url 'doctor_profile_setting'%}?profile={{request.user.Dr.id}}">
+            <a href="{% url 'doctor_profile_setting' %}?profile={{request.user.Dr.id}}">
              <span>
               Profile Settings
              </span>
@@ -166,7 +166,7 @@
             </a>
            </li>
            <li>
-            <a href="{%url 'dlogout'%}">
+            <a href="{% url 'dlogout' %}">
              <span>
               Logout
              </span>
@@ -181,19 +181,25 @@
       </div>
       <div class="col-md-7 col-lg-8 col-xl-9">
        <div class="appointments-detail">
-        <div class="row">{% if app|length is not 0 %}{% for doc in app%}
+        <div class="row">{% if app|length is not 0 %}{% for doc in app %}
          <div class="col-md-12 col-sm-6 col-lg-4">
           <div class="card widget-profile pat-widget-profile">
            <div class="card-body">
             <div class="pro-widget-content">
              <div class="profile-info-widget">
-              <a class="booking-doc-img" href="{%url 'patient_profile'%}?profile={{doc.patient.id}}">
+               {% if doc.patient.img|length != 0 %}
+              <a class="booking-doc-img" href="/media/{{doc.patient.img}}">
                <img alt="User Image" src="/media/{{doc.patient.img}}"/>
               </a>
+{% else %}
+              <a class="booking-doc-img" href="/media/default.jpg">
+                <img alt="User Image" src="/media/default.jpg"/>
+               </a>{% endif %}
+
               <div class="profile-det-info">
                <h3>
                 <a href="{%url 'patient_profile'%}?profile={{doc.patient.id}}">
-                 {{doc.patient.name}}
+                 Dr. {{doc.patient.name}}
                 </a>
                </h3>
                <div class="appointment-action">
@@ -204,11 +210,11 @@
                  <i class="feather-eye">
                  </i>
                 </a>
-                <a class="btn btn-sm bg-success-light" href="{% url 'checkup'%}?id={{doc.patient.id}}&Oid={{doc.id}}">
+                <a class="btn btn-sm bg-success-light" href="{% url 'checkup' %}?id={{doc.patient.id}}&Oid={{doc.id}}">
                  <i class="feather-check-circle">
                  </i>
                 </a>
-                <a class="btn btn-sm bg-danger-light" href="{% url 'appo_delete'%}?id={{doc.id}}&&next={{request.get_full_path}}">
+                <a class="btn btn-sm bg-danger-light" href="{% url 'appo_delete' %}?id={{doc.id}}&&next={{request.get_full_path}}">
                  <i class="feather-x-circle">
                  </i>
                 </a>

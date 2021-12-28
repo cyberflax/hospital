@@ -35,7 +35,7 @@
           Billing details
          </h3>
         </div>
-        <form action="{%url 'product_order'%}" method="post">{%csrf_token%}
+        <form action="{% url 'product_order' %}" method="post">{% csrf_token %}
          <div class="card-body">
           <div class="info-widget">
            <h4 class="card-title">
@@ -175,7 +175,7 @@
              <input id="terms_accept1" required type="checkbox"/>
              <label for="terms_accept1">
               I have read and accept
-              <a href="{%url 'term_con'%}">
+              <a href="{% url 'term_con' %}">
                Terms &amp; Conditions
               </a>
              </label>
@@ -183,7 +183,7 @@
            </div>
            <div class="submit-section mt-4">
 
-             <a class="cards-btns" href="{%url 'payment_success'%}?user={{request.user.id}}">
+             <a class="cards-btns" href="{% url 'payment_success' %}?user={{request.user.id}}">
        <button type="submit" value="" class="btn btn-primary submit-btn"> Confirm and Pay
        </button>   </a> </div>
           </div>
@@ -210,7 +210,7 @@
         <div class="total-table">
          <div class="table-responsive">
           <table class="table table-center mb-0">
-           <tbody>{% for prod,prices,qty in product%}
+           <tbody>{% for prod,prices,qty in product %}
             <tr>
              <td>
               {{prod.name}} </td>
@@ -222,7 +222,7 @@
               ${{prices}}
              </td>
             </tr>
-           {%endfor%}
+           {% endfor %}
            </tbody>
           </table>
          </div>
@@ -290,4 +290,4 @@
      </div>
     </div>
    </div>
- {%endblock%}
+ {% endblock %}

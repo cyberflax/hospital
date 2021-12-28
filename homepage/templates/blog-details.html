@@ -51,21 +51,22 @@
          </h4>
         </div>
         <div class="card-body">
-         <ul class="latest-posts">{%for tit in alls%}
+         <ul class="latest-posts">{% for tit in alls %}
           <li>
            <div class="post-thumb">
-            <a href="/blog-details?@//@/={{tit.id}}&Did={{tit.doc.id}}">
-<!--             <img alt="" class="img-fluid" src="/media/{{tit.img}}"/>-->
               {% if tit.img|length is not 0 %}
-             <img alt="" class="img-fluid" src="/media/{{tit.img}}"/>
+              
+            <a href="/media/{{tit.img}}">
+             <img alt="" class="img-fluid" src="/media/{{tit.img}}"/></a>
            {% else %}
-            <img alt="" class="img-fluid" src="/media/default.jpg"/>
+           <a href="/media/default.jpg">
+            <img alt="" class="img-fluid" src="/media/default.jpg"/></a>
          {% endif %}
-            </a>
+            
            </div>
            <div class="post-info">
             <h4>
-             <a href="/blog-details?@//@/={{tit.id}}&Did={{tit.doc.id}}">
+             <a href="{% url 'blog_details' %}?@//@/={{tit.id}}&Did={{tit.doc.id}}">
               {{tit.title}}
              </a>
             </h4>
@@ -253,16 +254,13 @@
        <div class="blog-view">
         <div class="blog blog-single-post">
          <div class="blog-image">
-<!--          <a href="javascript:void(0);">-->
-<!--           <img alt="" class="img-fluid" src="/media/{{tit.img}}"/>-->
-
               {% if tit.img|length is not 0 %}
           <a href="/media/{{tit.img}}">
            <img alt="" class="img-fluid" src="/media/{{tit.img}}"/></a>
            {% else %}<a href="/media/default.jpg">
           <img alt="img-fluid" src="/media/default.jpg"/></a>
          {% endif %}
-          </a>
+          
          </div>
          <h3 class="blog-title">
           {{tit.title}}
@@ -272,8 +270,6 @@
            <ul>
             <li>
              <div class="post-author">
-<!--              <a href="{% url 'Doctor_profile' tit.doc.id %}">-->
-<!--               <img alt="Post Author" src="/media/{{tit.doc.img}}"/>-->
 
                 {% if tit.doc.img|length is not 0 %}
               <a href="/media/{{tit.doc.img}}">
@@ -283,9 +279,9 @@
               <img alt="Post Author" src="/media/default.jpg"/></a>
          {% endif %}
                <span>
-               {{tit.doc.name}}
+              Dr. {{tit.doc.name}}
                </span>
-<!--              </a>-->
+
              </div>
             </li>
             <li>
@@ -361,15 +357,13 @@
           <div class="about-author">
            <div class="about-author-img">
             <div class="author-img-wrap">
-<!--             <a href="{% url 'Doctor_profile' tit.doc.id %}">-->
-<!--              <img alt="" class="img-fluid rounded-circle" src="/media/{{tit.doc.img}}"/>-->
-               {% if tit.doc.img|length is not 0 %}
+ {% if tit.doc.img|length is not 0 %}
              <a href="/media/{{tit.doc.img}}">
               <img alt="" class="img-fluid rounded-circle" src="/media/{{tit.doc.img}}"/></a>
            {% else %}<a href="/media/default.jpg">
              <img  alt='' class="avatar rounded-circle" src="/media/default.jpg"/></a>
          {% endif %}
-<!--             </a>-->
+
             </div>
            </div>
            <div class="author-details">
@@ -476,8 +470,6 @@
  {% for i in review %}
            <li>
             <div class="comment">
-<!--             <img alt="User Image" class="avatar rounded-circle" src="/media/{{i.patient.img}}"/>-->
-
 
                {% if i.patient.img|length is not 0 %}
              <img alt="User Image" class="avatar rounded-circle" src="/media/{{i.patient.img}}"/>
@@ -535,8 +527,9 @@
               </div>
              </div>
             </div>
-           </li>{%endfor%}{% else %}
-           <p style="font-size:25px;margin-top: 10px;margin-left: 10px; margin-left: 10px;color:blue">No Review !</p>{% endif %}
+           </li>{% endfor %}{% else %}
+           <p style="font-size:25px;margin-top: 10px;margin-left: 10px;
+            margin-left: 10px;color:blue">No Review !</p>{% endif %}
           </ul>
          </div>
         </div>

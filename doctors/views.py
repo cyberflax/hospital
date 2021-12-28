@@ -24,6 +24,7 @@ def Doctor_profile(request,id):
             if name in patients:
                 var = reView(patient=patient1,name=name, review=review,dics=profile,YES=0,NO=0,rating=rating)
                 var.save()
+                messages.success(request,'Review Posted.')
                 return redirect(request.get_full_path())
             else:
                  messages.success(request, "Your are not patient")
@@ -55,7 +56,8 @@ def Doctor_register(request):
             usermail = User.objects.filter(email=email)
             usernam=User.objects.filter(username=name)
             print(name,name.lower(),usernam)
-            if len(usermail) !=1 and len(usernam)!=1:
+            if len(usermail) !=1:
+                if len(usernam)!=1:
                     user =User.objects.create_user(username=name, email=email, password=password)
                     user.save()
                     user1 = Dr(user=user, name=name, email=email,fees_starting=0,fees_end=0 )
@@ -70,8 +72,11 @@ def Doctor_register(request):
                     else:
                         messages.success(request, "Your account has been successfully created")
                     return redirect('home')
+                    
+                else:
+                    messages.error(request, "username is already register.")
             else:
-                messages.error(request, "Email or name is already register.")
+                messages.error(request, "Email is already register.")
         return render(request,'doctor/doctor-register.html')
     else:
         return redirect('error500')
@@ -119,16 +124,16 @@ def dlogin(request):
                             messages.success(request,F'{username} you are successfully logged In')
                             return redirect('home')
                 else:
-                    messages.warning(request, 'Wrong password')
+                    messages.error(request, 'Wrong password')
             else:
-                messages.warning(request,'Email is not registered')
+                messages.error(request,'Email is not registered')
             return redirect('dlogin')
         return render(request,'login.html')
     else:
         return redirect('error500')
 def dlogout(request):
     logout(request)
-    messages.success(request,'you are successfully logged Out')
+    messages.success(request,f'{request.user.username} you are successfully logged Out')
     return redirect('home')
 def doctor_dashboard(request):
     
@@ -137,7 +142,6 @@ def doctor_dashboard(request):
         dr = Dr.objects.get(id=request.user.Dr.id)
         list= checkout.objects.filter(dr_name=dr)
         totalapp=len(list)
-
         doctors=Dr.objects.get(id=request.user.Dr.id)
         p_list=mypatient.objects.filter(Dr_names=doctors)
         current_date=date.today()
@@ -345,6 +349,7 @@ def appo_delete(request):
         next = request.GET.get('next')
         check=checkout.objects.get(id=checkid)
         check.delete()
+        messages.success(request,'Appointment deleted.')
         return redirect(next)
     else:
         return redirect('error500')
@@ -368,6 +373,7 @@ def schedule(request):
             z = i.times.remove(time1)
             if i.times.all().count()==0:
                 p.delete()
+                messages.success(request,'Schedule Time is deleted.')
             return redirect(request.META.get('HTTP_REFERER'))
         res = {'time': time, 'days': days, 'x': x1}
         return render(request,'doctor/schedule-timings.html',res)
@@ -389,6 +395,7 @@ def invoices(request):
             if len(check) is not 0:
                 check.delete()
             app.delete()
+            messages.success(request,'Invoice deleted.')
             return redirect(request.META.get('HTTP_REFERER'))
         elif request.GET.get('aid') is not None:
             aid = request.GET.get('aid')
@@ -396,6 +403,7 @@ def invoices(request):
             pat=patient_record.objects.get(id=pat)
             check = billings.objects.get(patient=pat,id=aid)
             check.delete()
+            messages.success(request,'Invoice deleted.')
             return redirect(request.META.get('HTTP_REFERER'))
         res = {'invoice': invoice,'bill':bill}
         return render(request,'doctor/invoices.html',res)
@@ -503,7 +511,7 @@ def allpatient(request):
             dr_id=data.dr_name
             my_patients = mypatient.objects.filter(Dr_names=dr_id, pa_names=pa_id)
             # app=appoinmentlist(doctor=dr_id,patient=pa_id,date=data.date,time1=data.time1,time2=data.time2)
-            prec=prescriptions(patient=pa_id,date=data.date,doctor=dr_id,prec_name='none')
+            prec=prescriptions(patient=pa_id,date=data.date,doctor=dr_id)
             prec.save()
             # bill=billings(appoinment=app,patient=pa_id,doctor=dr_id,amount=data.amount,paid_on_date=data.date,invoice_no=0)
             # bill.save()

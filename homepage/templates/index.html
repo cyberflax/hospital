@@ -62,7 +62,7 @@
          <p>
           We hire the best specialists to deliver top-notch diagnostic services for you.
          </p>
-         <a href="{%url 'search'%}">
+         <a href="#">
           Book Now
          </a>
         </div>
@@ -80,7 +80,7 @@
          <p>
           We provide the a wide range of medical services, so every person could have the opportunity.
          </p>
-         <a href="/pharmacy-search">
+         <a href="{% url 'pharmacy_search' %}">
           Book Now
          </a>
         </div>
@@ -98,7 +98,7 @@
          <p>
           We use the first-class medical equipment for timely diagnostics of various diseases.
          </p>
-         <a href="/pharmacy-search">
+         <a href="{% url 'pharmacy_search' %}">
           Book Now
          </a>
         </div>
@@ -123,16 +123,16 @@
       <div class="col-md-12">
        <ul class="nav nav-tabs nav-tabs-solid">
          <li class="nav-item">
-         <a class="nav-link show active"  href="{%url 'home'%}">
+         <a class="nav-link show active"  href="{% url 'home' %}">
           All
          </a>
         </li>
-       {%for i in specialty%}
+       {% for i in specialty %}
         <li class="nav-item">
-         <a class="nav-link show active"  href="{%url 'home'%}?special={{i}}">
+         <a class="nav-link show active"  href="{% url 'home' %}?special={{i}}">
           {{i}}
          </a>
-        </li>{%endfor%}
+        </li>{% endfor %}
        </ul>
 
 
@@ -140,20 +140,19 @@
         <div class="tab-pane show active"  id="all">
          <div class="doctor-slider slider">
            <div class="row">
- {% for i in special%}
+ {% for i in special  %}
            <div class="col-lg-3 col-md-6">
           <div class="profile-widget">
            <div class="doc-img">
-            <a href="{%url 'Doctor_profile' i.id %}">
-<!--             <img alt="User Image" class="img-fluid" src="/media/{{i.img}}"/>-->
-
-
              {% if i.img|length is not 0 %}
-           <img alt="User Image"  class="img-fluid" src="/media/{{i.img}}"/>
+             
+            <a href="/media/{{i.img}}">
+           <img alt="User Image"  class="img-fluid" src="/media/{{i.img}}"/></a>
            {% else %}
-            <img alt="User Image" src="/media/default.jpg"/>
+           <a href="/media/default.jpg">
+            <img alt="User Image" src="/media/default.jpg"/></a>
          {% endif %}
-            </a>
+            
             <a class="fav-btn" href="javascript:void(0)">
              <i class="far fa-bookmark">
              </i>
@@ -161,14 +160,14 @@
            </div>
            <div class="pro-content">
             <h3 class="title">
-             <a href="{%url 'Doctor_profile' i.id %}">
+             <a href="{% url 'Doctor_profile' i.id %}">
               Dr. {{i.name}}
              </a>
              <i class="feather-check-circle verified">
              </i>
             </h3>
             <p class="speciality">
-             {{i.qulification }}
+             {{i.qulification}}
 
             </p>
             <div class="rating">
@@ -207,10 +206,10 @@
              </li>
             </ul>
             <div class="profile-btn-list">
-             <a class="btn btn-primary view-btn" href="{%url 'Doctor_profile' i.id %}">
+             <a class="btn btn-primary view-btn" href="{% url 'Doctor_profile' i.id  %}">
               View Profile
              </a>{% if request.user.userType.type == '1' %}
-             <a class="btn book-btn" href="{%url 'booking'%}?@//@/={{i.id}}">
+             <a class="btn book-btn" href="{% url 'booking' %}?@//@/={{i.id}}">
               Book Now
              </a>{% endif %}
             </div>
@@ -218,7 +217,7 @@
           </div> </div>{% endfor %}</div>
          </div>
 
-         <a class="btn btn-secondary see-more" href="{%url 'search'%}">
+         <a class="btn btn-secondary see-more" href="#">
           See More
          </a>
         </div>
@@ -262,13 +261,13 @@
          <div class="col-md-4 col-sm-6">
           <div class="feature-box">
            <div class="feature-img">
-            <a href="{%url 'search'%}">
+            <a href="{% static 'assets/img/features/feature-05.jpg' %}">
              <img alt="Feature Image" class="img-fluid" src="{% static 'assets/img/features/feature-05.jpg' %}"/>
             </a>
            </div>
            <div class="feature-content">
             <h3>
-             <a href="{%url 'search'%}">
+             <a href="#">
               Operation
              </a>
             </h3>
@@ -278,13 +277,13 @@
          <div class="col-md-4 col-sm-6">
           <div class="feature-box">
            <div class="feature-img">
-            <a href="{%url 'search'%}">
+            <a href="{% static 'assets/img/features/feature-06.jpg' %}">
              <img alt="Feature Image" class="img-fluid" src="{% static 'assets/img/features/feature-06.jpg' %}"/>
             </a>
            </div>
            <div class="feature-content">
             <h3>
-             <a href="{%url 'search'%}">
+             <a href="#">
               Medical
              </a>
             </h3>
@@ -294,13 +293,13 @@
          <div class="col-md-4 col-sm-6">
           <div class="feature-box">
            <div class="feature-img">
-            <a href="{%url 'search'%}">
+            <a href="{% static 'assets/img/features/feature-05.jpg' %}">
              <img alt="User Image" class="img-fluid" src="{% static 'assets/img/features/feature-05.jpg' %}"/>
             </a>
            </div>
            <div class="feature-content">
             <h3>
-             <a href="{%url 'search'%}">
+             <a href="#">
               Patient Ward
              </a>
             </h3>
@@ -310,13 +309,13 @@
          <div class="col-md-4 col-sm-6">
           <div class="feature-box">
            <div class="feature-img">
-            <a href="{%url 'search'%}">
+            <a href="{% static 'assets/img/features/feature-02.jpg' %}">
              <img alt="User Image" class="img-fluid" src="{% static 'assets/img/features/feature-02.jpg' %}"/>
             </a>
            </div>
            <div class="feature-content">
             <h3>
-             <a href="{%url 'search'%}">
+             <a href="#">
               Test Room
              </a>
             </h3>
@@ -326,13 +325,13 @@
          <div class="col-md-4 col-sm-6">
           <div class="feature-box">
            <div class="feature-img">
-            <a href="{%url 'search'%}">
+            <a href="{% static 'assets/img/features/feature-03.jpg' %}">
              <img alt="User Image" class="img-fluid" src="{% static 'assets/img/features/feature-03.jpg' %}"/>
             </a>
            </div>
            <div class="feature-content">
             <h3>
-             <a href="{%url 'search'%}">
+             <a href="#">
               ICU
              </a>
             </h3>
@@ -342,13 +341,13 @@
          <div class="col-md-4 col-sm-6">
           <div class="feature-box">
            <div class="feature-img">
-            <a href="{%url 'search'%}">
+            <a href="{% static 'assets/img/features/feature-04.jpg' %}">
              <img alt="User Image" class="img-fluid" src="{% static 'assets/img/features/feature-04.jpg' %}"/>
             </a>
            </div>
            <div class="feature-content">
             <h3>
-             <a href="{%url 'search'%}">
+             <a href="#">
               Laboratory
              </a>
             </h3>
@@ -356,7 +355,7 @@
           </div>
          </div>
          <div class="col-lg-4">
-          <a class="btn btn-primary see-more" href="{%url 'search'%}">
+          <a class="btn btn-primary see-more" href="#">
            See More
           </a>
          </div>
@@ -381,20 +380,19 @@
        <div class="our-doctor">
         <div class="row">
 
-         {%for jj in title%}
+         {% for jj in title %}
          <div class="col-lg-3 col-md-6">
           <div class="profile-widget">
            <div class="doc-img">
-            <a href="/doctor-profile">
-<!--             <img alt="User Image" class="img-fluid" src="/media/{{jj.img}}"/>-->
-
-
              {% if jj.img|length is not 0 %}
-           <img alt="User Image"  class="img-fluid" src="/media/{{jj.img}}"/>
+             
+            <a href="/media/{{jj.img}}">
+           <img alt="User Image"  class="img-fluid" src="/media/{{jj.img}}"/></a>
            {% else %}
-            <img alt="User Image" src="/media/default.jpg"/>
+           <a href="/media/default.jpg">
+            <img alt="User Image" src="/media/default.jpg"/></a>
          {% endif %}
-            </a>
+            
             <a class="fav-btn" href="javascript:void(0)">
              <i class="far fa-bookmark">
              </i>
@@ -402,7 +400,7 @@
            </div>
            <div class="pro-content">
             <h3 class="title">
-             <a href="/doctor-profile">
+             <a href="{% url 'Doctor_profile' jj.id %}">
              Dr. {{jj.name}}
              </a>
              <i class="feather-check-circle verified">
@@ -449,13 +447,13 @@
              <a class="btn btn-primary view-btn" href="{% url 'Doctor_profile' jj.id %} ">
               View Profile
              </a>{% if request.user.userType.type == '1' %}
-             <a class="btn book-btn" href="{%url 'booking'%}?@//@/={{jj.id}}">
+             <a class="btn book-btn" href="{% url 'booking' %}?@//@/={{jj.id}}">
               Book Now
              </a>{% endif %}
             </div>
            </div>
           </div>
-         </div>{%endfor%}
+         </div>{% endfor %}
 
         </div>
        </div> {% else %}
@@ -478,36 +476,35 @@
        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
       </p>
      </div>{% if blog|length is not 0 %}
-     <div class="row blog-grid-row">{% for i in blog%}
+     <div class="row blog-grid-row">{% for i in blog %}
       <div class="col-md-6 col-lg-3 col-sm-12">
        <div class="blog grid-blog">
         <div class="blog-image">
-         <a href="/blog-details?@//@/={{i.id}}&Did={{i.doc.id}}">
-<!--          <img alt="Post Image" class="img-fluid" src="/media/{{i.img}}"/>-->
-
              {% if i.img|length is not 0 %}
-           <img alt="Post Image" class="img-fluid" src="/media/{{i.img}}">
+             
+         <a href="/media/{{i.img}}">
+           <img alt="Post Image" class="img-fluid" src="/media/{{i.img}}"></a>
            {% else %}
-            <img alt="User Image" src="/media/default.jpg"/>
+           <a href="/media/default.jpg">
+            <img alt="User Image" src="/media/default.jpg"/></a>
          {% endif %}
-         </a>
+         
         </div>
         <div class="blog-content">
          <h3 class="blog-title">
-          <a href="/blog-details?@//@/={{i.id}}&Did={{i.doc.id}}">
+          <a href="{% url 'blog_details' %}?@//@/={{i.id}}&Did={{i.doc.id}}">
            {{i.title}}
           </a>
          </h3>
          <p>{{i.doc.Ov_view.about}}
          </p>
-         <a class="read-link" href="/blog-details?@//@/={{i.id}}&Did={{i.doc.id}}">
+         <a class="read-link" href="{% url 'blog_details' %}?@//@/={{i.id}}&Did={{i.doc.id}}">
           Read More
          </a>
          <ul class="entry-meta meta-item">
           <li>
            <div class="post-author">
             <a href="{% url 'Doctor_profile' i.doc.id %}">
-<!--             <img alt="Post Author" src="/media/{{i.doc.img}} "/>-->
 
                {% if i.doc.img|length is not 0 %}
              <img alt="Post Author" src="/media/{{i.doc.img}} "/>
@@ -528,11 +525,11 @@
          </ul>
         </div>
        </div>
-      </div>{%endfor%}
+      </div>{% endfor %}
 
      </div>
      <div class="view-all">
-      <a class="btn btn-secondary see-more" href="{%url 'blog_list'%}">
+      <a class="btn btn-secondary see-more" href="{% url 'blog_list' %}">
        View All
       </a>
      </div>

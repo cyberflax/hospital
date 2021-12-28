@@ -215,11 +215,14 @@
               </a>
              </td>
              <td>
-              <h2 class="table-avatar">
-               <a class="avatar avatar-sm mr-2" href="/patient-profile?profile={{i.patient.id}}">
+              <h2 class="table-avatar">{% if i.patient.img|length != 0 %}
+               <a class="avatar avatar-sm mr-2" href="/media/{{i.patient.img}}">
                 <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.patient.img}}"/>
-               </a>
-               <a href="/patient-profile?profile={{i.patient.id}}">
+               </a>{% else %}
+               <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+               </a>{% endif %}
+               <a href="{% url 'patient_profile' %}?profile={{i.patient.id}}">
                 {{i.patient.name}}
                 <span>
                  #PT-00{{i.patient.id}}
@@ -235,7 +238,7 @@
              </td>
              <td class="text-left">
               <div class="table-action">
-               <a class="btn btn-sm bg-info-light" href="{%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Oid={{i.id}}">
+               <a class="btn btn-sm bg-info-light" href="{% url 'invoice_view' %}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Oid={{i.id}}">
 <!--               {%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{request.user.Dr.id}}&Oid={{i.id}}-->
                 <i class="feather-eye">
                 </i>
@@ -244,7 +247,7 @@
                 <i class="feather-check-circle">
                 </i>
                </a> -->
-               <a class="btn btn-sm bg-danger-light" href="{%url 'invoices'%}?pid={{i.patient.id}}&Oid={{i.id}}">
+               <a class="btn btn-sm bg-danger-light" href="{% url 'invoices' %}?pid={{i.patient.id}}&Oid={{i.id}}">
                 <i class="feather-x-circle">
                 </i>
                </a>
@@ -255,16 +258,20 @@
           {%for i in bill%}
           <tr>
            <td>
-            <a href="{%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
+            <a href="{% url 'invoice_view' %}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
              #INV-00{{i.id}}
             </a>
            </td>
            <td>
-            <h2 class="table-avatar">
-             <a class="avatar avatar-sm mr-2" href="/patient-profile?profile={{i.patient.id}}">
+            <h2 class="table-avatar">{% if i.patient.img|length != 0 %}
+             <a class="avatar avatar-sm mr-2" href="/media/{{i.patient.img}}">
               <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.patient.img}}"/>
-             </a>
-             <a href="/patient-profile?profile={{i.patient.id}}">
+             </a>{% else %}
+             <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+               <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+              </a>{% endif %}
+
+             <a href="{% url 'patient_profile' %}?profile={{i.patient.id}}">
               {{i.patient.name}}
               <span>
                #PT-00{{i.patient.id}}
@@ -280,7 +287,7 @@
            </td>
            <td class="text-left">
             <div class="table-action">
-             <a class="btn btn-sm bg-info-light" href="{%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
+             <a class="btn btn-sm bg-info-light" href="{% url 'invoice_view' %}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
 <!--               {%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{request.user.Dr.id}}&Oid={{i.id}}-->
               <i class="feather-eye">
               </i>
@@ -289,14 +296,14 @@
               <i class="feather-check-circle">
               </i>
              </a> -->
-             <a class="btn btn-sm bg-danger-light" href="{%url 'invoices'%}?pat={{i.patient.id}}&aid={{i.id}}">
+             <a class="btn btn-sm bg-danger-light" href="{% url 'invoices' %}?pat={{i.patient.id}}&aid={{i.id}}">
               <i class="feather-x-circle">
               </i>
              </a>
 
             </div>
            </td>
-        </tr> {%endfor%}
+        </tr> {% endfor %}
            </tbody>
           </table>
          </div>

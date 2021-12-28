@@ -34,7 +34,7 @@
             <input class="form-control" required name="password" id="pass3" type="password"/>
            </div>
            <div class="text-left">
-            <a class="forgot-link" href="{% url 'pwd_reset'%}">
+            <a class="forgot-link" href="{% url 'pwd_reset' %}">
              Forgot Password ?
             </a>
            </div>
@@ -65,7 +65,7 @@
            </div>
            <div class="text-center dont-have">
             Don’t have an account?
-            <a href="/patient-register">
+            <a href="{% url 'patient_register' %}">
              Register
             </a>
            </div>

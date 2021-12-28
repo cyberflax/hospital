@@ -32,17 +32,19 @@
        <div class="doctor-widget">
         <div class="doc-info-left">
          <div class="doctor-img1">
-          <a href="/pharmacy-details?@//@/={{title.id}}">
 
            {% if title.img|length is not 0 %}
-               <img alt="User Image" src="/media/{{title.img}}"/>
+           
+          <a href="/media/{{title.img}}">
+               <img alt="User Image" src="/media/{{title.img}}"/></a>
            {% else %}
-            <img alt="User Image"   src="/media/default.jpg"/>
-           {% endif %}</a>
+           <a href="/media/blank.png">
+            <img alt="User Image"   src="/media/blank.png"/></a>
+           {% endif %}
          </div>
          <div class="doc-info-cont">
           <h4 class="doc-name mb-2">
-           <a href="/pharmacy-details">
+           <a href="{% url 'pharmacy_details' %}">
             {{title.user}}
            </a>
           </h4>
@@ -80,7 +82,7 @@
           <a class="apt-btn" data-target="#voice_call" data-toggle="modal" href="#">
            Call Now
           </a>
-          <a class="view-pro-btn" href="/product-all?@//@/={{title.id}}">
+          <a class="view-pro-btn" href="{% url 'product_all' %}?@//@/={{title.id}}">
            Browse Products
           </a>
          </div>
@@ -133,7 +135,7 @@
              Awards
             </h4>
             {% if title.pha_Oview.pha_awards.all|length is not 0 %}
-            {% for i in title.pha_Oview.pha_awards.all%}
+            {% for i in title.pha_Oview.pha_awards.all %}
             <div class="experience-box">
              <ul class="experience-list">
               <li>
@@ -155,7 +157,7 @@
                </div>
               </li>
              </ul>
-            </div>{%endfor%}
+            </div>{% endfor %}
             {% else %}
             <p style="font-size:15px;color:blue">No Award details ! </p>
             {% endif %}
@@ -165,7 +167,7 @@
         </div>
         <div class="tab-pane fade" id="doc_locations" role="tabpanel">
          {% if title.pha_loc.all|length is not 0 %}
-         {% for i in title.pha_loc.all%}
+         {% for i in title.pha_loc.all %}
          <div class="location-list">
           <div class="row">
            <div class="col-md-6">
@@ -253,7 +255,7 @@
             </div>
            </div>
           </div>
-         </div>{%endfor%}
+         </div>{% endfor %}
           {% else %}
             <p style="font-size:25px;color:blue;text-align:center">Location Not Available ! </p>
             {% endif %}
@@ -264,7 +266,7 @@
           {% if title.pha_review.all|length is not 0 %}
           <ul class="comments-list">
 
-{% for i in title.pha_review.all%}
+{% for i in title.pha_review.all %}
            <li>
             <div class="comment">
              <img alt="User Image" class="avatar avatar-sm rounded-circle" src="{% static 'assets/img/patients/patient2.jpg' %}"/>
@@ -278,15 +280,15 @@
                </span>
 
                  <div class="review-count rating">
-                {%for  j in "x"|ljust:"5"%}
-    {%if i.rating > forloop.counter0 %}
+                {% for  j in "x"|ljust:"5" %}
+    {% if i.rating > forloop.counter0 %}
                 <i class="fas fa-star filled" >
                 </i>
-                {%else%}
+                {% else %}
                 <i class="fas fa-star">
                 </i>
-                {%endif%}
-                {%endfor%}
+                {% endif %}
+                {% endfor %}
 
                </div>
 
@@ -304,12 +306,12 @@
                 <span>
                  Recommend?
                 </span>
-                <a class="like-btn" href="/liked?@//@/={{i.id}}&next={{request.get_full_path}}">
+                <a class="like-btn" href="{% url 'liked' %}?@//@/={{i.id}}&next={{request.get_full_path}}">
                  <i class="far fa-thumbs-up">
                  </i>
                  {{i.YES}}
                 </a>
-                <a class="dislike-btn" href="/disliked?@//@/={{i.id}}&next={{request.get_full_path}}">
+                <a class="dislike-btn" href="{% url 'disliked' %}?@//@/={{i.id}}&next={{request.get_full_path}}">
                  <i class="far fa-thumbs-down">
                  </i>
                {{i.NO}}
@@ -318,7 +320,7 @@
               </div>
              </div>
             </div>
-           </li>{%endfor%}
+           </li>{% endfor %}
           </ul>
           <div class="all-feedback load-more mb-0">
            <a class="btn btn-primary btn-sm" href="#">
@@ -337,7 +339,7 @@
             {{title.name}}
            </strong>
           </h4>
-          <form method="post">{% csrf_token%}
+          <form method="post">{% csrf_token %}
            <div class="form-group">
             <label>
              Review
@@ -426,7 +428,7 @@
                  Today
                  <span class="day my-3">
 <!--                 {{title.pha_buss.dates}}-->
-                  {% now 'd-m-Y'%}
+                  {% now 'd-m-Y' %}
                  </span>
                 </div>
                 <div class="time-items">

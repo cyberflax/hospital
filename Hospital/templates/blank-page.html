@@ -69,22 +69,22 @@
                             </a>
                             <ul class="submenu">
                                 <li>
-                                    <a href="{% url 'doctor_dashboard'%}?id={{request.user.Dr.id}}">
+                                    <a href="{% url 'doctor_dashboard' %}?id={{request.user.Dr.id}}">
                                         Doctor Dashboard
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'appointments'%}?doctor={{request.user.Dr.id}}">
+                                    <a href="{% url 'appointments' %}?doctor={{request.user.Dr.id}}">
                                         Appointments
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'schedule'%}">
+                                    <a href="{% url 'schedule' %}">
                                         Schedule Timing
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'my_patient'%}?doctor={{request.user.Dr.id}}">
+                                    <a href="{% url 'my_patient' %}?doctor={{request.user.Dr.id}}">
                                         Patients List
                                     </a>
                                 </li>
@@ -94,22 +94,22 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'invoices'%}?invoice={{request.user.Dr.id}}">
+                                    <a href="{% url 'invoices' %}?invoice={{request.user.Dr.id}}">
                                         Invoices
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{%url 'doctor_profile_setting'%}?profile={{request.user.Dr.id}}">
+                                    <a href="{% url 'doctor_profile_setting' %}?profile={{request.user.Dr.id}}">
                                         Profile Settings
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'reviews'%}">
+                                    <a href="{% url 'reviews' %}">
                                         Reviews
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'change_password'%}">
+                                    <a href="{% url 'change_password' %}">
                                         Change Password
                                     </a>
                                 </li>
@@ -131,12 +131,12 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'patient_dashboard'%}?Pid={{request.user.patient_record.id}}">
+                                    <a href="{% url 'patient_dashboard' %}?Pid={{request.user.patient_record.id}}">
                                         Patient Dashboard
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'favourites'%}?pa={{request.user.id}}">
+                                    <a href="{% url 'favourites' %}?pa={{request.user.id}}">
                                         Favourites
                                     </a>
                                 </li>
@@ -146,19 +146,19 @@
                                 <!--                        </a>-->
                                 <!--                    </li>-->
                                 <li>
-                                    <a href="{%url 'profile_setting'%}?profile={{request.user.id}}">
+                                    <a href="{% url 'profile_setting' %}?profile={{request.user.id}}">
                                         Profile Settings
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{% url 'change_password'%}">
+                                    <a href="{% url 'change_password' %}">
                                         Change Password
                                     </a>
                                 </li>
                             </ul>
                         </li>
                         <li class="has-submenu">
-                            <a href="/pharmacy-search">
+                            <a href="{% url 'pharmacy_search' %}">
                                 <i class="fas fa-plus">
                                 </i>
                                 Pharmacy
@@ -166,7 +166,7 @@
                         </li>
                         {% endif %}
                         <li class="has-submenu">
-                            <a href="{% url 'blog_list'%}">
+                            <a href="{% url 'blog_list' %}">
                                 <i class="fas fa-plus">
                                 </i>
                                 Blogs
@@ -174,13 +174,13 @@
                         </li>
                         {% if request.user.userType.type == '4' %}
                         <li class="has-submenu">
-                            <a href="{% url 'adminhome'%}">
+                            <a href="{% url 'adminhome' %}">
                                 <i class="fas fa-plus">
                                 </i>
                                 Admin
                             </a>
                         </li>
-                        {%endif%}
+                        {% endif %}
                         {% if request.user.userType.type == '5' %}
                         <li class="has-submenu">
                             <a href="{% url 'indexs' %}">
@@ -189,32 +189,32 @@
                                 Pharmacy Admin
                             </a>
                         </li>
-                        {%endif%}
+                        {% endif %}
                         <li class="login-link">
-                            <a href="/login">
+                            <a href="{% url 'dlogin' %}">
                                 Login / Signup
                             </a>
                         </li>
                         {% if request.user.is_authenticated%}
                         <li class="has-submenu">
-                            <a href="/logout?@/@/={{request.user.id}}">
+                            <a href="{% url 'dlogout' %}?@/@/={{request.user.id}}">
                                 <i class="fas fa-plus">
                                 </i>logout </a>
                         </li>
-                        {%else%}
+                        {% else %}
                         <li class="has-submenu">
-                            <a href="/login">
+                            <a href="{% url 'dlogin' %}">
                                 <i class="fas fa-plus">
                                 </i>
                                 login </a>
                         </li>
                         <li class="has-submenu">
-                            <a href="{% url 'Doctor_register'%}">
+                            <a href="{% url 'Doctor_register' %}">
                                 <i class="fas fa-plus">
                                 </i>
                                 signup </a>
                         </li>
-                        {%endif%}
+                        {% endif %}
                     </ul>
                 </div>
                 <ul class="nav header-navbar-rht">
@@ -222,8 +222,7 @@
                     <li class="nav-item dropdown has-arrow logged-item">
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#">
                             <span class="user-img">
-                                <!--         <img alt="Fred Ortego" class="rounded-circle" src="/media/{{request.user.Dr.img}}" width="31"/>-->
-                                {% if request.user.Dr.img|length is not 0 %}
+                               {% if request.user.Dr.img|length is not 0 %}
                                 <img alt="Fred Ortego" class="rounded-circle" src="/media/{{request.user.Dr.img}}"
                                     width="31" />
                                 {% else %}
@@ -244,21 +243,21 @@
                                 </div>
                                 <div class="user-text">
                                     <h6>
-                                        {{request.user.Dr.name}}
+                                        Dr.{{request.user.Dr.name}}
                                     </h6>
                                     <p class="text-muted mb-0">
                                         Doctor
                                     </p>
                                 </div>
                             </div>
-                            <a class="dropdown-item" href="{% url 'doctor_dashboard'%}?id={{request.user.Dr.id}}">
+                            <a class="dropdown-item" href="{% url 'doctor_dashboard' %}?id={{request.user.Dr.id}}">
                                 Dashboard
                             </a>
                             <a class="dropdown-item"
-                                href="{% url 'doctor_profile_setting'%}?profile={{request.user.Dr.id}}">
+                                href="{% url 'doctor_profile_setting' %}?profile={{request.user.Dr.id}}">
                                 Profile Settings
                             </a>
-                            <a class="dropdown-item" href="{% url 'dlogout'%}">
+                            <a class="dropdown-item" href="{% url 'dlogout' %}">
                                 Logout
                             </a>
                         </div>
@@ -267,8 +266,6 @@
                     <li class="nav-item dropdown has-arrow logged-item">
                         <a class="dropdown-toggle nav-link" data-toggle="dropdown" href="#">
                             <span class="user-img">
-                                <!--         <img alt="Fred Ortego" class="rounded-circle" src="/media/{{request.user.patient_record.img}}" width="31"/>-->
-
                                 {% if request.user.patient_record.img|length is not 0 %}
                                 <img alt="Fred Ortego" class="rounded-circle" width="31"
                                     src="/media/{{request.user.patient_record.img}}" />
@@ -281,9 +278,7 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="user-header">
                                 <div class="avatar avatar-sm">
-                                    <!--                                <img alt="User Image" class="avatar-img rounded-circle"-->
-                                    <!--                                     src="/media/{{request.user.patient_record.img}}"/>-->
-                                    {% if request.user.patient_record.img|length is not 0 %}
+                                 {% if request.user.patient_record.img|length is not 0 %}
                                     <img alt="User Image" class="avatar-img rounded-circle"
                                         src="/media/{{request.user.patient_record.img}}" />
                                     {% else %}
@@ -294,8 +289,7 @@
                                 </div>
                                 <div class="user-text">
                                     <h6>
-                                        <!-- {{request.patient.patient_record.patient}} -->
-                                        {{request.user.patient_record.name}}
+                                       {{request.user.patient_record.name}}
                                     </h6>
                                     <p class="text-muted mb-0">
                                         Patient
@@ -303,13 +297,13 @@
                                 </div>
                             </div>
                             <a class="dropdown-item"
-                                href="{% url 'patient_dashboard'%}?Pid={{request.user.patient_record.id}}">
+                                href="{% url 'patient_dashboard' %}?Pid={{request.user.patient_record.id}}">
                                 Dashboard
                             </a>
-                            <a class="dropdown-item" href="{%url 'profile_setting'%}?profile={{request.user.id}}">
+                            <a class="dropdown-item" href="{% url 'profile_setting' %}?profile={{request.user.id}}">
                                 Profile Settings
                             </a>
-                            <a class="dropdown-item" href="{% url 'dlogout'%}">
+                            <a class="dropdown-item" href="{% url 'dlogout' %}">
                                 Logout
                             </a>
                         </div>
@@ -331,9 +325,7 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <div class="user-header">
                                 <div class="avatar avatar-sm">
-                                    <!--                                <img alt="User Image" class="avatar-img rounded-circle"-->
-                                    <!--                                     src="/media/{{request.user.patient_record.img}}"/>-->
-                                    {% if request.user.hos_admin_record.img|length is not 0 %}
+                              {% if request.user.hos_admin_record.img|length is not 0 %}
                                     <img alt="User Image" class="avatar-img rounded-circle"
                                         src="/media/{{request.user.hos_admin_record.img}}" />
                                     {% else %}
@@ -355,10 +347,10 @@
                                 href="{% url 'adminhome'%}">
                                 Dashboard
                             </a>
-                            <a class="dropdown-item" href="{%url 'adminprofile'%}">
+                            <a class="dropdown-item" href="{% url 'adminprofile' %}">
                                 Profile Settings
                             </a>
-                            <a class="dropdown-item" href="{% url 'dlogout'%}">
+                            <a class="dropdown-item" href="{% url 'dlogout' %}">
                                 Logout
                             </a>
                         </div>
@@ -405,7 +397,7 @@
                             <a class="dropdown-item" href="{% url 'settings' %}">
                              Settings
                             </a>
-                            <a class="dropdown-item" href="{% url 'dlogout'%}">
+                            <a class="dropdown-item" href="{% url 'dlogout' %}">
                                 Logout
                             </a>
                         </div>
@@ -518,7 +510,7 @@
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="{% url 'patient_dashboard'%}?Pid={{request.user.patient_record.id}}">
+                                        <a href="{% url 'patient_dashboard' %}?Pid={{request.user.patient_record.id}}">
                                             Patient Dashboard
                                         </a>
                                     </li>
@@ -534,7 +526,7 @@
                                 </h2>
                                 <ul>
                                     <li>
-                                        <a href="{% url 'appointments'%}?doctor={{request.user.Dr.id}}">
+                                        <a href="{% url 'appointments' %}?doctor={{request.user.Dr.id}}">
                                             Appointments
                                         </a>
                                     </li>
@@ -545,7 +537,7 @@
                                     </li>
                                    
                                     <li>
-                                        <a href="{% url 'doctor_dashboard'%}?id={{request.user.Dr.id}}">
+                                        <a href="{% url 'doctor_dashboard' %}?id={{request.user.Dr.id}}">
                                             Doctor Dashboard
                                         </a>
                                     </li>
@@ -560,12 +552,12 @@
             For Patients
         </h2><ul>
 <li>
-    <a href="/login">
+    <a href="{% url 'dlogin' %}">
         Login
     </a>
 </li>
 <li>
-    <a href="{% url 'patient_register'%}">
+    <a href="{% url 'patient_register' %}">
         Register
     </a>
 </li></ul>
@@ -578,12 +570,12 @@
 <ul>
 
     <li>
-        <a href="/login">
+        <a href="{% url 'dlogin' %}">
             Login
         </a>
     </li>
     <li>
-        <a href="{% url 'Doctor_register'%}">
+        <a href="{% url 'Doctor_register' %}">
             Register
         </a>
     </li>
@@ -641,12 +633,12 @@
                                 <div class="copyright-menu">
                                     <ul class="policy-menu">
                                         <li>
-                                            <a href="term-condition.html">
+                                            <a href="{% url 'term_con' %}">
                                                 Terms and Conditions
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="privacy-policy.html">
+                                            <a href="{% url 'privacy' %}">
                                                 Policy
                                             </a>
                                         </li>

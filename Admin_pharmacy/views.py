@@ -38,6 +38,8 @@ def categories(request):
                 products = category.objects.get(id=request.POST['catid'])
                 products.cate = name
                 products.save()
+                messages.success(request,'Category edit succesfully.')
+                return redirect(request.get_full_path())
             elif request.POST.get('catename') is not None:#for add
                 name = request.POST['catename']
                 cate=category.objects.values('cate')
@@ -45,12 +47,16 @@ def categories(request):
                 if name.lower() not in data:
                     cat=category(cate=name)
                     cat.save()
+                    messages.success(request,'Category added succesfully.')
+                    return redirect(request.get_full_path())
                 else:
                     messages.warning(request,'category is already in list')
 
         prod = request.GET.get('catids')#for delete
         products = category.objects.filter(id=prod)
         products.delete()
+        # messages.success(request,'Category deleted.')
+        # return redirect(request.get_full_path())
 
         return render(request,'categories.html',{'product':product})
         
@@ -73,6 +79,8 @@ def sales(request):
             os=pro[0]
             os.invoice=invoice_no
             os.save()
+            messages.success(request,'Sale edit succesfully.')
+            return redirect(request.get_full_path())
         return render(request,'sales.html',{'product':product})
     
     else:
@@ -87,6 +95,8 @@ def transaction(request):
         if len(order) > 0:
             ob = order[0]
             ob.delete()
+            messages.success(request,'Transaction deleted.')
+            return redirect(request.get_full_path())
 
         return render(request,'transactions-list.html',{'product':product})
     else:
@@ -102,7 +112,6 @@ def profile(request):
             id1 = request.POST.get('profileid')
             if id1 is not None:
                 id1 = request.POST['profileid']
-                print(id1,'111')
                 fname = request.POST['fname']
                 lname = request.POST['lname']
                 add = request.POST['address']
@@ -127,6 +136,8 @@ def profile(request):
                 profiles.email=email
                 profiles.zipcode=zip
                 profiles.save()
+                messages.success(request,'Profile Updated.')
+                return redirect(request.get_full_path())
             elif request.POST.get('adminid') is not None:
                 id = request.POST['adminid']  # admin edit
                 name = request.POST['name']
@@ -138,7 +149,9 @@ def profile(request):
                     prof.about = about
                     prof.name = name
                     prof.img = img
-                    prof.save()
+                    prof.save()             
+                    messages.success(request,'Profile update succesfully.')
+                    return redirect(request.get_full_path())
 
         return render(request,'profile.html',{'profile':profile})
         
@@ -182,9 +195,13 @@ def settings(request):
                 prod.webname=webname
                 prod.favicon=favicon
                 prod.save()
+                messages.success(request,'setting edit succesfully.')
+                return redirect(request.get_full_path())
             else:
                 prods=setting(webname=webname,weblogo=weblogo,favican=favicon,pharmacy=sett)
                 prods.save()
+                messages.success(request,'Setting Updated.')
+                return redirect(request.get_full_path())
         return render(request,'settings.html')
     
     else:
@@ -197,6 +214,7 @@ def products(request):
         products = pha_product.objects.filter(doc=li)
         products1 = pha_product.objects.filter(id=request.GET.get('prod'))
         products1.delete()
+        # messages.success(request,'product deleted.')
         if request.method=='POST': # for edit
                 pro=request.POST['phar_ids']
                 name = request.POST['prodname']
@@ -211,8 +229,10 @@ def products(request):
                 product1.discount = dis
                 product1.genatic_name=gen
                 product1.save()
-        return render(request,'products.html',
-        {'product':products,'today':date.today(),'cates':category.objects.all()})
+                messages.success(request,'Product edit succesfully.')
+                return redirect(request.get_full_path())
+        res= {'product':products,'today':date.today(),'cates':category.objects.all()}
+        return render(request,'products.html',res)
     
     else:
         return redirect('error404')
@@ -250,6 +270,7 @@ def outstock(request):
         product2 = pharmacy.objects.get(id=request.user.pharmacy.id)
         products = pha_product.objects.filter(id=request.GET.get('prod') , doc=product2)#for delete
         products.delete()
+        # messages.success(request,'Product deleted.')
 
         if request.method == 'POST':  # for edit
             phars = request.POST['phar_ids']
@@ -261,6 +282,8 @@ def outstock(request):
                 prod.quntity = qunt
                 prod.genatic_name = name
                 prod.save()
+                messages.success(request,'Product edit succesfully.')
+                return redirect(request.get_full_path())
         return render(request,'outstock.html',{'list':li})
     
     else:
@@ -274,7 +297,8 @@ def purchase(request):
         sup=request.GET.get('suppid')
         product1 = Purchase.objects.filter(id=sup)
         product1.delete()
-
+        # messages.success(request,'Purchase deleted.')
+            
         if request.method=='POST':
             supp1=request.POST['prod']
             suppl=request.POST['supp']
@@ -284,6 +308,8 @@ def purchase(request):
                 prod=prods[0]
                 prod.supplir=supple
                 prod.save()
+                messages.success(request,'Purchase edit succesfully.')
+                return redirect(request.get_full_path())
         return render(request,'purchase.html',{'product':product,'supp':supp})
     
     else:
@@ -308,6 +334,7 @@ def add_purchase(request):
                 prod=Purchase(pharmacys=pharmcy,med_name=medname,price=price,
                 quntity=qun,img=img,category=cate,ex_date=exdate)
                 prod.save()
+                messages.success(request,'Purchase add succesfully.')
                 return redirect('purchase')
         return render(request,'add-purchase.html',{'supp':supp})
         
@@ -321,6 +348,8 @@ def order(request):
         sup = request.GET.get('suppid')
         product1 = pharmacy_prod_order.objects.filter(id=sup,pharmacys=pharmcy)
         product1.delete()
+        # messages.success(request,'Order deleted.')
+                
 
         return render(request,'order.html',{'product':product})
     
@@ -344,6 +373,8 @@ def expired(request):
                     prods.expiry_date=exp
                     prods.genatic_name=gen
                     prods.save()
+                    messages.success(request,'Product edit succesfully.')
+                    return redirect(request.get_full_path())
         return render(request,'expired.html',{'li':li,'date':cont})
     
     else:
@@ -368,6 +399,8 @@ def suppliers(request):
                 pro.company=com
                 pro.product=product
                 pro.save()
+                messages.success(request,'Supplier edit succesfully.')
+                return redirect(request.get_full_path())
         return render(request,'supplier.html',{'supply':supply,'prod':prod})
     
     else:
@@ -389,6 +422,7 @@ def add_supplier(request):
                 supp=supplier(user=pharmcy,name=name,img=img,email=email,mobile=mobile,
                 company=company,address=add)
                 supp.save()
+                messages.success(request,'Supplier add succesfully.')
                 return redirect('supplier')
         return render(request,'add-supplier.html')
     
@@ -411,6 +445,8 @@ def invoice_report(request):
             ob.invoice=invoice
             ob.payment_status=status
             ob.save()
+            messages.success(request,'Invoice edit succesfully.')
+            return redirect(request.get_full_path())
         return render(request,'invoice-report.html',{'product':product})
     
     else:

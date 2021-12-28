@@ -222,7 +222,7 @@
         </span>
        </li>
        <li class="active">
-        <a href="{% url 'indexs'%}">
+        <a href="{% url 'indexs' %}">
          <i class="fe fe-home">
          </i>
          <span>
@@ -231,7 +231,7 @@
         </a>
        </li>
        <li class="submenu">
-        <a href="{% url 'indexs'%}">
+        <a href="{% url 'indexs' %}">
          <i class="fe fe-document">
          </i>
          <span>
@@ -242,7 +242,7 @@
         </a>
         <ul style="display: none;">
          <li>
-          <a href="{% url 'products'%}">
+          <a href="{% url 'products' %}">
            Products
           </a>
          </li>
@@ -252,7 +252,7 @@
           </a>
          </li>
          <li>
-          <a href="{% url 'outstock'%}">
+          <a href="{% url 'outstock' %}">
            Out-Stock
           </a>
          </li>
@@ -301,7 +301,7 @@
         </ul>
        </li>
        <li>
-        <a href="{% url 'sales'%}?sale={{request.user.userType.id}}">
+        <a href="{% url 'sales' %}?sale={{request.user.userType.id}}">
          <i class="fe fe-activity">
          </i>
          <span>
@@ -326,14 +326,14 @@
           </a>
          </li>
          <li>
-          <a href="{% url 'add_supplier'%}">
+          <a href="{% url 'add_supplier' %}">
            Add Supplier
           </a>
          </li>
         </ul>
        </li>
        <li>
-        <a href="{% url 'transaction'%}?trans={{request.user.userType.id}}">
+        <a href="{% url 'transaction' %}?trans={{request.user.userType.id}}">
          <i class="fe fe-table">
          </i>
          <span>
@@ -353,7 +353,7 @@
         </a>
         <ul style="display: none;">
          <li>
-          <a href="{% url 'invoice_report'%}?invoice={{request.user.userType.id}}">
+          <a href="{% url 'invoice_report' %}?invoice={{request.user.userType.id}}">
            Invoice Reports
           </a>
          </li>
@@ -365,7 +365,7 @@
         </span>
        </li>
        <li>
-        <a href="{%url 'profile'%}?id={{request.user.id}}">
+        <a href="{% url 'profile' %}?id={{request.user.id}}">
          <i class="fe fe-user-plus">
          </i>
          <span>
@@ -374,7 +374,7 @@
         </a>
        </li>
        <li>
-        <a href="{% url 'settings'%}">
+        <a href="{% url 'settings' %}">
          <i class="fe fe-vector">
          </i>
          <span>

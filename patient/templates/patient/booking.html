@@ -16,7 +16,7 @@
                                 Home
                             </a>
                         </li>
-                        <li aria-current="page" style="color: blue;"  class="breadcrumb-item active">
+                        <li aria-current="page" style="color: blue;" class="breadcrumb-item active">
                             Booking
                         </li>
                     </ol>
@@ -32,16 +32,19 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="booking-doc-info">
-                            <a class="booking-doc-img" href="{% url 'Doctor_profile' title.id %}">
                                 {% if title.img|length is not 0 %}
-                                <img alt="User Image" src="/media/{{title.img}}"/>
-                                {% else %}<img alt="User Image" src="/media/default.jpg"/>
+                                <a class="booking-doc-img" href="/media/{{title.img}}">
+                           
+                                <img alt="User Image" src="/media/{{title.img}}" /></a>
+                                {% else %}
+                                <a class="booking-doc-img" href="/media/default.jpg">
+                                    <img alt="User Image" src="/media/default.jpg" /></a>
                                 {% endif %}
-                            </a>
+                            
                             <div class="booking-info">
                                 <h4>
                                     <a href="{% url 'Doctor_profile' title.id %}">
-                                        {{title.name}}
+                                       Dr. {{title.name}}
                                     </a>
                                 </h4>
                                 <div class="rating">
@@ -56,8 +59,8 @@
                                     <i class="fas fa-star">
                                     </i>
                                     <span class="d-inline-block average-rating">
-             35
-            </span>
+                                        35
+                                    </span>
                                 </div>
                                 <p class="text-muted mb-0">
                                     <i class="fas fa-map-marker-alt">
@@ -77,20 +80,20 @@
                                 <div class="row align-items-center">
                                     <div class="col-12 col-sm-6 col-md-4 col-lg-4">
                                         <h4 class="mb-0">
-                               {% now 'd F Y' %}
+                                            {% now 'd F Y' %}
                                         </h4>
                                     </div>
                                     <div class="col-12 col-sm-6 col-md-2 col-lg-4 text-sm-center">
                                         <p class="text-muted mb-0">
-                                    {% now 'l' %}
+                                            {% now 'l' %}
                                         </p>
                                     </div>
                                     <div class="col-12 col-sm-8 col-md-6 col-lg-4 text-md-right">
                                         <div class="bookingrange btn btn-white btn-sm">
-                                            <i class="far fa-calendar-alt mr-2" >
+                                            <i class="far fa-calendar-alt mr-2">
                                             </i>
                                             <span>
-             </span>
+                                            </span>
                                             <i class="fas fa-chevron-down ml-2">
                                             </i>
                                         </div>
@@ -103,24 +106,24 @@
                                 <div class="col-md-12">
                                     <div class="day-slot">
                                         <ul>{% if title.for_booking.all|length is not 0 %}
-                                            {% for i in title.for_booking.all%}
+                                            {% for i in title.for_booking.all %}
                                             <li>
                                                 <div class="days">
-               <span>
-               {{i.day}}
-               </span>
+                                                    <span>
+                                                        {{i.day}}
+                                                    </span>
                                                     <span class="slot-date">
-                {{i.date|date:'d'}}
-                <small class="slot-year">
-                {{i.date|date:'MY'}}
-                </small>
-               </span>
+                                                        {{i.date|date:'d'}}
+                                                        <small class="slot-year">
+                                                            {{i.date|date:'MY'}}
+                                                        </small>
+                                                    </span>
                                                 </div>
                                             </li>
-                                            {%endfor%}{% else %}
+                                            {% endfor %}{% else %}
 
-                                                <p style="font-size:30px; color:blue ">Booking date is not available !</p>
-              {% endif %}
+                                            <p style="font-size:30px; color:blue ">Booking date is not available !</p>
+                                            {% endif %}
 
 
                                         </ul>
@@ -135,26 +138,28 @@
                                         <ul class="nav nav-tabs nav-tabs-solid"> {% for x in books %}
 
                                             <li class="nav-item">
-                                                  {% if x.0.times.all|length is not 0 %}
-{% for time in x.0.times.all %}
+                                                {% if x.0.times.all|length is not 0 %}
+                                                {% for time in x.0.times.all %}
 
-                <a class="timing "   data-toggle="tab" onclick="$('#date').val('{{x.0.dr.id}}');$('#time').val('{{time.id}}');">
-                    <span>
-                    {{time.time1 }}-{{time.time2}}
-                </span>
-                </a>
-{% endfor%}{% else %}
-           <p style="font-size:15px">Time not Available !</p>{% endif %}
+                                                <a class="timing " data-toggle="tab"
+                                                    onclick="$('#date').val('{{x.0.dr.id}}');$('#time').val('{{time.id}}');">
+                                                    <span>
+                                                        {{time.time1 }}-{{time.time2}}
+                                                    </span>
+                                                </a>
+                                                {% endfor %}{% else %}
+                                                <p style="font-size:15px">Time not Available !</p>{% endif %}
 
                                             </li>
-                                            {%endfor%}
+                                            {% endfor %}
 
                                         </ul>
                                     </div>
                                 </div>
-                        <div style="display:none">
-                    <input id="time" name="time1" type="text" required />
-                      <input id="date" name="date" type="text" value=""></div>
+                                <div style="display:none">
+                                    <input id="time" name="time1" type="text" required />
+                                    <input id="date" name="date" type="text" value="">
+                                </div>
                             </div>
 
                         </div>
@@ -163,13 +168,12 @@
 
                     <div class="submit-section proceed-btn text-left">
 
-<button type="submit" class="btn btn-primary submit-btn">Proceed to Pay</button>
+                        <button type="submit" class="btn btn-primary submit-btn">Proceed to Pay</button>
                     </div>{% endif %}
-<!--                 {% if x.0.times.all|length is not 0 %}     {% endif %}-->
-                </form>
+               </form>
             </div>
         </div>
     </div>
 
 </div>
-{%endblock%}
+{% endblock %}

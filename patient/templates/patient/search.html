@@ -64,7 +64,7 @@
 
      <div class="row">
       <div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
-         <form method="post">{%csrf_token%}
+         <form method="post">{% csrf_token %}
        <div class="card search-filter">
         <div class="card-header">
          <h4 class="card-title mb-0">
@@ -86,13 +86,11 @@
            <label class="form-check">
             <input  name='datas' id='datas' value="{{datas}}"
                     type="checkbox"/>
-
-<!--                    {% if datas in request.POST.datas %}checked{% endif %}-->
-            <span class="checkmark">
+ <span class="checkmark">
             </span>
             {{datas}}
            </label>
-          </div>{%endfor%}
+          </div>{% endfor %}
          </div>
 
          <div class="filter-widget">
@@ -105,8 +103,7 @@
            <label class="form-check">
             <input   name='data' value="{{data}}" id='data'
                       type="checkbox"/>
-<!--              {% if datas in request.POST.datas %}checked{% endif %}-->
-            <span class="checkmark">
+ <span class="checkmark">
             </span>
             {{data}}
            </label>
@@ -125,29 +122,30 @@
       <div class="col-md-12 col-lg-8 col-xl-9">
 
 
-        {%for data in li %}
-        {%for i in data %}
+        {% for data in li %}
+        {% for i in data %}
        <div class="card">
         <div class="card-body">
          <div class="doctor-widget">
           <div class="doc-info-left">
            <div class="doctor-img">
-            <a href="{%url 'Doctor_profile' i.id %}">
-             <!-- <img alt="User Image" class="img-fluid" src="/media/{{i.img}}"/> -->
-
+         
              {% if i.img|length is not 0 %}
-             <img alt="User Image" class="img-fluid" src="/media/{{i.img}}"/>
-             {% else %}
-              <img alt="User Image" class="img-fluid" src="/media/default.jpg"/>
+             <a href="/media/{{i.img}}">
+            
+             <img alt="User Image" class="img-fluid" src="/media/{{i.img}}"/></a>
+             {% else %}  <a href="/media/default.jpg">
+            
+              <img alt="User Image" class="img-fluid" src="/media/default.jpg"/></a>
            {% endif %}
 
-            </a>
+            
            </div>
            <div class="doc-info-cont">
             <h4 class="doc-name">
-             <a href="{%url 'Doctor_profile' i.id %}">
-              {{i.name}}</a>
-  <a class="" href="{%url 'favt'%}?dr={{i.id}}&pa={{request.user.id}}">
+             <a href="{% url 'Doctor_profile' i.id %}">
+             Dr. {{i.name}}</a>
+  <a class="" href="{% url 'favt' %}?dr={{i.id}}&pa={{request.user.id}}">
            {% if  i.id  in  favt %}
             <i class="fas fa-check-circle verified ml-2">
             </i>{% else %}
@@ -237,17 +235,17 @@
             </ul>
            </div>
            <div class="clinic-booking">
-            <a class="view-pro-btn" href="{%url 'Doctor_profile' i.id %}">
+            <a class="view-pro-btn" href="{% url 'Doctor_profile' i.id %}">
              View Profile
             </a>
-            <a class="apt-btn" href="{%url 'booking'%}?@//@/={{i.id}}">
+            <a class="apt-btn" href="{% url 'booking' %}?@//@/={{i.id}}">
              Book Now
             </a>
            </div>
           </div>
          </div>
         </div>
-       </div> {%endfor%}{%endfor%}
+       </div> {% endfor %}{% endfor %}
 
        <div class="load-more">
         <a class="btn btn-primary btn-sm" href="javascript:void(0);">
@@ -263,4 +261,4 @@
            <p style="color:blue;font-size:30px;text-align:center;" class="my-3 mx-3" >Doctor Not Available !</p>
       {% endif %}
    </div>
-{%endblock%}
+{% endblock %}

@@ -35,33 +35,42 @@
 									<tr>
 										<td>
 											<h2 class="table-avatar">
-								
-														                                          
-       {% if ap.doctor.img|length is not 0 %}<a href="/media/{{ap.doctor.img}}">
-       <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{ap.doctor.img}}" width="31"/></a>
-            {% else %}<a href="/media/default.jpg">
-             <img alt="User Image" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/></a>
-          {% endif %}
-												
-												<a href="{% url 'Doctor_profile' ap.doctor.id %}">Dr. {{ap.doctor.name}}</a>
+
+
+												{% if ap.doctor.img|length is not 0 %}<a
+													href="/media/{{ap.doctor.img}}">
+													<img alt="User Image" class="avatar-img rounded-circle"
+														src="/media/{{ap.doctor.img}}" width="31" /></a>
+												{% else %}<a href="/media/default.jpg">
+													<img alt="User Image" class="avatar-img rounded-circle" width="31"
+														src="/media/default.jpg" /></a>
+												{% endif %}
+
+												<a href="{% url 'Doctor_profile' ap.doctor.id %}">Dr.
+													{{ap.doctor.name}}</a>
 											</h2>
 										</td>
 										<td>{{ap.doctor.specialization}}</td>
 										<td>
 											<h2 class="table-avatar">
-										                                          
-       {% if ap.patient.img|length is not 0 %}<a href="/media/{{ap.patient.img}}">
-       <img alt="Fred Ortego" class="avatar-img rounded-circle" src="/media/{{ap.patient.img}}" width="31"/></a>
-            {% else %}<a href="/media/default.jpg">
-             <img alt="Fred Ortego" class="avatar-img rounded-circle" width="31" src="/media/default.jpg"/></a>
-          {% endif %}	
-													
-													
-												<a href="{%url 'patient_profile'%}?profile={{ap.patient.id}}">{{ap.patient}} </a>
+
+												{% if ap.patient.img|length is not 0 %}<a
+													href="/media/{{ap.patient.img}}">
+													<img alt="Fred Ortego" class="avatar-img rounded-circle"
+														src="/media/{{ap.patient.img}}" width="31" /></a>
+												{% else %}<a href="/media/default.jpg">
+													<img alt="Fred Ortego" class="avatar-img rounded-circle" width="31"
+														src="/media/default.jpg" /></a>
+												{% endif %}
+
+
+												<a href="{%url 'patient_profile'%}?profile={{ap.patient.id}}">{{ap.patient}}
+												</a>
 											</h2>
 										</td>
-										<td> {{ap.date|date:'d  M  Y'}} <span class="text-primary d-block">{{ap.time1}}-{{ap.time2}}
-												</span></td>
+										<td> {{ap.date|date:'d M Y'}} <span
+												class="text-primary d-block">{{ap.time1}}-{{ap.time2}}
+											</span></td>
 										<td>
 											<div class="status-toggle">
 												<input checked="" class="check" id="status_1" type="checkbox" />

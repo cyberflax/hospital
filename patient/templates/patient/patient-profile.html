@@ -33,13 +33,15 @@
         <div class="card-body">
          <div class="pro-widget-content">
           <div class="profile-info-widget">
-           <a class="booking-doc-img" href="#">
               {% if list.0.img|length is not 0 %}
-           <img alt="User Image" src="/media/{{list.0.img}}"/>
+              
+           <a class="booking-doc-img" href="/media/{{list.0.img}}">
+           <img alt="User Image" src="/media/{{list.0.img}}"/></a>
            {% else %}
-            <img alt="User Image" src="/media/default.jpg"/>
+           <a class="booking-doc-img" href="/media/default.jpg">
+            <img alt="User Image" src="/media/default.jpg"/></a>
          {% endif %}
-           </a>
+           
            <div class="profile-det-info">
             <h3>
              {{list.0.patient}}
@@ -94,8 +96,7 @@
          <li class="list-group-item">{% if last is not None %}
           <div class="media align-items-center">
            <div class="mr-3">
-            <!-- <img alt="Image placeholder" class="avatar rounded-circle" src="/media/{{last.doctor.img}}"/> -->
-            {% if last.doctor.img|length is not 0 %}
+           {% if last.doctor.img|length is not 0 %}
            <img  alt="Image placeholder" class="avatar rounded-circle" src="/media/{{last.doctor.img}}"/>
            {% else %}
             <img  alt="Image placeholder" class="avatar rounded-circle" src="/media/default.jpg"/>
@@ -202,14 +203,18 @@
                 <tr>
                  <td>
                   <h2 class="table-avatar">
-                   <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.dr_name.id %}">
                      {% if i.dr_name.img|length is not 0  %}
+                     <a class="avatar avatar-sm mr-2" href="/media/{{i.dr_name.img}}">
+                  
                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.dr_name.img}}"/>
-                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
-                   {% endif %} 
-                   </a>
-                   <a href="{%url 'Doctor_profile' i.dr_name.id %}">
-                    {{i.dr_name.name}}
+                    </a>{% else %} 
+                    <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                  
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                   </a>{% endif %} 
+                   
+                   <a href="{% url 'Doctor_profile' i.dr_name.id %}">
+                    Dr. {{i.dr_name.name}}
                     <span>
                      {{i.dr_name.specialization}}
                     </span>
@@ -287,7 +292,7 @@
                  </th>
                 </tr>
                </thead>
-               <tbody>{%for i in prec%}
+               <tbody>{% for i in prec %}
                 <tr>
                  <td>
                   {{i.date}}
@@ -302,21 +307,18 @@
                  </td>
                  <td>
                   <h2 class="table-avatar">
-                   <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
-                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
-                  
+                 
                   
                     {% if i.doctor.img|length is not 0  %}
-                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                    <a class="avatar avatar-sm mr-2" href="/media/{{i.doctor.img}}">
+                   
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/></a>
+                    {% else %}  <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                   
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/></a>
                    {% endif %}
-                  
-                  
-                  
-                  
-                  
-                  </a>
-                   <a href="{%url 'Doctor_profile' i.doctor.id %}">
+              
+                   <a href="{% url 'Doctor_profile' i.doctor.id %}">
                     {{i.doctor.name}}
                     <span>
                      {{i.doctor.specialization}}
@@ -338,7 +340,7 @@
                    </a>
                   </div>
                  </td>
-                </tr>{%endfor%}
+                </tr>{% endfor %}
 
                </tbody>
               </table>
@@ -374,7 +376,7 @@
                   </th>
                  </tr>
                 </thead>
-                <tbody>{%for i in prec%}
+                <tbody>{% for i in prec %}
                  <tr>
                   <td>
                    {{i.date}}
@@ -389,16 +391,19 @@
                   </td>
                   <td>
                    <h2 class="table-avatar">
-                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
-                     <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
-                     {% if i.doctor.img|length is not 0  %}
-                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                     {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                 {% if i.doctor.img|length is not 0  %}
+                 <a class="avatar avatar-sm mr-2" href="/media/{{i.doctor.img}}">
+                    
+                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/></a>
+                     {% else %}
+                      <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                    
+                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/></a>
                     {% endif %}
                    
                     </a>
-                    <a href="{%url 'Doctor_profile' i.doctor.id %}">
-                     {{i.doctor.name}}
+                    <a href="{% url 'Doctor_profile' i.doctor.id %}">
+                     Dr. {{i.doctor.name}}
                      <span>
                       {{i.doctor.specialization}}
                      </span>
@@ -419,7 +424,7 @@
                     </a>
                    </div>
                   </td>
-                 </tr>{%endfor%}
+                 </tr>{% endfor %}
  
                 </tbody>
                </table>
@@ -467,7 +472,7 @@
                  </th>
                 </tr>
                </thead>
-               <tbody>{%for i in medical%}
+               <tbody>{% for i in medical %}
                 <tr>
                  <td>
                   <!-- <a href="/media/{{i.attachment}}" > -->
@@ -495,16 +500,18 @@
                  </td>
                  <td>
                   <h2 class="table-avatar">
-                   <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
-                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
-                    {% if i.doctor.img|length is not 0  %}
-                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                 {% if i.doctor.img|length is not 0  %}
+                 <a class="avatar avatar-sm mr-2" href="/media/{{i.doctor.img}}">
+                   
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/></a>
+                    {% else %}
+                    <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                      <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/></a>
                    {% endif %}
                     
-                  </a>
-                   <a href="{%url 'Doctor_profile' i.doctor.id %}">
-                    {{i.doctor.name}}
+                  
+                   <a href="{% url 'Doctor_profile' i.doctor.id %}">
+                   Dr. {{i.doctor.name}}
                     <span>
                      {{i.doctor.specialization}}
                     </span>
@@ -526,7 +533,7 @@
                   </div>
                  </td>
                 </tr>
-               {%endfor%}
+               {% endfor %}
                </tbody>
               </table>
              </div>
@@ -566,10 +573,10 @@
                  </th>
                 </tr>
                </thead>
-               <tbody>{%for i in bill%}
+               <tbody>{% for i in bill %}
                 <tr>
                  <td>
-   <a href="{%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{i.doctor.id}}Bid={{i.id}}">
+   <a href="{% url 'invoice_view' %}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
                    #INV-00{{i.id}}
                   </a>
 
@@ -577,16 +584,18 @@
                  </td>
                  <td>
                   <h2 class="table-avatar">
-                   <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
-                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
-                  
+                 
                     {% if i.doctor.img|length is not 0  %}
-                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                    <a class="avatar avatar-sm mr-2" href="/media/{{i.doctor.img}}">
+                 
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/></a>
+                    {% else %}  <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                 
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/></a>
                    {% endif %}
-                  </a>
-                   <a href="{%url 'Doctor_profile' i.doctor.id %}">
-                    {{i.doctor.name}}
+                  
+                   <a href="{% url 'Doctor_profile' i.doctor.id %}">
+                   Dr. {{i.doctor.name}}
                     <span>
                     {{i.doctor.specialization}}
                     </span>
@@ -605,34 +614,37 @@
                     <i class="feather-printer">
                     </i>
                    </a>
-                   <a class="btn btn-sm bg-info-light" href="{%url 'invoice_view'%}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
+                   <a class="btn btn-sm bg-info-light" href="{% url 'invoice_view' %}?Pid={{i.patient.id}}&Did={{i.doctor.id}}&Bid={{i.id}}">
                     <i class="feather-eye">
                     </i>
                    </a>
                   </div>
                  </td>
                 </tr>
-               {%endfor%}
+               {% endfor %}
                {% for a in appt %}
                <tr>
                   <td>
-                   <a href="{%url 'invoice_view'%}?Pid={{a.patient.id}}&Did={{a.doctor.id}}&Oid={{a.id}}">
+                   <a href="{% url 'invoice_view' %}?Pid={{a.patient.id}}&Did={{a.doctor.id}}&Oid={{a.id}}">
                     #INV-00{{a.id}}
                    </a>
                   </td>
                   <td>
                    <h2 class="table-avatar">
-                    <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' a.doctor.id %}">
-                     <!-- <img alt="User Image" class="avatar-img rounded-circle" src=" /media/{{i.doctor.img}}"/> -->
-                    
+   
                    
                      {% if a.doctor.img|length is not 0  %}
-                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{a.doctor.img}}"/>
-                     {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                     <a class="avatar avatar-sm mr-2" href="/media/{{a.doctor.img}}">
+                    
+                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{a.doctor.img}}"/></a>
+                     {% else %}
+                     <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                    
+                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/></a>
                     {% endif %}
                    
-                   </a>
-                    <a href="{%url 'Doctor_profile' a.doctor.id %}">
+                  
+                    <a href="{% url 'Doctor_profile' a.doctor.id %}">
                       {{a.doctor.name}}
                      <span>
                      {{a.doctor.specialization}}
@@ -654,7 +666,7 @@
                       <i class="feather-printer">
                       </i>
                      </a>
-                     <a class="btn btn-sm bg-info-light" href="{%url 'invoice_view'%}?Pid={{a.patient.id}}&Did={{a.doctor.id}}&Oid={{a.id}}">
+                     <a class="btn btn-sm bg-info-light" href="{% url 'invoice_view' %}?Pid={{a.patient.id}}&Did={{a.doctor.id}}&Oid={{a.id}}">
                       <i class="feather-eye">
                       </i>
                      </a>
@@ -680,7 +692,7 @@
      </div>
     </div>
    </div>
-   {%endblock%}
+   {% endblock %}
 
 {% block body1 %}
 

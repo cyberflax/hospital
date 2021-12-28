@@ -15,12 +15,12 @@
           <div class="login-header">
            <h3>
             Pharmacy Register
-               <a href="{%url 'register'%}">
+               <a href="{% url 'register' %}">
              Are you a Admin?
             </a>
            </h3>
           </div>
-          <form method="post">{%csrf_token%}
+          <form method="post">{% csrf_token %}
            <div class="form-group">
             <label>
           Pharmacy Name

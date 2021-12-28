@@ -53,15 +53,19 @@
           </tr>
          </thead>
          <tbody>
-         {%for prod,all,qty in product%}
+         {% for prod,all,qty in product %}
           <tr>
            <td>
-            <h2 class="table-avatar">
-             <a class="avatar avatar-sm mr-2" href="/product-description?@//@/={{prod.id}}">
+            <h2 class="table-avatar">{% if prod.img|length != 0 %}
+             <a class="avatar avatar-sm mr-2" href="/media/{{prod.img}}">
               <img alt="User Image" class="avatar-img" src="/media/{{prod.img}}"/>
-             </a>
+             </a>{% else %}
+             <a class="avatar avatar-sm mr-2" href="/media/blank.png">
+               <img alt="User Image" class="avatar-img" src="/media/black.png"/>
+              </a>{% endif %}
+
             </h2>
-            <a href="/product-description?@//@/={{prod.id}}">
+            <a href="{% url 'product_description' %}?@//@/={{prod.id}}">
              {{prod.name}}
             </a>
            </td>
@@ -74,14 +78,14 @@
            <td>
             <div class="custom-increment cart">
              <div class="input-group1">
-<a href="/minus?quntity={{prod.id}}&next={{prod.doc.name}}" >
+<a href="{% url 'minus' %}?quntity={{prod.id}}&next={{prod.doc.name}}" >
               <button id='minusButton'  class="btn btn-default btn-xs">
         <i class="fas fa-minus mr-2"></i>
         </button>
 </a>
    <input class="input-number" id="quantity1" name="quantity1" type="text" value="{{qty}}"/>
 
-<a href="/plus?quntity={{prod.id}}&next={{prod.doc.name}}" >
+<a href="{% url 'plus' %}?quntity={{prod.id}}&next={{prod.doc.name}}" >
               <button id='plusButton' class="btn btn-default btn-xs">
         <i class="fas fa-plus ml-2"></i>
         </button>
@@ -94,14 +98,14 @@
 
            <td class="text-right">
             <div class="table-action">
-             <a class="btn btn-sm bg-danger-light" href="{% url 'delete'%}?id= {{prod.id}}&next={{prod.doc.name}}">
+             <a class="btn btn-sm bg-danger-light" href="{% url 'delete' %}?id= {{prod.id}}&next={{prod.doc.name}}">
               <i class="feather-x-circle">
               </i>
              </a>
             </div>
            </td>
           </tr>
-{%endfor%}
+{% endfor %}
 
          </tbody>
         </table>
@@ -178,7 +182,7 @@
            </li>
            <li>{% if product|length is not 0 %}
             <div class="clinic-booking pt-4">
-             <a class="apt-btn" href="{% url 'product_checkout'%}">
+             <a class="apt-btn" href="{% url 'product_checkout' %}">
               Proceed to checkout
              </a>
             </div>{% endif %}
@@ -191,4 +195,4 @@
      </div>
     </div>
    </div>
-{%endblock%}
+{% endblock %}

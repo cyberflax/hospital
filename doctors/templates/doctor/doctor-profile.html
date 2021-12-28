@@ -79,7 +79,7 @@
              Get Directions
             </a>
              {% if  request.user.userType.type == '1'  %}
-            <a class="fav-btn" href="{%url 'favt'%}?dr={{title.id}}&pa={{request.user.id}}">
+            <a class="fav-btn" href="{% url 'favt' %}?dr={{title.id}}&pa={{request.user.id}}">
             {% if  title.id  in  favt %}
             <i class="fas fa-check-circle verified ml-2">
             </i>{% else %}
@@ -153,7 +153,7 @@
            View Profile
           </a>
           {% if  request.user.userType.type == '1'  %}
-          <a class="apt-btn" href="/booking?@//@/={{title.id}}">
+          <a class="apt-btn" href="{% url 'booking' %}?@//@/={{title.id}}">
            Book Now
           </a>{% endif %}
          </div>
@@ -193,7 +193,7 @@
 
         <div class="tab-pane fade show active" id="doc_overview" role="tabpanel">
 
-{% if over|length is not 0%}
+{% if over|length is not 0 %}
           <div class="row">
           <div class="col-md-12 col-lg-12">
            <div class="widget about-widget">
@@ -227,7 +227,7 @@
                </div>
               </li>
              </ul>
-            </div>{%endfor%}
+            </div>{% endfor %}
            </div>
            <div class="widget experience-widget">
             <h4 class="widget-title">
@@ -253,12 +253,12 @@
               </li>
 
              </ul>
-            </div>{%endfor%}
+            </div>{% endfor %}
            </div>
            <div class="widget awards-widget">
             <h4 class="widget-title">
              Awards
-            </h4>{%for i in title.Ov_view.Awards.all%}
+            </h4>{% for i in title.Ov_view.Awards.all %}
             <div class="experience-box">
              <ul class="experience-list">
               <li>
@@ -282,28 +282,28 @@
               </li>
 
              </ul>
-            </div>{%endfor%}
+            </div>{% endfor %}
            </div>
            <div class="service-list">
             <h4>
              Services{{title.Ov_view.0.servi_ses.all}}
-            </h4>{%for i in title.Ov_view.servi_ses.servies_add.all%}
+            </h4>{% for i in title.Ov_view.servi_ses.servies_add.all %}
             <ul class="clearfix">
              <li>
               {{i.servics}}
              </li>
-            </ul>{%endfor%}
+            </ul>{% endfor %}
            </div>
            <div class="service-list">
             <h4>
              Specializations
-            </h4>{%for i in title.Ov_view.Specific_ation.all%}
+            </h4>{% for i in title.Ov_view.Specific_ation.all %}
             <ul class="clearfix">
             <li>
               {{i.specification}}
 
 </li>
-            </ul>{%endfor%}
+            </ul>{% endfor %}
            </div>
           </div>
           </div>
@@ -316,7 +316,7 @@
 
         <div class="tab-pane fade" id="doc_locations" role="tabpanel">
          {% if location|length is not 0 %}
-        {% for i in title.Loca_tions.all%}
+        {% for i in title.Loca_tions.all %}
          <div class="location-list">
 
           <div class="row">
@@ -413,7 +413,7 @@
             </div>
            </div>
           </div>
-         </div>{%endfor%}
+         </div>{% endfor %}
 
          {% else %}
         <p style="font-size:25px;color:blue;text-align:center">No Location Available ! </p>{% endif %}
@@ -422,12 +422,11 @@
         <div class="tab-pane fade" id="doc_reviews" role="tabpanel">
          {% if review|length is not 0 %}
          <div class="widget review-listing">
-          <ul class="comments-list">{% for i in review%}
+          <ul class="comments-list">{% for i in review %}
 
            <li>
             <div class="comment">
-<!--             <img alt="User Image" class="avatar avatar-sm rounded-circle" src="/media/{{i.patient.img}}"/>-->
-<!--            -->
+
                {% if i.patient.img|length is not 0 %}
              <img alt="User Image" class="avatar rounded-circle" src="/media/{{i.patient.img}}"/>
 
@@ -443,15 +442,15 @@
                 Reviewed 2 Days ago
                </span>
                <div class="review-count rating">
-                {%for  j in "x"|ljust:"5"%}
-    {%if i.rating > forloop.counter0 %}
+                {% for  j in "x"|ljust:"5" %}
+    {% if i.rating > forloop.counter0 %}
                 <i class="fas fa-star filled" >
                 </i>
-                {%else%}
+                {% else %}
                 <i class="fas fa-star">
                 </i>
-                {%endif%}
-                {%endfor%}
+                {% endif %}
+                {% endfor %}
 
                </div>
               </div>
@@ -473,12 +472,12 @@
                 <span>
                  Recommend?
                 </span>
-                <a class="like-btn plus" href="/like?@//@/={{i.id}}&next={{request.get_full_path}}">
+                <a class="like-btn plus" href="{% url 'like' %}?@//@/={{i.id}}&next={{request.get_full_path}}">
                  <i class="far fa-thumbs-up">
                  </i>
                  {{i.YES}}
                 </a>
-                <a class="dislike-btn minus" href="/dislike?@//@/={{i.id}}&next={{request.get_full_path}}">
+                <a class="dislike-btn minus" href="{% url 'dislike' %}?@//@/={{i.id}}&next={{request.get_full_path}}">
                  <i class="far fa-thumbs-down">
                  </i>
                  {{i.NO}}
@@ -488,7 +487,7 @@
              </div>
             </div>
 
-           </li>{%endfor%}
+           </li>{% endfor %}
 
           </ul>
           <div class="all-feedback load-more mb-0">
@@ -496,7 +495,7 @@
             Show all feedback
            </a>
           </div></div>
-          {% else%}
+          {% else %}
           <p class="my-3 mx-5" style="font-size:25px;text-align:center; color:blue">
            No Reviews ! </p> {% endif %}
 
@@ -571,7 +570,7 @@
               <input id="terms_accept" required type="checkbox"/>
               <label for="terms_accept">
                I have read and accept
-               <a href="{%url 'term_con'%}">
+               <a href="{% url 'term_con' %}">
                 Terms &amp; Conditions
                </a>
               </label>
@@ -614,7 +613,7 @@
                 </div>
                </div>
               </div>
-              <div class="card-body"> {% for i in title.Buss_Ho.Hour_S.all%}
+              <div class="card-body"> {% for i in title.Buss_Ho.Hour_S.all %}
                <div class="listing-day">
                 <div class="day">
                  {{i.Day}}
@@ -624,7 +623,7 @@
                   {{i.Time1}} -  {{i.Time2}}
                  </span>
                 </div>
-               </div>{%endfor%}
+               </div>{% endfor %}
                <div class="listing-day closed">
                 <div class="day">
                  Sunday

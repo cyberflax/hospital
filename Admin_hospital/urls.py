@@ -38,7 +38,7 @@ urlpatterns = [
     path('admin_pwd_chng/', views.admin_pwd_chng, name='admin_pwd_chng'),
 
     path('register/', views.register, name='register'),
-    path('reviews/', views.doc_reviews, name='doc_reviews'),
+    path('doc-reviews/', views.doc_reviews, name='doc_reviews'),
     path('adminsettings/', views.adminsettings, name='adminsettings'),
     path('specialities/', views.specialities, name='specialities'),
     path('table-basic/', views.tablebasic, name='tablebasic'),

@@ -34,7 +34,7 @@
 									{% for r in rvw %}
 									<tr>
 										<td>
-											<h2 class="table-avatar">													src="/media/{{r.patient.img}}" />-->
+											<h2 class="table-avatar">						
 
 													{% if r.patient.img|length is not 0 %}
 													<a class="avatar avatar-sm mr-2" href="/media/{{r.patient.img}}">
@@ -71,11 +71,11 @@
 											{%if r.rating > forloop.counter0 %}
 											<i class="fe fe-star text-warning">
 											</i>
-											{%else%}
+											{% else %}
 											<i class="fe fe-star-o text-secondary">
 											</i>
-											{%endif%}
-											{%endfor%}
+											{% endif %}
+											{% endfor %}
 
 
 

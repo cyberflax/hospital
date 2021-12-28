@@ -39,20 +39,18 @@
                                     <td>#SP00{{forloop.counter}}</td>
                                     <td>
                                         <h2 class="table-avatar">
-                                            <a class="avatar avatar-sm mr-2" data-toggle="modal"
-                                        onclick="$('#prodid').val('{{p.id}}');"  href="#edit_specialities_details">
-
-
-
-       {% if p.img|length is not 0 %}
-       <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{p.img}}" width="31"/>
-            {% else %}
-             <img alt="User Image" class="avatar-img rounded-circle" width="31" src="/media/black.png"/>
+                                            <!-- <a class="avatar avatar-sm mr-2" data-toggle="modal"
+                                        onclick="$('#prodid').val('{{p.id}}');"  href="#edit_specialities_details"> -->
+       {% if p.img|length is not 0 %} <a class="avatar avatar-sm mr-2" href="/media/{{p.img}}">
+       <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{p.img}}" width="31"/></a>
+            {% else %} <a class="avatar avatar-sm mr-2" href="/media/black.png">
+             <img alt="User Image" class="avatar-img rounded-circle" width="31" src="/media/black.png"/></a>
           {% endif %}
 
-                                            </a>
-                                            <a data-toggle="modal"  onclick="$('#prodid').val('{{p.id}}');"  href="#edit_specialities_details">
-												{{p.name}} (Syrup 200 ml)</a>
+                                            <!-- </a> -->
+                                            <!-- <a data-toggle="modal"  onclick="$('#prodid').val('{{p.id}}');"  href="#edit_specialities_details"> -->
+												{{p.name}} (Syrup 200 ml)
+                                            <!-- </a> -->
                                         </h2>
                                     </td>
                                     <td>${{p.price}}</td>

@@ -32,17 +32,18 @@
        <div class="profile-sidebar">
         <div class="widget-profile pro-widget-content">
          <div class="profile-info-widget">
-          <a class="booking-doc-img" href="{% url 'patient_profile' %}?profile={{request.user.patient_record.id}}">
-
-
+         
             {% if request.user.patient_record.img|length is not 0 %}
-           <img alt="User Image" src="/media/{{request.user.patient_record.img}}"/>
-           {% else %}
-            <img alt="User Image" src="/media/default.jpg"/>
+            <a class="booking-doc-img" href="/media/{{request.user.patient_record.img}}">
+
+           <img alt="User Image" src="/media/{{request.user.patient_record.img}}"/></a>
+           {% else %} <a class="booking-doc-img" href="/media/default.jpg">
+
+            <img alt="User Image" src="/media/default.jpg"/></a>
          {% endif %}
 
 
-          </a>
+          
           <div class="profile-det-info">
            <h3>
            {{request.user.patient_record.patient}}
@@ -51,7 +52,7 @@
             <h5>
              <i class="feather-gift">
              </i>
-            {{request.user.patient_record.DOB}}, {{request.user.patient_record.age}}years
+            {{request.user.patient_record.DOB}}( {{request.user.patient_record.age}}years)
             </h5>
             <h5 class="mb-0">
              <i class="feather-map-pin">
@@ -66,7 +67,7 @@
          <nav class="dashboard-menu">
           <ul>
            <li >
-            <a href="{% url 'patient_dashboard'%}?Pid={{request.user.patient_record.id}}">
+            <a href="{% url 'patient_dashboard' %}?Pid={{request.user.patient_record.id}}">
              <span>
               Dashboard
              </span>
@@ -75,7 +76,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'favourites'%}?pa={{request.user.patient_record.id}}">
+            <a href="{% url 'favourites' %}?pa={{request.user.patient_record.id}}">
              <span>
               Favourites
              </span>
@@ -146,7 +147,7 @@
             </a>
            </li>
            <li>
-            <a href="{%url 'profile_setting'%}?profile={{request.user.patient_record.id}}">
+            <a href="{% url 'profile_setting' %}?profile={{request.user.patient_record.id}}">
              <span>
               Profile Settings
              </span>
@@ -155,7 +156,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'change_password'%}">
+            <a href="{% url 'change_password' %}">
              <span>
               Change Password
              </span>
@@ -164,7 +165,7 @@
             </a>
            </li>
            <li>
-            <a href="{% url 'dlogout'%}">
+            <a href="{% url 'dlogout' %}">
              <span>
               Logout
              </span>
@@ -222,7 +223,7 @@
                  </th>
                 </tr>
                </thead>
-               <tbody>{%for i in record%}
+               <tbody>{% for i in record %}
                 <tr>
                  <td>
                   <a href="#">
@@ -240,33 +241,36 @@
                    {{i.attachment}}
                   </a>
                  </td> -->
-                 <td>{% if i.desc|length is not 0 or i.desc is not blank %}
+                 <td>{% if i.desc|length != 0  %}
                   {{i.desc}}
                   {% else %}
-                  <p style="color:red">
-                    No Desc.</p>{% endif %}
+                  <p style="color:rgb(139, 52, 52)">
+                    No Des.</p>{% endif %}
                  </td>
-                 <td>{% if  i.attachment is not blank %}
+                 <td>{% if  i.attachment|length != 0 %}
                   <a href="/media/{{i.attachment}}">
                    {{i.attachment}}
                   </a>
                   {% else %}
-                  <a href="/media/{{blank.png}}" style="color:red">
+                  <a href="/media/{{blank.png}}" style="color:rgb(139, 65, 65)">
                     No Atachment</a>{% endif %}
                  </td>
                  <td>
                   <h2 class="table-avatar">
-                   <a class="avatar avatar-sm mr-2" href="{%url 'Doctor_profile' i.doctor.id %}">
-                    <!-- <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/> -->
-                  
+                
                     {% if i.doctor.img|length is not 0  %}
+                    <a class="avatar avatar-sm mr-2" href="/media/{{i.doctor.img}} ">
+                   
                     <img alt="User Image" class="avatar-img rounded-circle" src="/media/{{i.doctor.img}}"/>
-                    {% else %}<img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
-                   {% endif %} 
+                    </a>{% else %}
+                    <a class="avatar avatar-sm mr-2" href="/media/default.jpg">
+                   
+                    <img alt="User Image" class="avatar-img rounded-circle" src="/media/default.jpg"/>
+                  </a> {% endif %} 
                   
-                  </a>
+                  
                    <a href="{%url 'Doctor_profile' i.doctor.id %}">
-                 {{i.doctor.name}}
+                 Dr.{{i.doctor.name}}
                     <span>
                     {{i.doctor.specialization}}
                     </span>
@@ -288,7 +292,7 @@
                   </div>
                  </td>
                 </tr>
-               {%endfor%}
+               {% endfor %}
                </tbody>
               </table>
              </div>
@@ -308,11 +312,11 @@
      </div>
     </div>
    </div>
-   {%endblock%}
+   {% endblock %}
 
 
    
-{% block body1%}
+{% block body1 %}
 
 <div class="modal fade custom-modal" id="medical_details">
   <div class="modal-dialog modal-dialog-centered">

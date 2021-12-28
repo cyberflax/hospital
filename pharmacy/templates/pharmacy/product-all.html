@@ -34,7 +34,7 @@
          <h4 class="card-title mb-0">
           Filter
          </h4>
-        </div><form method="POST" >{%csrf_token%}
+        </div><form method="POST" >{% csrf_token %}
         <div class="card-body">
          <div class="filter-widget">
           <h4>
@@ -106,10 +106,14 @@
         {% for i in t %}{% if i.expiry_date >= today %}
         <div class="col-md-12 col-lg-6 col-xl-4 product-custom">
          <div class="profile-widget">
-          <div class="doc-img">
-           <a href="/product-description?@//@/={{i.id}}" tabindex="-1">
+          <div class="doc-img">{% if i.img|length != 0 %}
+           <a href="/media/{{i.img}}" tabindex="-1">
             <img alt="Product image" class="img-fluid" src="/media/{{i.img}}"/>
-           </a>
+           </a>{% else %}
+           <a href="/product-description?@//@/={{i.id}}" tabindex="-1">
+            <img alt="Product image" class="img-fluid" src="/media/black.png"/>
+           </a>{% endif %}
+
            <a class="fav-btn" href="javascript:void(0)" tabindex="-1">
             <i class="far fa-bookmark">
             </i>
@@ -117,7 +121,7 @@
           </div>
           <div class="pro-content">
            <h3 class="title">
-            <a href="/product-description?@//@/={{i.id}}" tabindex="-1">
+            <a href="{% url 'product_description' %}?@//@/={{i.id}}" tabindex="-1">
              {{i.name}}
             </a>
            </h3>
@@ -131,7 +135,7 @@
              </span>
             </div>
             <div class="col-4 text-right">
-             <a class="cart-icon" href="/addcart?@//@/={{i.id}}&next={{i.doc.id}}">
+             <a class="cart-icon" href="{% url 'addcart' %}?@//@/={{i.id}}&next={{i.doc.id}}">
               <i class="feather-shopping-cart">
               </i>
              </a>
@@ -160,4 +164,4 @@
         <p style=" margin-left:20px;font-size:25px;color:blue;">Product Not Available !</p>{% endif %}
 
    </div>
-{%endblock%}
+{% endblock %}
