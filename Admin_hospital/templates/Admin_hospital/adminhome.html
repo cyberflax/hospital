@@ -279,7 +279,17 @@
                                             20 Oct 2019
                                         </td>
                                         <td class="text-right">
-                                            $100.00
+                                            
+                                            {% if list|length != 0 %}
+                                            {% for l in list %}
+                                            {% if p.id == l.id %}
+
+                                           <!-- $ {{l.total}}.00 -->
+                                            {% endif %}
+                                            {% endfor %}
+                                            {% endif %}
+                                            
+                                            
                                         </td>
                                     </tr>
                                     {% endfor %}
@@ -379,7 +389,7 @@
                                             </div>
                                         </td>
                                         <td class="text-right">
-                                            $200.00
+                                            ${{ap.amount}}.00
                                         </td>
                                     </tr>
                                     {% endfor %}

@@ -127,7 +127,7 @@ class rvw_reply(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name +' - '+ self.dics.name
+        return self.name +' - '+ self.doc.name
 
 class Loca_tions(models.Model):
     doc = models.ForeignKey(Dr, on_delete=models.CASCADE, related_name="Loca_tions")

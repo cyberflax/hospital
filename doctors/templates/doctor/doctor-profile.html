@@ -422,7 +422,8 @@
         <div class="tab-pane fade" id="doc_reviews" role="tabpanel">
          {% if review|length is not 0 %}
          <div class="widget review-listing">
-          <ul class="comments-list">{% for i in review %}
+          <ul class="comments-list">
+            {% for i in review %}
 
            <li>
             <div class="comment">
@@ -463,7 +464,9 @@
                {{i.review}}
               </p>
               <div class="comment-reply">
-               <a class="comment-btn" href="#">
+               <a class="comment-btn" 
+               onclick="$('#review_id').val('{{i.id}}');" data-toggle="modal"
+                href="#edit_specialities_details">
                 <i class="fas fa-reply">
                 </i>
                 Reply
@@ -485,8 +488,78 @@
                </p>
               </div>
              </div>
-            </div>
+            </div>{% if reply|length != 0 %}
+            {% for r in  reply %}
+{% if i.id == r.rvw.id %}
+            <ul class="comments-reply">
+              <li>
+               <div class="comment">
+             
+                
+               {% if r.patient.img|length is not 0 %}
+               <img alt="User Image" class="avatar rounded-circle" src="/media/{{r.patient.img}}"/>
+  
+             {% else %}
+              <img  alt="User Image" class="avatar rounded-circle" src="/media/default.jpg"/>
+           {% endif %}
+                <div class="comment-body">
+                 <div class="meta-data">
+                  <span class="comment-author">
+                  {{r.name}}
+                  </span>
+                  <span class="comment-date">
+                   Reviewed 3 Days ago
+                  </span>
+                  <div class="review-count rating">
+                   <i class="fas fa-star filled">
+                   </i>
+                   <i class="fas fa-star filled">
+                   </i>
+                   <i class="fas fa-star filled">
+                   </i>
+                   <i class="fas fa-star filled">
+                   </i>
+                   <i class="fas fa-star">
+                   </i>
+                  </div>
+                 </div>
+                 <p class="comment-content">
+                 {{r.review}}
+                 </p>
+                 <div class="comment-reply">
+                  <!-- <a class="comment-btn" href="#">
+                   <i class="fas fa-reply">
+                   </i> -->
 
+
+                   <a class="comment-btn" 
+                   onclick="$('#review_id').val('{{i.id}}');" data-toggle="modal"
+                    href="#edit_specialities_details">
+                    <i class="fas fa-reply">
+                    </i>
+    
+                   Reply
+                  </a>
+                  <p class="recommend-btn">
+                   <span>
+                    Recommend?
+                   </span>
+                   <a class="like-btn" href="{% url 'like' %}?re_like={{r.id}}&next={{request.get_full_path}}">
+                    <i class="far fa-thumbs-up">
+                    </i>
+                   {{r.YES}}
+                   <a class="dislike-btn" href="{% url 'dislike' %}?re_dislike={{r.id}}&next={{request.get_full_path}}">
+                    <i class="far fa-thumbs-down">
+                    </i>
+                   {{r.NO}}
+                   </a>
+                  </p>
+                 </div>
+                </div>
+               </div>
+              </li>
+             </ul>
+{% endif %}{% endfor %}{% endif %}
            </li>{% endfor %}
 
           </ul>
@@ -653,3 +726,117 @@
     </div>
    </div>
    {% endblock%}
+
+   {% block body1 %}
+
+   
+<div aria-hidden="true" class="modal fade" id="edit_specialities_details" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+   <div class="modal-content">
+    <div class="modal-header">
+     <h5 class="modal-title">
+      Add Reply
+     </h5>
+     <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+      <span aria-hidden="true">
+       ×
+      </span>
+     </button>
+    </div>
+    <div class="modal-body">
+     <form method="post" >{% csrf_token %}
+    <input name="reid" id='review_id'>
+       <div class="write-review">
+        <h4>
+         Write a reply for
+         <span class="text-info">
+          <strong>
+          {{title.name}}
+          </strong>
+         </span>
+        </h4>
+         <div class="form-group">
+          <label>
+           Reply
+          </label>
+          <!-- <div class="star-rating" >
+            <input id="star-5" name="ratings"  type="radio" required value='{{5}}'/>
+            <label for="star-5" title="5 stars">
+             <i class="active fa fa-star">
+             </i>
+            </label>
+            <input id="star-4" name="ratings" type="radio" required value='{{4}}'/>
+            <label for="star-4" title="4 stars">
+             <i class="active fa fa-star">
+             </i>
+            </label>
+            <input id="star-3" name="ratings" type="radio" required value="{{3}}"/>
+            <label for="star-3" title="3 stars">
+             <i class="active fa fa-star">
+             </i>
+            </label>
+            <input id="star-2" name="ratings" type="radio" required value="2"/>
+            <label for="star-2" title="2 stars">
+             <i class="active fa fa-star">
+             </i>
+            </label>
+            <input id="star-1" name="ratings" type="radio" required value="1"/>
+            <label for="star-1" title="1 star">
+             <i class="active fa fa-star">
+             </i>
+            </label>
+           </div> -->
+         <!-- </div> -->
+         <div class="form-group">
+          <label>
+           <!-- Title of your review/  -->
+           Your Name
+          </label>
+          <input class="form-control" name="re_name" id="nameid" readonly
+           value="{{request.user.patient_record.name}}"/>
+         </div>
+         <div class="form-group">
+          <label>
+           Your review
+          </label>
+          <textarea class="form-control" id="review_desc"  required name='reply' maxlength="100"></textarea>
+          <div class="d-flex justify-content-between mt-3">
+           <small class="text-muted">
+            <span id="chars">
+             100
+            </span>
+            characters remaining
+           </small>
+          </div>
+         </div>
+         <div class="form-group">
+          <div class="terms-accept">
+           <div class="custom-checkbox">
+            <input id="terms_accept" required type="checkbox"/>
+            <label for="terms_accept">
+             I have read and accept
+             <a href="{% url 'term_con' %}">
+              Terms &amp; Conditions
+             </a>
+            </label>
+           </div>
+          </div>
+         </div>
+         <div class="submit-section" >
+          <button class="btn btn-primary submit-btn"  type="submit">
+           Post
+          </button>
+         </div>
+        
+       </div>
+       
+       
+         </form>
+    </div>
+   </div>
+  </div>
+
+  
+ </div>
+
+ {% endblock body1 %}

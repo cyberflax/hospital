@@ -17,22 +17,37 @@ def Doctor_profile(request,id):
         patient = patient_record.objects.values('name')
         patients = {data['name'] for data in patient}
         if request.method == "POST":
-            name = request.POST['name']
-            review = request.POST['review']
-            rating = request.POST['rating']
-            patient1 = patient_record.objects.get(name=name)
-            if name in patients:
-                var = reView(patient=patient1,name=name, review=review,dics=profile,YES=0,NO=0,rating=rating)
+            if request.POST.get('name') != None:
+                name = request.POST['name']
+                review = request.POST['review']
+                rating = request.POST['rating']
+                patient1 = patient_record.objects.get(name=name)
+                if name in patients:
+                    var = reView(patient=patient1,name=name, review=review,dics=profile,YES=0,NO=0,rating=rating)
+                    var.save()
+                    messages.success(request,'Review Posted.')
+                    return redirect(request.get_full_path())
+                else:
+                    messages.success(request, "Your are not patient")
+            elif request.POST.get('reid') != 0:
+                name = request.POST['re_name']
+                review = request.POST['reply']
+                # rating = request.POST['ratings']
+                rv=reView.objects.get(id=request.POST.get('reid'))
+                patient1 = patient_record.objects.get(name=name)
+                # if name in patients:
+                var = rvw_reply(rvw=rv,patient=patient1,name=name, review=review,
+                doc=profile,YES=0,NO=0,rating=0)
                 var.save()
-                messages.success(request,'Review Posted.')
+                messages.success(request,'Reply Posted.')
                 return redirect(request.get_full_path())
-            else:
-                 messages.success(request, "Your are not patient")
+
         review = reView.objects.filter(dics=profile)
         loc=Loca_tions.objects.filter(doc=profile)
         pro=Dr.objects.filter(id=id)
         buss_ho=Buss_Ho.objects.filter(doc1=profile)
         ov_view=Ov_view.objects.filter(doc=profile)
+        reply=rvw_reply.objects.filter(doc=profile)
         # if request.user.userType.type == '1' is not None:
         #     pa_names=patient_record.objects.get(id=request.user.patient_record.id)# for favourite checked
         #     favt=favourite.objects.values('dr_name').filter(pa_name=pa_names)
@@ -40,7 +55,7 @@ def Doctor_profile(request,id):
         # else:
         #     print('')
         res={'title':profile,'review':review,'location':loc,
-        'Buss_Ho':buss_ho,'over':ov_view}
+        'Buss_Ho':buss_ho,'over':ov_view,'reply':reply}
         return render(request,'doctor/doctor-profile.html',res)
     
 def Doctor_register(request):
@@ -309,12 +324,21 @@ def like(request):
         bid=request.GET.get('@//@/')
         next=request.GET.get('next')
         prod_list = reView.objects.filter(id=bid)
-        if len(prod_list) > 0:
-            ob = prod_list[0]
-            if ob.YES >= 0:
-                ob.YES+= 1
-                ob.save()
-        return redirect(next)
+        if request.GET.get('@//@/') != None:
+            if len(prod_list) > 0:
+                ob = prod_list[0]
+                if ob.YES >= 0:
+                    ob.YES+= 1
+                    ob.save()
+            return redirect(next)
+        elif request.GET.get('re_like') != None:
+                prod_list=rvw_reply.objects.filter(id=request.GET.get('re_like'))
+                if len(prod_list) > 0:
+                    ob = prod_list[0]
+                    if ob.YES >= 0:
+                        ob.YES+= 1
+                        ob.save()
+                return redirect(next)
     else:
         return redirect('error500')
 def dislike(request):
@@ -323,12 +347,21 @@ def dislike(request):
         bid=request.GET.get('@//@/')
         next = request.GET.get('next')
         prod_list = reView.objects.filter(id=bid)
-        if len(prod_list) > 0:
-            ob = prod_list[0]
-            if ob.NO >= 0:
-                ob.NO+= 1
-                ob.save()
-        return redirect(next)
+        if request.GET.get('@//@/') != None:
+            if len(prod_list) > 0:
+                ob = prod_list[0]
+                if ob.NO >= 0:
+                    ob.NO+= 1
+                    ob.save()
+            return redirect(next)
+        elif request.GET.get('re_dislike') != None:
+            prod_list=rvw_reply.objects.filter(id=request.GET.get('re_dislike'))
+            if len(prod_list) > 0:
+                ob = prod_list[0]
+                if ob.NO >= 0:
+                    ob.NO+= 1
+                    ob.save()
+            return redirect(next)
     else:
         return redirect('error500')
 def appointments(request):
