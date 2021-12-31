@@ -12,43 +12,29 @@ from django.contrib.auth import authenticate,login,logout
 
 
 # Create your views here.
-
+import collections
 def adminhome(request):
     if request.user.is_authenticated:
         res = {}
         res['dct'] = Dr.objects.all()
         res['pnt'] = patient_record.objects.all()
         res['apmnt'] = appoinmentlist.objects.all()
-        total=0
-        li=[]
-        # lis=[]
-        dic={}
-        for a in res['apmnt']:
-            for p in res['pnt']:
-                if a.patient.id==p.id:
-                    if len(li)==0 :
-                            total+=a.amount
-                            dic={'id':a.patient.id,'total':total}
-                            di_cpy=dic.copy()
-                            li.append(di_cpy)
-                            print(li,'ooii')
-                    elif len(li)>0:
-                    
-                        for i in li: 
-                            
-                            if i['id'] != a.patient.id:
-                                
-                                 total=0 
-                                 total+=a.amount
-                                 dic={'id':a.patient.id,'total':total}
-                                 di_cpys=dic.copy()
-                                 li.append(di_cpys)
-                                
-                            else:   
-                                total+=a.amount
-                                i['total']=total 
-                            
-        res['list']=li
+    
+        p_ap=appoinmentlist.objects.values('patient','amount')
+        ret=collections.defaultdict(int)
+        for p in p_ap:
+           ret[p['patient']]+=int(p['amount'])
+        p_apt=[{'pat':patient,'amount':amount} for patient,amount in ret.items()]
+        res['pat_amount']=p_apt
+    
+        d_ap=appoinmentlist.objects.values('doctor','amount')
+        ret=collections.defaultdict(int)
+        for d in d_ap:
+           ret[d['doctor']]+=int(d['amount'])
+        d_apt=[{'doc':doctor,'amount':amount} for doctor,amount in ret.items()]
+        res['doc_amount']=d_apt
+    
+          
         return render(request, 'Admin_hospital/adminhome.html', res)
 
     else:

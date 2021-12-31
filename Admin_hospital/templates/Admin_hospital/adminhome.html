@@ -201,7 +201,16 @@
                                             {{d.specialization}}
                                         </td>
                                         <td>
-                                           $3200.00
+                                            {% if doc_amount|length != 0 %}
+                                            {% for dr in doc_amount %}
+                                            
+                                            {% if d.id == dr.doc %}
+                                            ${{dr.amount}}.00
+                                           
+                                            {% endif %}
+                                            {% endfor %}
+                                            {% endif %}
+                                            
                                         </td>
                                         <td>
                                             <i class="fe fe-star text-warning">
@@ -280,11 +289,12 @@
                                         </td>
                                         <td class="text-right">
                                             
-                                            {% if list|length != 0 %}
-                                            {% for l in list %}
-                                            {% if p.id == l.id %}
-
-                                           <!-- $ {{l.total}}.00 -->
+                                            {% if pat_amount|length != 0 %}
+                                            {% for pt in pat_amount %}
+                                            
+                                            {% if p.id == pt.pat %}
+                                            ${{pt.amount}}.00
+                                           
                                             {% endif %}
                                             {% endfor %}
                                             {% endif %}
