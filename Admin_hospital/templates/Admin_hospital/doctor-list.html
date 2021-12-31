@@ -48,7 +48,19 @@
 										<td>{{d.specialization}}</td>
 										<td>{{d.date|date:'d M Y'}} <br /><small>
 					{{d.time|time:'h:i A'}}</small></td>
-										<td>$3100.00</td>
+										<td>
+
+
+											{% if doc_amount|length != 0 %}
+                                            {% for dr in doc_amount %}
+                                            
+                                            {% if d.id == dr.doc %}
+                                            ${{dr.amount}}.00
+                                           
+                                            {% endif %}
+                                            {% endfor %}
+                                            {% endif %}
+										</td>
 										<td>
 											<div class="status-toggle">
 												<input checked="" class="check" id="status_1" type="checkbox" />

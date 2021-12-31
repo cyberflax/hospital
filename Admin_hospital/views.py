@@ -182,6 +182,12 @@ def doctorlist(request):
     if request.user.is_authenticated:
         res = {}
         res['dct'] = Dr.objects.all()
+        d_ap=appoinmentlist.objects.values('doctor','amount')
+        ret=collections.defaultdict(int)
+        for d in d_ap:
+           ret[d['doctor']]+=int(d['amount'])
+        d_apt=[{'doc':doctor,'amount':amount} for doctor,amount in ret.items()]
+        res['doc_amount']=d_apt
         return render(request, 'Admin_hospital/doctor-list.html', res)
 
     else:
@@ -325,6 +331,12 @@ def patientlist(request):
 
         res = {}
         res['pnt'] = patient_record.objects.all()
+        p_ap=appoinmentlist.objects.values('patient','amount')
+        ret=collections.defaultdict(int)
+        for p in p_ap:
+           ret[p['patient']]+=int(p['amount'])
+        p_apt=[{'pat':patient,'amount':amount} for patient,amount in ret.items()]
+        res['pat_amount']=p_apt
         return render(request, 'Admin_hospital/patient-list.html', res)
 
     else:

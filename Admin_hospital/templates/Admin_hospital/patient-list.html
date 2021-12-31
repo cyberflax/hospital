@@ -53,7 +53,22 @@
 											<td>{{p.address}}</td>
 											<td>{{p.mobile}}</td>
 											<td>{{p.date|date:'d M Y'}}</td>
-											<td class="text-right">$100.00</td>
+											<td class="text-right">
+												
+												
+												
+												
+												
+												
+												{% if pat_amount|length != 0 %}
+												{% for pt in pat_amount %}
+												
+												{% if p.id == pt.pat %}
+												${{pt.amount}}.00
+											   
+												{% endif %}
+												{% endfor %}
+												{% endif %}</td>
 										</tr>
 										{% endfor %}
 									</tbody>
