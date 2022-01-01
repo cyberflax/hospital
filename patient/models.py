@@ -1,7 +1,7 @@
 from typing import Tuple
 from django.db import models
 from django.db.models.deletion import CASCADE
-import model_utils
+# import model_utils
 from django.contrib.auth.models import User
 # Create your models here.
 from doctors.models import Dr

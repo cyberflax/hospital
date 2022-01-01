@@ -1,5 +1,5 @@
 from django.db.models.fields import related
-import model_utils
+# import model_utils
 from django.contrib.auth.models import User
 from django.db import models
 from Admin_hospital.models import *
@@ -23,7 +23,7 @@ class Dr(models.Model):
     name = models.CharField(max_length=30)
     img = models.ImageField()
     qulification = models.CharField(max_length=100)
-    specialization = models.ForeignKey(speciality,unique=True,
+    specialization = models.ForeignKey(speciality,
     on_delete=models.CASCADE,related_name='Drs',null=True)
     address = models.TextField(max_length=300)
     email=models.EmailField()
