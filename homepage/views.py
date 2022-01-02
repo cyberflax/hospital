@@ -50,6 +50,7 @@ def home(request):
     profile = Dr.objects.all()
     blog=dr_blogs.objects.all()
     spc=speciality.objects.all()
+    re={}
     if  len(spc)>0:
         speciali = speciality.objects.values('spec')
         speci = {data['spec'] for data in speciali}
@@ -62,7 +63,7 @@ def home(request):
         else:
             res=profile
 
-    re = {'title': profile,'blog':blog,'specialty':speci,'special':res}
+        re = {'title': profile,'blog':blog,'specialty':speci,'special':res}
     if request.method=="POST":
         email = request.POST['email1']
         var = Newsletter_subscriber(suscriber_email=email)
