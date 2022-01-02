@@ -49,16 +49,17 @@ def Pforgot(request,id):
 def home(request):
     profile = Dr.objects.all()
     blog=dr_blogs.objects.all()
-    speciality = speciality.objects.values('spec')
-    speciality = {data['spec'] for data in speciality}
-    name = request.GET.get('special')
-    if name is None:
-        names=specility.objects.get(spec=name)
-        profile1 = Dr.objects.filter(specialization=names)
+    if  len(speciality.objeects.all())>0:
+        speciality = speciality.objects.values('spec')
+        speciality = {data['spec'] for data in speciality}
+        name = request.GET.get('special')
+        if name is None:
+            names=specility.objects.get(spec=name)
+            profile1 = Dr.objects.filter(specialization=names)
 
-        res=profile1
-    else:
-        res=profile
+            res=profile1
+        else:
+            res=profile
 
     re = {'title': profile,'blog':blog,'specialty':speciality,'special':res}
     if request.method=="POST":
