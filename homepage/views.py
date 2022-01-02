@@ -6,7 +6,7 @@ from .models import dr_blogs,Newsletter_subscriber
 from doctors.models import Dr, frgt_pwd,reView
 from patient.models import favourite, patient_record
 from django.contrib import messages
-
+from Admin_hospital.models import speciality
 #for send email
 from django.core.mail import send_mail
 #for html to email
@@ -49,14 +49,16 @@ def Pforgot(request,id):
 def home(request):
     profile = Dr.objects.all()
     blog=dr_blogs.objects.all()
-    speciality = Dr.objects.values('specialization')
-    speciality = {data['specialization'] for data in speciality}
+    speciality = speciality.objects.values('spec')
+    speciality = {data['spec'] for data in speciality}
     name = request.GET.get('special')
-    profile1 = Dr.objects.filter(specialization=name)
     if name is None:
-        res=profile
-    else:
+        names=specility.objects.get(spec=name)
+        profile1 = Dr.objects.filter(specialization=names)
+
         res=profile1
+    else:
+        res=profile
 
     re = {'title': profile,'blog':blog,'specialty':speciality,'special':res}
     if request.method=="POST":
