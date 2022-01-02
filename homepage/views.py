@@ -49,19 +49,20 @@ def Pforgot(request,id):
 def home(request):
     profile = Dr.objects.all()
     blog=dr_blogs.objects.all()
-    if  len(speciality.objeects.all())>0:
-        speciality = speciality.objects.values('spec')
-        speciality = {data['spec'] for data in speciality}
+    spc=speciality.objects.all()
+    if  len(spc)>0:
+        speciali = speciality.objects.values('spec')
+        speci = {data['spec'] for data in speciali}
         name = request.GET.get('special')
         if name is None:
-            names=specility.objects.get(spec=name)
+            names=speciality.objects.get(spec=name)
             profile1 = Dr.objects.filter(specialization=names)
 
             res=profile1
         else:
             res=profile
 
-    re = {'title': profile,'blog':blog,'specialty':speciality,'special':res}
+    re = {'title': profile,'blog':blog,'specialty':speci,'special':res}
     if request.method=="POST":
         email = request.POST['email1']
         var = Newsletter_subscriber(suscriber_email=email)
