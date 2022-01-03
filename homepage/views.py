@@ -55,7 +55,7 @@ def home(request):
         speciali = speciality.objects.values('spec')
         speci = {data['spec'] for data in speciali}
     name = request.GET.get('special')
-    if name is None:
+    if name is not None:
         names=speciality.objects.get(spec=name)
         profile1 = Dr.objects.filter(specialization=names)
         res=profile1
