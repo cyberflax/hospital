@@ -54,14 +54,13 @@ def home(request):
     if  len(spc)>0:
         speciali = speciality.objects.values('spec')
         speci = {data['spec'] for data in speciali}
-        name = request.GET.get('special')
-        if name is None:
-            names=speciality.objects.get(spec=name)
-            profile1 = Dr.objects.filter(specialization=names)
-
-            res=profile1
-        else:
-            res=profile
+    name = request.GET.get('special')
+    if name is None:
+        names=speciality.objects.get(spec=name)
+        profile1 = Dr.objects.filter(specialization=names)
+        res=profile1
+    else:
+        res=profile
 
         re = {'title': profile,'blog':blog,'specialty':speci,'special':res}
     if request.method=="POST":
