@@ -51,9 +51,6 @@ def home(request):
     blog=dr_blogs.objects.all()
     spc=speciality.objects.all()
     re={}
-    if  len(spc)>0:
-        speciali = speciality.objects.values('spec')
-        speci = {data['spec'] for data in speciali}
     name = request.GET.get('special')
     if name is not None:
         names=speciality.objects.get(spec=name)
@@ -61,7 +58,10 @@ def home(request):
         res=profile1
     else:
         res=profile
-
+    
+    if  len(spc)>0:
+        speciali = speciality.objects.values('spec')
+        speci = {data['spec'] for data in speciali}
         re = {'title': profile,'blog':blog,'specialty':speci,'special':res}
     if request.method=="POST":
         email = request.POST['email1']
